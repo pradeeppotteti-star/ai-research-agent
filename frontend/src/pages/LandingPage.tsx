@@ -18,28 +18,28 @@ export const LandingPage: React.FC = () => {
     <div className="space-y-24 py-6">
       {/* Hero Section */}
       <section className="text-center relative max-w-4xl mx-auto pt-8">
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-96 bg-zinc-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-300 text-xs font-semibold mb-6">
-          <Sparkles className="w-3.5 h-3.5 text-zinc-900 dark:text-zinc-100" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-800 dark:text-cyan-300 text-xs font-semibold mb-6">
+          <Sparkles className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
           <span>Inspired by "Deep Research: A Survey of Autonomous Research Agents"</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-zinc-900 dark:text-white leading-tight mb-6">
+        <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
           Evidence-Grounded AI <br />
-          <span className="bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-900 dark:from-white dark:via-zinc-300 dark:to-white bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-cyan-600 via-teal-600 to-sky-600 dark:from-cyan-400 dark:via-teal-300 dark:to-sky-400 bg-clip-text text-transparent">
             Academic Research Agent
           </span>
         </h1>
 
-        <p className="text-lg sm:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
           An autonomous research agent designed to solve traditional LLM limitations: multi-tool search integration, grounded citation verification, paper comparison matrices, and candidate research-gap detection.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             to="/signup"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 shadow-lg shadow-zinc-900/10 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-cyan-600 to-teal-700 hover:from-cyan-500 hover:to-teal-600 shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5"
           >
             <span>Start Autonomous Research</span>
             <ArrowRight className="w-4 h-4" />
@@ -47,13 +47,14 @@ export const LandingPage: React.FC = () => {
 
           <Link
             to="/login"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
           >
-            <Search className="w-4 h-4 text-zinc-900 dark:text-zinc-100" />
+            <Search className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
             <span>Try Demo Account</span>
           </Link>
         </div>
       </section>
+
 
 
 

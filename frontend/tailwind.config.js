@@ -6,25 +6,26 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#ecfdf5',
-          100: '#d1fae5',
-          200: '#a7f3d0',
-          300: '#6ee7b7',
-          400: '#34d399',
-          500: '#10b981',
-          600: '#059669', // Primary Forest Emerald Green
-          700: '#047857',
-          800: '#065f46',
-          900: '#064e3b',
-          950: '#022c22',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb', // Royal Cobalt Blue
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
         },
-        amber: {
-          500: '#f59e0b',
-          600: '#d97706',
+        copper: {
+          500: '#f97316',
+          600: '#ea580c', // Warm Copper
+          700: '#c2410c',
         },
         darkbg: {
-          DEFAULT: '#0F1715', // Deep Night Pine
-          card: '#16221E',
+          DEFAULT: '#0B0F19', // Deep Midnight Obsidian
+          card: '#1E293B',
         },
       },
       fontFamily: {
@@ -35,6 +36,7 @@ export default {
   },
   plugins: [],
 };
+
 
 
 

@@ -5,7 +5,7 @@
 @layer base {
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    @apply bg-[#F8FAFC] text-slate-800 dark:bg-[#121824] dark:text-slate-100 transition-colors duration-200;
+    @apply bg-[#FAFAF9] text-stone-900 dark:bg-[#18181B] dark:text-zinc-100 transition-colors duration-200;
   }
 
   code, pre, .font-mono {
@@ -13,17 +13,17 @@
   }
 }
 
-/* High-Precision Academic UI Design System */
+/* High-Precision Academic UI Design System - Option B Crimson & Parchment */
 .glass-panel {
-  @apply bg-white/95 dark:bg-[#121824]/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-md transition-colors duration-200;
+  @apply bg-stone-50/95 dark:bg-[#18181B]/95 backdrop-blur-md border border-stone-200 dark:border-zinc-800 shadow-sm dark:shadow-md transition-colors duration-200;
 }
 
 .glass-card {
-  @apply bg-white dark:bg-[#1e293b]/90 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-200;
+  @apply bg-white dark:bg-[#27272A]/90 border border-stone-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200;
 }
 
 .glass-card:hover {
-  @apply border-brand-500/40 dark:border-blue-400/40;
+  @apply border-brand-500/40 dark:border-rose-400/40;
 }
 
 /* Dense Data Table & Code Styling */
@@ -41,14 +41,15 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-100 dark:bg-[#121824];
+  @apply bg-stone-100 dark:bg-[#18181B];
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-700 rounded;
+  @apply bg-stone-300 dark:bg-zinc-700 rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400 dark:bg-slate-600;
+  @apply bg-stone-400 dark:bg-zinc-600;
 }
+
 

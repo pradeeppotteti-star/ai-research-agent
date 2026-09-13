@@ -6,33 +6,26 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#f0f6ff',
-          100: '#e0edfe',
-          200: '#bae0fd',
-          300: '#7ccbfd',
-          400: '#3884d6',
-          500: '#1e3e62', // Deep Institutional Navy
-          600: '#193453',
-          700: '#142a44',
-          800: '#112236',
-          900: '#0e1b2b',
-          950: '#09111c',
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#991b1b', // Deep University Crimson
+          600: '#800020', // Harvard Crimson
+          700: '#7f1d1d',
+          800: '#651818',
+          900: '#450a0a',
+          950: '#2c0606',
         },
-        navy: {
-          50: '#f0f4f8',
-          100: '#d9e2ec',
-          200: '#bcccdc',
-          300: '#9fb3c8',
-          400: '#829ab1',
-          500: '#627d98',
-          600: '#486581',
-          700: '#334e68',
-          800: '#243b53',
-          900: '#102a43',
+        bronze: {
+          500: '#b45309',
+          400: '#d97706',
+          300: '#f59e0b',
         },
         darkbg: {
-          DEFAULT: '#121824',
-          card: '#1e293b',
+          DEFAULT: '#18181b', // Deep Espresso Charcoal
+          card: '#27272a',
         },
       },
       fontFamily: {
@@ -43,4 +36,5 @@ export default {
   },
   plugins: [],
 };
+
 

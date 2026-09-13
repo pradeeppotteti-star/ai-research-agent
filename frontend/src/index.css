@@ -15,16 +15,17 @@
 
 /* High-Precision Academic UI Design System - Aquamarine & Deep Turquoise Theme */
 .glass-panel {
-  @apply bg-white/95 dark:bg-[#061723]/95 backdrop-blur-md border border-cyan-900/10 dark:border-cyan-500/20 shadow-sm dark:shadow-md transition-colors duration-200;
+  @apply bg-slate-100/90 dark:bg-[#0B1E29]/95 backdrop-blur-md border border-cyan-900/15 dark:border-cyan-500/20 shadow-sm dark:shadow-md transition-colors duration-200;
 }
 
 .glass-card {
-  @apply bg-white dark:bg-[#0E2A35]/95 border border-cyan-900/10 dark:border-cyan-500/20 shadow-sm hover:shadow-md transition-all duration-200;
+  @apply bg-slate-100/90 dark:bg-[#0D222E]/95 border border-cyan-900/15 dark:border-cyan-500/20 shadow-sm hover:shadow-md transition-all duration-200;
 }
 
 .glass-card:hover {
   @apply border-cyan-500/50 dark:border-cyan-400/50 shadow-cyan-500/10;
 }
+
 
 /* Dense Data Table & Code Styling */
 .academic-table th {

@@ -1,0 +1,56 @@
+redirectsOrigin = "config"
+plugins = []
+functionsDirectory = "C:\\Users\\prade\\Downloads\\FInal-Project\\netlify\\functions"
+functionsDirectoryOrigin = "config-v1"
+headers = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\Users\\prade\\Downloads\\FInal-Project\\frontend\\dist"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "C:\\Users\\prade\\Downloads\\FInal-Project"
+command = "npm run build"
+functions = "C:\\Users\\prade\\Downloads\\FInal-Project\\netlify\\functions"
+
+[build.environment]
+NODE_VERSION = "20"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/api/:splat"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

@@ -1,0 +1,3 @@
+@echo off
+echo Starting Evidence-Grounded AI Academic Research Agent...
+npm run dev

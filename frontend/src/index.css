@@ -5,7 +5,7 @@
 @layer base {
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    @apply bg-[#FAFAF9] text-stone-900 dark:bg-[#18181B] dark:text-zinc-100 transition-colors duration-200;
+    @apply bg-[#F4F7F4] text-[#0F1715] dark:bg-[#0F1715] dark:text-emerald-50 transition-colors duration-200;
   }
 
   code, pre, .font-mono {
@@ -13,17 +13,17 @@
   }
 }
 
-/* High-Precision Academic UI Design System - Option B Crimson & Parchment */
+/* High-Precision Academic UI Design System - Forest Emerald & Sage Theme */
 .glass-panel {
-  @apply bg-stone-50/95 dark:bg-[#18181B]/95 backdrop-blur-md border border-stone-200 dark:border-zinc-800 shadow-sm dark:shadow-md transition-colors duration-200;
+  @apply bg-white/95 dark:bg-[#0F1715]/95 backdrop-blur-md border border-emerald-900/10 dark:border-emerald-500/20 shadow-sm dark:shadow-md transition-colors duration-200;
 }
 
 .glass-card {
-  @apply bg-white dark:bg-[#27272A]/90 border border-stone-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200;
+  @apply bg-white dark:bg-[#16221E]/95 border border-emerald-900/10 dark:border-emerald-500/20 shadow-sm hover:shadow-md transition-all duration-200;
 }
 
 .glass-card:hover {
-  @apply border-brand-500/40 dark:border-rose-400/40;
+  @apply border-emerald-500/50 dark:border-emerald-400/50 shadow-emerald-500/10;
 }
 
 /* Dense Data Table & Code Styling */
@@ -41,15 +41,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-stone-100 dark:bg-[#18181B];
+  @apply bg-emerald-50 dark:bg-[#0F1715];
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-stone-300 dark:bg-zinc-700 rounded;
+  @apply bg-emerald-200 dark:bg-emerald-900/60 rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-stone-400 dark:bg-zinc-600;
+  @apply bg-emerald-300 dark:bg-emerald-800;
 }
+
 
 

@@ -6,26 +6,25 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          200: '#fecaca',
-          300: '#fca5a5',
-          400: '#f87171',
-          500: '#991b1b', // Deep University Crimson
-          600: '#800020', // Harvard Crimson
-          700: '#7f1d1d',
-          800: '#651818',
-          900: '#450a0a',
-          950: '#2c0606',
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
+          600: '#059669', // Primary Forest Emerald Green
+          700: '#047857',
+          800: '#065f46',
+          900: '#064e3b',
+          950: '#022c22',
         },
-        bronze: {
-          500: '#b45309',
-          400: '#d97706',
-          300: '#f59e0b',
+        amber: {
+          500: '#f59e0b',
+          600: '#d97706',
         },
         darkbg: {
-          DEFAULT: '#18181b', // Deep Espresso Charcoal
-          card: '#27272a',
+          DEFAULT: '#0F1715', // Deep Night Pine
+          card: '#16221E',
         },
       },
       fontFamily: {
@@ -36,5 +35,6 @@ export default {
   },
   plugins: [],
 };
+
 
 

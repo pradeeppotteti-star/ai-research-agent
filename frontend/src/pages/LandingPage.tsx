@@ -20,26 +20,26 @@ export const LandingPage: React.FC = () => {
       <section className="text-center relative max-w-4xl mx-auto pt-8">
         <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-semibold mb-6">
-          <Sparkles className="w-3.5 h-3.5 text-brand-400" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs font-semibold mb-6">
+          <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
           <span>Inspired by "Deep Research: A Survey of Autonomous Research Agents"</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight mb-6">
+        <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
           Evidence-Grounded AI <br />
-          <span className="bg-gradient-to-r from-brand-400 via-indigo-300 to-sky-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-amber-600 dark:from-emerald-400 dark:via-teal-300 dark:to-amber-400 bg-clip-text text-transparent">
             Academic Research Agent
           </span>
         </h1>
 
-        <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
+        <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
           An autonomous research agent designed to solve traditional LLM limitations: multi-tool search integration, grounded citation verification, paper comparison matrices, and candidate research-gap detection.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             to="/signup"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5"
           >
             <span>Start Autonomous Research</span>
             <ArrowRight className="w-4 h-4" />
@@ -47,13 +47,14 @@ export const LandingPage: React.FC = () => {
 
           <Link
             to="/login"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-300 bg-slate-900 border border-slate-800 hover:bg-slate-800 hover:text-white transition-all flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
           >
-            <Search className="w-4 h-4" />
+            <Search className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>Try Demo Account</span>
           </Link>
         </div>
       </section>
+
 
       {/* 8 Limitations Solved Grid */}
       <section className="space-y-8">

@@ -86,7 +86,7 @@ Primary synthesis highlights three main pillars:
 
     return {
       sessionId,
-      title: `Evidence-Grounded Survey: ${query}`,
+      title: `AI Smart Research Survey: ${query}`,
       sections: {
         researchQuestion: query,
         searchMethodology: `Systematic multi-provider search executed across ${sourcesSearched.join(

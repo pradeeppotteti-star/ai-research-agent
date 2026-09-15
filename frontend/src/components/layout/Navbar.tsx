@@ -67,14 +67,14 @@ export const Navbar: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-base tracking-tight text-slate-900 dark:text-white font-sans">
-                  Evidence-Grounded AI Agent
+                  AI Smart Research Agent
                 </span>
                 <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
                   v1.0
                 </span>
               </div>
               <span className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block font-mono">
-                Academic Literature Synthesis Workstation
+                Evidence-Grounded Multi-Source Literature Survey Synthesis
               </span>
             </div>
           </Link>

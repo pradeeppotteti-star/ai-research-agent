@@ -9,8 +9,8 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-3">
               <BrainCircuit className="w-5 h-5 text-brand-400" />
-              <span className="font-bold text-slate-100 text-lg">
-                Evidence-Grounded AI Academic Research Agent
+              <span className="font-bold text-slate-100 text-[15px]">
+                AI SMART RESEARCH AGENT: EVIDENCE-GROUNDED MULTI-SOURCE LITERATURE SURVEY SYNTHESIS
               </span>
             </div>
             <p className="text-sm text-slate-400 max-w-md leading-relaxed">
@@ -57,7 +57,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} Evidence-Grounded AI Research Agent. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} AI Smart Research Agent. All rights reserved.</p>
           <p className="font-mono">Production Ready • React 18 + Node Express + MongoDB</p>
         </div>
       </div>

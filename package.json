@@ -2,7 +2,7 @@
   "name": "evidence-grounded-ai-research-agent",
   "version": "1.0.0",
   "private": true,
-  "description": "Production-ready Evidence-Grounded AI Academic Research Agent monorepo",
+  "description": "Production-ready AI SMART RESEARCH AGENT: EVIDENCE-GROUNDED MULTI-SOURCE LITERATURE SURVEY SYNTHESIS monorepo",
   "workspaces": [
     "frontend",
     "backend",

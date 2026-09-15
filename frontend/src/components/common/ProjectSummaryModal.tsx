@@ -31,7 +31,7 @@ export const ProjectSummaryModal: React.FC<ProjectSummaryModalProps> = ({ isOpen
 
   if (!isOpen) return null;
 
-  const summaryMarkdown = `# Executive Briefing: Evidence-Grounded AI Academic Research Agent
+  const summaryMarkdown = `# Executive Briefing: AI SMART RESEARCH AGENT: EVIDENCE-GROUNDED MULTI-SOURCE LITERATURE SURVEY SYNTHESIS
 
 ## 🌟 Mission Overview
 Inspired by the landmark survey paper *"Deep Research: A Survey of Autonomous Research Agents"*, this full-stack production platform solves key bottlenecks in autonomous literature synthesis:
@@ -63,7 +63,7 @@ Inspired by the landmark survey paper *"Deep Research: A Survey of Autonomous Re
         setIsPlayingAudio(false);
       } else {
         window.speechSynthesis.cancel();
-        const textToSpeak = `Executive Briefing for Evidence-Grounded AI Academic Research Agent. Inspired by Deep Research: A Survey of Autonomous Research Agents by Shaik Fazullah, Potteti Pradeep, and Puli Prabhas. Built to overcome multi-tool literature retrieval, citation factuality verification, and candidate gap detection.`;
+        const textToSpeak = `Executive Briefing for AI SMART RESEARCH AGENT: EVIDENCE-GROUNDED MULTI-SOURCE LITERATURE SURVEY SYNTHESIS. Inspired by Deep Research: A Survey of Autonomous Research Agents by Shaik Fazullah, Potteti Pradeep, and Puli Prabhas. Built to overcome multi-tool literature retrieval, citation factuality verification, and candidate gap detection.`;
         const utterance = new SpeechSynthesisUtterance(textToSpeak);
         utterance.rate = 0.95;
         utterance.pitch = 1.0;

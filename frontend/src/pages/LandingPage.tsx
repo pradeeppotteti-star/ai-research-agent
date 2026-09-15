@@ -25,10 +25,10 @@ export const LandingPage: React.FC = () => {
           <span>Inspired by "Deep Research: A Survey of Autonomous Research Agents"</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
-          Evidence-Grounded AI <br />
+        <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
+          AI Smart Research Agent: <br />
           <span className="bg-gradient-to-r from-cyan-600 via-teal-600 to-sky-600 dark:from-cyan-400 dark:via-teal-300 dark:to-sky-400 bg-clip-text text-transparent">
-            Academic Research Agent
+            Evidence-Grounded Multi-Source Literature Survey Synthesis
           </span>
         </h1>
 

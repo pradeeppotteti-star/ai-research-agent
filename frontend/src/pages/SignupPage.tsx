@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
-import { BrainCircuit, Sparkles, User, Mail, Lock, Building, AlertCircle } from 'lucide-react';
+import { BrainCircuit, Sparkles, User, Mail, Lock, AlertCircle } from 'lucide-react';
 
 export const SignupPage: React.FC = () => {
   const { login } = useAuth();
@@ -11,7 +11,6 @@ export const SignupPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [institution, setInstitution] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +24,6 @@ export const SignupPage: React.FC = () => {
         name,
         email,
         password,
-        institution: institution || 'Academic Institution',
       });
 
       if (res.data.success) {
@@ -45,9 +43,9 @@ export const SignupPage: React.FC = () => {
         <div className="w-12 h-12 rounded-2xl bg-brand-600/20 border border-brand-500/30 text-brand-400 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-brand-500/10">
           <BrainCircuit className="w-6 h-6" />
         </div>
-        <h1 className="text-2xl font-black text-white">Create Researcher Account</h1>
+        <h1 className="text-2xl font-black text-white">Create Account</h1>
         <p className="text-sm text-slate-400 mt-1">
-          Access evidence-grounded literature synthesis & gap detection
+          Enter your details below to create your account
         </p>
       </div>
 
@@ -62,7 +60,7 @@ export const SignupPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-              Full Name
+              Username
             </label>
             <div className="relative">
               <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
@@ -71,7 +69,7 @@ export const SignupPage: React.FC = () => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Dr. Alex Morgan"
+                placeholder="e.g. Alex Morgan"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all"
               />
             </div>
@@ -79,7 +77,7 @@ export const SignupPage: React.FC = () => {
 
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-              Academic Email
+              Email
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
@@ -88,23 +86,7 @@ export const SignupPage: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="alex.morgan@university.edu"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-              Institution / Organization (Optional)
-            </label>
-            <div className="relative">
-              <Building className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
-              <input
-                type="text"
-                value={institution}
-                onChange={(e) => setInstitution(e.target.value)}
-                placeholder="MIT / Stanford / Oxford"
+                placeholder="alex@example.com"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all"
               />
             </div>
@@ -137,7 +119,7 @@ export const SignupPage: React.FC = () => {
             ) : (
               <>
                 <Sparkles className="w-4 h-4" />
-                <span>Create Researcher Account</span>
+                <span>Create Account</span>
               </>
             )}
           </button>
@@ -153,3 +135,4 @@ export const SignupPage: React.FC = () => {
     </div>
   );
 };
+

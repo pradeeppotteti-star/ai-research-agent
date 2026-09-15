@@ -24,7 +24,7 @@ export function generateBibTeX(paper: Paper): string {
   author = {${authorsString}},
   journal = {${journal}},
   year = {${year}},
-${doiStr}${urlStr}  note = {Evidence Grounded AI Academic Research Agent}
+${doiStr}${urlStr}  note = {AI Smart Research Agent: Evidence-Grounded Multi-Source Literature Survey Synthesis}
 }`;
 }
 

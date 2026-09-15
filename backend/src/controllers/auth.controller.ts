@@ -73,7 +73,7 @@ export const signup = async (req: Request, res: Response) => {
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Name, email, and password are required.',
+        message: 'Username, email, and password are required.',
         code: 'VALIDATION_ERROR',
       });
     }

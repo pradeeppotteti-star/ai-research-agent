@@ -413,39 +413,39 @@ Proposes a multi-stage machine learning pipeline combining user profiling, secti
 
         {/* Structured Executive Summary Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="glass-card p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 bg-white dark:bg-slate-950">
-            <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400 font-mono">
+          <div className="glass-card p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 bg-white dark:bg-slate-900">
+            <span className="text-xs font-black uppercase tracking-wider text-brand-800 dark:text-brand-300 font-mono">
               01. Core Objective & Problem Addressed
             </span>
-            <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-sans">
-              This paper by <strong>{paper.authors ? paper.authors.join(', ') : 'Author'}</strong> investigates key bottlenecks in <strong>{paper.title}</strong>, formulating a structured framework to improve recommendation accuracy, citation grounding, and decision support precision.
+            <p className="text-xs text-slate-950 dark:text-slate-200 leading-relaxed font-sans font-medium">
+              This paper by <strong className="text-slate-950 dark:text-white font-extrabold">{paper.authors ? paper.authors.join(', ') : 'Author'}</strong> investigates key bottlenecks in <strong className="text-slate-950 dark:text-white font-extrabold">{paper.title}</strong>, formulating a structured framework to improve recommendation accuracy, citation grounding, and decision support precision.
             </p>
           </div>
 
-          <div className="glass-card p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 bg-white dark:bg-slate-950">
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-mono">
+          <div className="glass-card p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 bg-white dark:bg-slate-900">
+            <span className="text-xs font-black uppercase tracking-wider text-indigo-800 dark:text-indigo-300 font-mono">
               02. Methodology & Novel Architecture
             </span>
-            <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-sans">
+            <p className="text-xs text-slate-950 dark:text-slate-200 leading-relaxed font-sans font-medium">
               Proposes a multi-stage machine learning pipeline combining user profiling, section parsing, feature extraction, and neural scoring to optimize experimental benchmarks.
             </p>
           </div>
 
-          <div className="glass-card p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 bg-white dark:bg-slate-950">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+          <div className="glass-card p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 bg-white dark:bg-slate-900">
+            <span className="text-xs font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-300 font-mono">
               03. Key Empirical Findings & Results
             </span>
-            <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-1 list-disc list-inside font-sans">
+            <ul className="text-xs text-slate-950 dark:text-slate-200 space-y-1 list-disc list-inside font-sans font-medium">
               <li>Demonstrates a 31% precision improvement over baseline models.</li>
               <li>Achieves 92.4% citation grounding under PDF paragraph anchor checks.</li>
             </ul>
           </div>
 
-          <div className="glass-card p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 bg-white dark:bg-slate-950">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 font-mono">
+          <div className="glass-card p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 bg-white dark:bg-slate-900">
+            <span className="text-xs font-black uppercase tracking-wider text-amber-800 dark:text-amber-300 font-mono">
               04. Stated Limitations & Future Directions
             </span>
-            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
+            <p className="text-xs text-slate-950 dark:text-slate-200 leading-relaxed font-sans font-medium">
               Closed-access metadata fallback for paywalled sections. Recommends developing specialized vision-language embedding adapters for real-time graph alignment.
             </p>
           </div>

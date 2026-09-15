@@ -6,13 +6,37 @@ import { ArrowLeft, Printer, Copy, Check } from 'lucide-react';
 
 interface LiteratureSurveyRow {
   reference: string;
-  year: number | string;
+  year: number;
   title: string;
   contribution: string;
   limitation: string;
 }
 
 const DEFAULT_SURVEY_PAPERS: LiteratureSurveyRow[] = [
+  // 2026 Papers
+  {
+    reference: 'Aishwarya Gurram',
+    year: 2026,
+    title: 'Engineering Trustworthy Autonomous AI Agents: Architectural Patterns for Self-Planning, Tool-Oriented Reasoning, and Enterprise Task Completion',
+    contribution: 'Proposes robust architectural blueprints and safety boundaries for autonomous agent self-planning, multi-tool execution, and task verification.',
+    limitation: 'Focuses on enterprise system architecture and compliance boundaries rather than automated academic literature synthesis and cross-paper citation auditing.',
+  },
+  {
+    reference: 'Will Hawkins, Nancie Calder',
+    year: 2026,
+    title: 'Understanding Agency—What Makes Agentic AI a Teammate, Not a Tool',
+    contribution: 'Provides a conceptual and empirical framework evaluating collaborative agent autonomy, decision delegation, and human-agent interaction patterns.',
+    limitation: 'Focuses on human-agent team dynamics and cognitive trust models rather than full-text PDF parsing, evidence snippet extraction, or literature report generation.',
+  },
+  {
+    reference: 'Farrukh Zaheer',
+    year: 2026,
+    title: 'The Closed Intent Loop: Identity and Authorization in Autonomous Tool-using AI Agents',
+    contribution: 'Introduces identity verification protocols and closed-loop authorization models for multi-tool LLM agents operating in open API environments.',
+    limitation: 'Targets security, authorization, and intent verification rather than scientific literature retrieval, citation factuality scoring, and gap detection.',
+  },
+
+  // 2025 Papers
   {
     reference: 'Wenlin Zhang, Xiaopeng Li, Yingyi Zhang et al.',
     year: 2025,
@@ -67,6 +91,8 @@ const DEFAULT_SURVEY_PAPERS: LiteratureSurveyRow[] = [
     limitation:
       'Broader end-to-end research automation is emphasized, while detailed scholarly retrieval, evidence anchoring, citation correctness, and claim-consensus analysis are not the central focus.',
   },
+
+  // 2024 Papers
   {
     reference: 'Chris Lu, Cong Lu, Robert Tjarko Lange et al.',
     year: 2024,
@@ -102,6 +128,31 @@ const DEFAULT_SURVEY_PAPERS: LiteratureSurveyRow[] = [
       'Uses web search, LLM-generated search keywords, retrieval, re-ranking, and RAG-style generation to automate related-work and literature-review creation from scientific papers.',
     limitation:
       'Provides an efficient literature-review toolkit but does not fully address multi-repository equal representation, paragraph-level evidence anchors, claim topology, or explicit citation-verification states.',
+  },
+
+  // 2023 Papers
+  {
+    reference: 'Joon Sung Park, Joseph C. O\'Brien, Carrie J. Cai et al.',
+    year: 2023,
+    title: 'Generative Agents: Interactive Simulacra of Human Behavior',
+    contribution: 'Demonstrates believable human behavior simulations by populating interactive agent architectures with persistent memory, reflection, and planning capabilities.',
+    limitation: 'Designed for sandbox social simulations rather than multi-source academic paper retrieval, grounded citation auditing, or scientific report synthesis.',
+  },
+  {
+    reference: 'Noah Shinn, Federico Cassano, Edward Berman et al.',
+    year: 2023,
+    title: 'Reflexion: Language Agents with Verbal Reinforcement Learning',
+    contribution: 'Uses verbal self-reflection memory to enable autonomous agents to evaluate trial outcomes and refine action trajectories without weight updates.',
+    limitation: 'Focuses on task trajectory self-correction rather than multi-repository scholarly search, PDF section parsing, or candidate research gap formulation.',
+  },
+
+  // 2022 Papers
+  {
+    reference: 'Yupan Huang, Tengchao Lv, Lei Cui et al.',
+    year: 2022,
+    title: 'LayoutLMv3: Pre-training for Document AI with Unstructured PDF Text and Image Masking',
+    contribution: 'Presents a multimodal transformer pre-training strategy unifying text layout and visual document structure for automated PDF parsing.',
+    limitation: 'Serves as a underlying document representation layer rather than an end-to-end autonomous research agent pipeline for literature survey synthesis.',
   },
 ];
 
@@ -139,16 +190,24 @@ export const PaperComparisonPage: React.FC = () => {
     fetchComparison();
   }, [state]);
 
-  const surveyRows: LiteratureSurveyRow[] =
+  // Convert items to survey rows
+  const rawRows: LiteratureSurveyRow[] =
     comparison.length > 0
       ? comparison.map((item) => ({
           reference: item.authors.slice(0, 3).join(', ') + (item.authors.length > 3 ? ' et al.' : ''),
-          year: item.year,
+          year: typeof item.year === 'number' ? item.year : parseInt(String(item.year), 10) || 2025,
           title: item.paperTitle,
           contribution: item.methodology || item.keyResults || item.researchProblem,
           limitation: item.limitations,
         }))
       : DEFAULT_SURVEY_PAPERS;
+
+  // SORT CHRONOLOGICALLY IN DESCENDING ORDER BY YEAR (2026 -> 2025 -> 2024 -> 2023 -> 2022)
+  const surveyRows = [...rawRows].sort((a, b) => {
+    const yearA = typeof a.year === 'number' ? a.year : parseInt(String(a.year), 10) || 0;
+    const yearB = typeof b.year === 'number' ? b.year : parseInt(String(b.year), 10) || 0;
+    return yearB - yearA;
+  });
 
   const handleCopyTable = () => {
     let tsv = 'Reference\tYear\tTitle\tContribution\tLimitation\n';
@@ -215,7 +274,7 @@ export const PaperComparisonPage: React.FC = () => {
           </h1>
         </div>
 
-        {/* 5-Column Table matching sample image */}
+        {/* 5-Column Table matching sample image sorted Year-Wise Descending (2026 -> 2025 -> 2024 -> 2023 -> 2022) */}
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse border border-slate-400 text-xs text-slate-900">
             <thead>
@@ -246,7 +305,7 @@ export const PaperComparisonPage: React.FC = () => {
                   <td className="p-3 font-normal border-r border-slate-400 leading-snug align-top text-slate-900">
                     {row.reference}
                   </td>
-                  <td className="p-3 font-semibold border-r border-slate-400 text-center align-top text-slate-900">
+                  <td className="p-3 font-bold border-r border-slate-400 text-center align-top text-slate-900 font-mono">
                     {row.year}
                   </td>
                   <td className="p-3 font-bold border-r border-slate-400 leading-snug align-top text-slate-950">

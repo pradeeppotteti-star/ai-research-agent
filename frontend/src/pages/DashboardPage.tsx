@@ -67,27 +67,27 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-10 py-6">
       {/* Welcome Hero Banner */}
-      <div className="relative glass-panel p-8 sm:p-10 rounded-3xl border border-emerald-900/10 dark:border-emerald-500/20 bg-gradient-to-r from-emerald-50 via-white to-teal-50 dark:from-[#0F1715] dark:via-[#16221E] dark:to-emerald-950/40 overflow-hidden shadow-sm dark:shadow-2xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-        <div className="absolute -top-10 -right-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative glass-panel p-8 sm:p-10 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-brand-950/40 overflow-hidden shadow-2xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="absolute -top-10 -right-10 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="space-y-3 z-10 max-w-2xl">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs font-bold font-mono">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-300 text-xs font-bold font-mono">
+              <Sparkles className="w-3.5 h-3.5 text-brand-400" />
               <span>Evidence-Grounded AI Research Agent Workstation</span>
             </span>
             {user?.role && (
-              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-teal-500/10 text-teal-800 dark:text-teal-300 border border-teal-500/20 font-mono">
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-teal-500/10 text-teal-300 border border-teal-500/30 font-mono">
                 {user.role} Account
               </span>
             )}
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight">
+          <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight">
             Welcome back, {user?.name || 'Academic Scholar'}
           </h1>
 
-          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p className="text-sm text-slate-300 leading-relaxed">
             Formulate grounded research queries, evaluate pairwise document consensus, verify claim citations, and synthesize 11-section survey reports in seconds.
           </p>
 

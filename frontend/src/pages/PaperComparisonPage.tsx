@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { PaperComparisonItem } from '@research-agent/shared';
-import { ArrowLeft, Printer, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Printer, Copy, Check, Table } from 'lucide-react';
 
 interface LiteratureSurveyRow {
   reference: string;
@@ -190,7 +190,6 @@ export const PaperComparisonPage: React.FC = () => {
     fetchComparison();
   }, [state]);
 
-  // Convert items to survey rows
   const rawRows: LiteratureSurveyRow[] =
     comparison.length > 0
       ? comparison.map((item) => ({
@@ -225,7 +224,7 @@ export const PaperComparisonPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="py-20 text-center text-slate-400 font-mono text-sm">
+      <div className="py-20 text-center text-slate-300 font-mono text-sm">
         Constructing literature survey matrix across papers...
       </div>
     );
@@ -262,59 +261,62 @@ export const PaperComparisonPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Publication Academic Document Card */}
-      <div className="bg-white text-slate-900 p-8 sm:p-12 rounded-xl shadow-2xl border border-slate-300 font-sans tracking-tight">
-        {/* Header matching sample image */}
-        <div className="border-b-2 border-slate-900 pb-4 mb-6">
-          <h3 className="text-base font-bold text-slate-900 tracking-normal">
-            Project Title: <span className="font-normal text-slate-800">AI Smart Research Agent</span>
-          </h3>
-          <h1 className="text-3xl font-extrabold text-slate-950 mt-1">
+      {/* High-Contrast Publication Academic Document Card */}
+      <div className="glass-panel p-6 sm:p-10 rounded-2xl border border-slate-800 shadow-2xl bg-slate-900/95 text-slate-100 font-sans tracking-tight">
+        {/* Header */}
+        <div className="border-b border-slate-800 pb-4 mb-6">
+          <div className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-1">
+            Project Title: <span className="text-brand-400 font-extrabold">AI Smart Research Agent</span>
+          </div>
+          <h1 className="text-3xl font-black text-white mt-1 tracking-tight">
             Literature Survey
           </h1>
+          <p className="text-xs text-slate-400 mt-1">
+            Side-by-side literature survey matrix ordered chronologically year-wise (2026 to 2022).
+          </p>
         </div>
 
-        {/* 5-Column Table matching sample image sorted Year-Wise Descending (2026 -> 2025 -> 2024 -> 2023 -> 2022) */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse border border-slate-400 text-xs text-slate-900">
+        {/* 5-Column Table with High-Contrast Dark Slate Styling */}
+        <div className="overflow-x-auto rounded-xl border border-slate-800 shadow-inner">
+          <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-200 border-b border-slate-400">
-                <th className="p-3 font-bold border-r border-slate-400 w-[21%] text-slate-950">
+              <tr className="bg-slate-950 border-b border-slate-800 text-slate-100">
+                <th className="p-3.5 font-bold border-r border-slate-800 w-[20%] uppercase tracking-wider text-slate-200">
                   Reference
                 </th>
-                <th className="p-3 font-bold border-r border-slate-400 w-[7%] text-center text-slate-950">
+                <th className="p-3.5 font-bold border-r border-slate-800 w-[7%] text-center uppercase tracking-wider text-slate-200">
                   Year
                 </th>
-                <th className="p-3 font-bold border-r border-slate-400 w-[24%] text-slate-950">
+                <th className="p-3.5 font-bold border-r border-slate-800 w-[24%] uppercase tracking-wider text-slate-200">
                   Title
                 </th>
-                <th className="p-3 font-bold border-r border-slate-400 w-[25%] text-slate-950">
+                <th className="p-3.5 font-bold border-r border-slate-800 w-[25%] uppercase tracking-wider text-slate-200">
                   Contribution
                 </th>
-                <th className="p-3 font-bold w-[23%] text-slate-950">
+                <th className="p-3.5 font-bold w-[24%] uppercase tracking-wider text-slate-200">
                   Limitation
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-800">
               {surveyRows.map((row, idx) => (
                 <tr
                   key={idx}
-                  className="border-b border-slate-400 hover:bg-slate-50 transition-colors"
+                  className="hover:bg-slate-800/50 transition-colors border-b border-slate-800/90"
                 >
-                  <td className="p-3 font-normal border-r border-slate-400 leading-snug align-top text-slate-900">
+                  <td className="p-3.5 font-normal text-slate-300 border-r border-slate-800/90 leading-relaxed align-top">
                     {row.reference}
                   </td>
-                  <td className="p-3 font-bold border-r border-slate-400 text-center align-top text-slate-900 font-mono">
+                  <td className="p-3.5 font-bold text-brand-300 border-r border-slate-800/90 text-center align-top font-mono text-sm">
                     {row.year}
                   </td>
-                  <td className="p-3 font-bold border-r border-slate-400 leading-snug align-top text-slate-950">
+                  <td className="p-3.5 font-bold text-white border-r border-slate-800/90 leading-snug align-top">
                     {row.title}
                   </td>
-                  <td className="p-3 leading-relaxed border-r border-slate-400 align-top text-slate-900">
+                  <td className="p-3.5 leading-relaxed text-slate-200 border-r border-slate-800/90 align-top">
                     {row.contribution}
                   </td>
-                  <td className="p-3 leading-relaxed align-top text-slate-900">
+                  <td className="p-3.5 leading-relaxed text-amber-300/95 align-top">
                     {row.limitation}
                   </td>
                 </tr>

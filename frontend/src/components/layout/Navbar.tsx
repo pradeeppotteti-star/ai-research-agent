@@ -59,22 +59,22 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 glass-panel border-b border-slate-200 dark:border-slate-800">
+      <header className="sticky top-0 z-40 glass-panel border-b border-slate-800 bg-slate-900/95">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to={user ? '/dashboard' : '/'} className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-lg bg-brand-500/10 dark:bg-slate-900 border border-brand-500/20 dark:border-slate-800 flex items-center justify-center text-brand-600 dark:text-blue-400 group-hover:border-brand-500/40 transition-colors">
+            <div className="w-9 h-9 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 group-hover:border-brand-500/40 transition-colors">
               <BrainCircuit className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base tracking-tight text-slate-900 dark:text-white font-sans">
+                <span className="font-extrabold text-base tracking-tight text-white font-sans">
                   AI Smart Research Agent
                 </span>
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-800 text-slate-300 border border-slate-700">
                   v1.0
                 </span>
               </div>
-              <span className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block font-mono">
+              <span className="text-[11px] text-slate-400 hidden sm:block font-mono">
                 Evidence-Grounded Multi-Source Literature Survey Synthesis
               </span>
             </div>
@@ -84,23 +84,23 @@ export const Navbar: React.FC = () => {
             {/* Theme Toggle Button (Light/Dark Mode) */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-800"
+              className="p-2 rounded-lg text-slate-300 hover:bg-slate-800 transition-colors border border-slate-800"
               title={theme === 'dark' ? 'Switch to Academic Light Mode' : 'Switch to Dark Mode'}
             >
               {theme === 'dark' ? (
                 <Sun className="w-4 h-4 text-amber-400" />
               ) : (
-                <Moon className="w-4 h-4 text-slate-700" />
+                <Moon className="w-4 h-4 text-slate-300" />
               )}
             </button>
 
             {/* Project Executive Summary Button */}
             <button
               onClick={() => setIsSummaryOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-500/10 text-brand-700 dark:text-brand-300 border border-brand-500/20 hover:bg-brand-500/20 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-500/10 text-brand-300 border border-brand-500/30 hover:bg-brand-500/20 transition-all"
               title="View Executive Project Synthesis Summary"
             >
-              <Sparkles className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
+              <Sparkles className="w-3.5 h-3.5 text-brand-400" />
               <span className="hidden sm:inline">Project Summary</span>
             </button>
 
@@ -111,8 +111,8 @@ export const Navbar: React.FC = () => {
                     to="/dashboard"
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                       isActive('/dashboard')
-                        ? 'bg-slate-100 dark:bg-slate-900 text-brand-600 dark:text-blue-400 border border-slate-200 dark:border-slate-800'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
+                        ? 'bg-slate-800 text-brand-300 border border-slate-700'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                     }`}
                   >
                     <LayoutDashboard className="w-3.5 h-3.5" />
@@ -124,7 +124,7 @@ export const Navbar: React.FC = () => {
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm ${
                       isActive('/research/new')
                         ? 'bg-brand-500 text-white'
-                        : 'bg-slate-900 text-white dark:bg-slate-900 dark:text-slate-200 border border-slate-800 hover:border-slate-700'
+                        : 'bg-slate-900 text-slate-200 border border-slate-700 hover:border-slate-600'
                     }`}
                   >
                     <Search className="w-3.5 h-3.5" />
@@ -135,8 +135,8 @@ export const Navbar: React.FC = () => {
                     to="/history"
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                       isActive('/history')
-                        ? 'bg-slate-100 dark:bg-slate-900 text-brand-600 dark:text-blue-400 border border-slate-200 dark:border-slate-800'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
+                        ? 'bg-slate-800 text-brand-300 border border-slate-700'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                     }`}
                   >
                     <History className="w-3.5 h-3.5" />
@@ -147,8 +147,8 @@ export const Navbar: React.FC = () => {
                     to="/saved-papers"
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                       isActive('/saved-papers')
-                        ? 'bg-slate-100 dark:bg-slate-900 text-brand-600 dark:text-blue-400 border border-slate-200 dark:border-slate-800'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
+                        ? 'bg-slate-800 text-brand-300 border border-slate-700'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                     }`}
                   >
                     <Bookmark className="w-3.5 h-3.5" />
@@ -159,8 +159,8 @@ export const Navbar: React.FC = () => {
                     to="/research/compare"
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                       isActive('/research/compare')
-                        ? 'bg-slate-100 dark:bg-slate-900 text-brand-600 dark:text-blue-400 border border-slate-200 dark:border-slate-800'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900/60'
+                        ? 'bg-slate-800 text-brand-300 border border-slate-700'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                     }`}
                   >
                     <GitCompare className="w-3.5 h-3.5" />

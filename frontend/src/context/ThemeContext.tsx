@@ -16,7 +16,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (saved === 'light' || saved === 'dark') {
       return saved;
     }
-    return 'light'; // Default to Light Mode (Academic Journal Slate)
+    return 'dark'; // Default to Dark Mode
   });
 
   useEffect(() => {

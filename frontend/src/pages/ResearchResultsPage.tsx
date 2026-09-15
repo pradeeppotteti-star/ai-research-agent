@@ -201,17 +201,17 @@ export const ResearchResultsPage: React.FC = () => {
   return (
     <div className="space-y-8 py-4">
       {/* Header Banner */}
-      <div className="glass-panel p-8 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-brand-950/30 relative overflow-hidden space-y-4">
+      <div className="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 relative overflow-hidden space-y-4 shadow-xl">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
+          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-700 dark:text-brand-400 border border-brand-500/20">
             {session.domain || 'Computer Science'}
           </span>
-          <span className="text-xs text-slate-400 font-mono">
+          <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">
             {papers.length} Papers Analyzed • Peer Review: {peerReview?.overallDecision || 'Accept'} ({peerReview?.overallScore}/10)
           </span>
         </div>
 
-        <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight">{session.query}</h1>
+        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight">{session.query}</h1>
 
         <div className="flex flex-wrap items-center gap-3 pt-2">
           {report && (
@@ -227,38 +227,38 @@ export const ResearchResultsPage: React.FC = () => {
           <button
             onClick={handleCompareClick}
             disabled={selectedPaperIds.length < 2}
-            className="px-4 py-3 rounded-xl font-semibold text-slate-200 bg-slate-900 border border-slate-800 hover:bg-slate-800 hover:text-white disabled:opacity-50 inline-flex items-center gap-2 text-xs"
+            className="px-4 py-3 rounded-xl font-semibold text-slate-800 dark:text-slate-200 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 disabled:opacity-50 inline-flex items-center gap-2 text-xs"
           >
-            <GitCompare className="w-4 h-4 text-brand-400" />
+            <GitCompare className="w-4 h-4 text-brand-600 dark:text-brand-400" />
             <span>Side-by-Side Paper Matrix ({selectedPaperIds.length})</span>
           </button>
 
           <button
             onClick={handleCopyBibTeX}
-            className="px-4 py-3 rounded-xl font-semibold text-slate-200 bg-slate-900 border border-slate-800 hover:bg-slate-800 inline-flex items-center gap-2 text-xs"
+            className="px-4 py-3 rounded-xl font-semibold text-slate-800 dark:text-slate-200 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 inline-flex items-center gap-2 text-xs"
           >
-            {bibtexCopied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-brand-400" />}
+            {bibtexCopied ? <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-4 h-4 text-brand-600 dark:text-brand-400" />}
             <span>{bibtexCopied ? 'Copied BibTeX' : 'Copy BibTeX'}</span>
           </button>
 
           <button
             onClick={handleDownloadBibTeX}
-            className="px-4 py-3 rounded-xl font-semibold text-slate-200 bg-slate-900 border border-slate-800 hover:bg-slate-800 inline-flex items-center gap-2 text-xs"
+            className="px-4 py-3 rounded-xl font-semibold text-slate-800 dark:text-slate-200 bg-slate-100 border border-slate-200 dark:bg-slate-900 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 inline-flex items-center gap-2 text-xs"
           >
-            <Download className="w-4 h-4 text-emerald-400" />
+            <Download className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>Download .bib</span>
           </button>
         </div>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex items-center border-b border-slate-800 gap-5 overflow-x-auto pb-1">
+      <div className="flex items-center border-b border-slate-200 dark:border-slate-800 gap-5 overflow-x-auto pb-1">
         <button
           onClick={() => setActiveTab('papers')}
           className={`pb-3 text-xs font-bold border-b-2 flex items-center gap-2 shrink-0 transition-all ${
             activeTab === 'papers'
-              ? 'border-brand-500 text-brand-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-brand-500 text-brand-600 dark:text-brand-400'
+              : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
           }`}
         >
           <BookOpen className="w-3.5 h-3.5" />
@@ -269,8 +269,8 @@ export const ResearchResultsPage: React.FC = () => {
           onClick={() => setActiveTab('graph')}
           className={`pb-3 text-xs font-bold border-b-2 flex items-center gap-2 shrink-0 transition-all ${
             activeTab === 'graph'
-              ? 'border-indigo-500 text-indigo-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+              : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
           }`}
         >
           <Network className="w-3.5 h-3.5" />
@@ -281,8 +281,8 @@ export const ResearchResultsPage: React.FC = () => {
           onClick={() => setActiveTab('consensus')}
           className={`pb-3 text-xs font-bold border-b-2 flex items-center gap-2 shrink-0 transition-all ${
             activeTab === 'consensus'
-              ? 'border-emerald-500 text-emerald-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+              : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
           }`}
         >
           <PieChart className="w-3.5 h-3.5" />
@@ -293,8 +293,8 @@ export const ResearchResultsPage: React.FC = () => {
           onClick={() => setActiveTab('review')}
           className={`pb-3 text-xs font-bold border-b-2 flex items-center gap-2 shrink-0 transition-all ${
             activeTab === 'review'
-              ? 'border-purple-500 text-purple-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-purple-500 text-purple-600 dark:text-purple-400'
+              : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
           }`}
         >
           <Award className="w-3.5 h-3.5" />
@@ -305,8 +305,8 @@ export const ResearchResultsPage: React.FC = () => {
           onClick={() => setActiveTab('trends')}
           className={`pb-3 text-xs font-bold border-b-2 flex items-center gap-2 shrink-0 transition-all ${
             activeTab === 'trends'
-              ? 'border-sky-500 text-sky-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-sky-500 text-sky-600 dark:text-sky-400'
+              : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
           }`}
         >
           <TrendingUp className="w-3.5 h-3.5" />
@@ -317,8 +317,8 @@ export const ResearchResultsPage: React.FC = () => {
           onClick={() => setActiveTab('lab')}
           className={`pb-3 text-xs font-bold border-b-2 flex items-center gap-2 shrink-0 transition-all ${
             activeTab === 'lab'
-              ? 'border-pink-500 text-pink-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'border-pink-500 text-pink-600 dark:text-pink-400'
+              : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
           }`}
         >
           <Users className="w-3.5 h-3.5" />
@@ -368,39 +368,39 @@ export const ResearchResultsPage: React.FC = () => {
       {/* Tab 3: Consensus & Contradiction Detector */}
       {activeTab === 'consensus' && (
         <div className="space-y-6">
-          <div className="glass-panel p-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 flex items-center justify-between">
+          <div className="glass-panel p-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 dark:bg-emerald-950/20 flex items-center justify-between">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
                 Multi-Document Pairwise Alignment
               </span>
-              <h3 className="text-2xl font-black text-white mt-1">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
                 Field Consensus Rating: {consensus?.overallFieldConsensusPct || 88}%
               </h3>
             </div>
-            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 font-mono font-black text-xl flex items-center justify-center border border-emerald-500/30">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-mono font-black text-xl flex items-center justify-center border border-emerald-500/30">
               {consensus?.overallFieldConsensusPct || 88}%
             </div>
           </div>
 
           <div className="space-y-4">
             {consensus?.consensusItems.map((item, idx) => (
-              <div key={idx} className="glass-card p-6 rounded-2xl border border-slate-800 space-y-3">
+              <div key={idx} className="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3">
                 <div className="flex items-start justify-between gap-4">
-                  <h4 className="font-bold text-slate-100 text-base">{item.topic}</h4>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base">{item.topic}</h4>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold font-mono bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
                     {item.consensusScorePct}% Agreement
                   </span>
                 </div>
 
-                <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-900 space-y-2">
-                  <span className="text-xs font-bold text-emerald-400 block">Synthesized Consensus</span>
-                  <p className="text-sm text-slate-200 leading-relaxed">{item.consensusSummary}</p>
+                <div className="bg-slate-50 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
+                  <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 block">Synthesized Consensus</span>
+                  <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-sans">{item.consensusSummary}</p>
                 </div>
 
                 {item.contrastingViewpoint && (
-                  <div className="bg-amber-500/5 p-4 rounded-xl border border-amber-500/20 space-y-1">
-                    <span className="text-xs font-bold text-amber-400 block">Contrasting Viewpoint / Limitation</span>
-                    <p className="text-sm text-slate-300 leading-relaxed">{item.contrastingViewpoint}</p>
+                  <div className="bg-amber-500/5 dark:bg-amber-950/20 p-4 rounded-xl border border-amber-500/20 space-y-1">
+                    <span className="text-xs font-bold text-amber-700 dark:text-amber-400 block">Contrasting Viewpoint / Limitation</span>
+                    <p className="text-sm text-slate-800 dark:text-slate-300 leading-relaxed font-sans">{item.contrastingViewpoint}</p>
                   </div>
                 )}
               </div>

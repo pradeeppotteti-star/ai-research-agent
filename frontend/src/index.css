@@ -15,11 +15,11 @@
 
 /* High-Contrast Dual-Theme Glass Panels & Cards */
 .glass-panel {
-  @apply bg-white/90 text-slate-900 border border-slate-200 dark:bg-slate-900/95 dark:text-slate-100 dark:border-slate-800 shadow-xl transition-colors duration-200;
+  @apply bg-white text-slate-900 border border-slate-200 dark:bg-slate-900 dark:text-slate-100 dark:border-slate-800 shadow-xl transition-colors duration-200;
 }
 
 .glass-card {
-  @apply bg-white/80 text-slate-900 border border-slate-200 dark:bg-slate-900/90 dark:text-slate-100 dark:border-slate-800 shadow-md hover:border-brand-500/50 hover:shadow-brand-500/10 transition-all duration-200;
+  @apply bg-white text-slate-900 border border-slate-200 dark:bg-slate-900 dark:text-slate-100 dark:border-slate-800 shadow-md hover:border-brand-500/50 dark:hover:border-brand-500/50 hover:shadow-brand-500/10 transition-all duration-200;
 }
 
 .glass-card:hover {

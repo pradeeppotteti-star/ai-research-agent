@@ -20,19 +20,19 @@ export const LandingPage: React.FC = () => {
       <section className="text-center relative max-w-4xl mx-auto pt-8">
         <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-6">
-          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-700 dark:text-cyan-300 text-xs font-semibold mb-6">
+          <Sparkles className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
           <span>Inspired by "Deep Research: A Survey of Autonomous Research Agents"</span>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight mb-6">
+        <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
           AI Smart Research Agent: <br />
-          <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-sky-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-cyan-600 via-teal-600 to-sky-600 dark:from-cyan-400 dark:via-teal-300 dark:to-sky-400 bg-clip-text text-transparent">
             Evidence-Grounded Multi-Source Literature Survey Synthesis
           </span>
         </h1>
 
-        <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
+        <p className="text-lg sm:text-xl text-slate-700 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
           An autonomous research agent designed to solve traditional LLM limitations: multi-tool search integration, grounded citation verification, paper comparison matrices, and candidate research-gap detection.
         </p>
 
@@ -47,9 +47,9 @@ export const LandingPage: React.FC = () => {
 
           <Link
             to="/login"
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-200 bg-slate-900 border border-slate-800 hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
           >
-            <Search className="w-4 h-4 text-cyan-400" />
+            <Search className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
             <span>Try Demo Account</span>
           </Link>
         </div>
@@ -61,10 +61,10 @@ export const LandingPage: React.FC = () => {
       {/* 8 Limitations Solved Grid */}
       <section className="space-y-8">
         <div className="text-center max-w-2xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
             Addressing Core Autonomous Agent Limitations
           </h2>
-          <p className="text-slate-400 text-sm mt-2">
+          <p className="text-slate-600 dark:text-slate-400 text-sm mt-2">
             Engineered to overcome bottlenecks documented in contemporary AI literature surveys.
           </p>
         </div>

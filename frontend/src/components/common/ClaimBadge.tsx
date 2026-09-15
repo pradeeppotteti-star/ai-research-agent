@@ -14,10 +14,10 @@ export const ClaimBadge: React.FC<ClaimBadgeProps> = ({ status, confidence, clas
   if (status === 'supported') {
     return (
       <span
-        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 ${className}`}
+        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 ${className}`}
         title={`Supported Claim (${confidencePct}% Grounding Score)`}
       >
-        <CheckCircle2 className="w-3.5 h-3.5" />
+        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
         <span>Supported</span>
         {confidencePct && <span className="opacity-75 font-mono">({confidencePct}%)</span>}
       </span>
@@ -27,10 +27,10 @@ export const ClaimBadge: React.FC<ClaimBadgeProps> = ({ status, confidence, clas
   if (status === 'inferred') {
     return (
       <span
-        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 ${className}`}
+        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/30 ${className}`}
         title={`Inferred Claim (${confidencePct}% Grounding Score)`}
       >
-        <HelpCircle className="w-3.5 h-3.5" />
+        <HelpCircle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
         <span>Inferred</span>
         {confidencePct && <span className="opacity-75 font-mono">({confidencePct}%)</span>}
       </span>
@@ -39,10 +39,10 @@ export const ClaimBadge: React.FC<ClaimBadgeProps> = ({ status, confidence, clas
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20 ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-rose-500/10 text-rose-800 dark:text-rose-300 border border-rose-500/30 ${className}`}
       title={`Uncertain Claim (${confidencePct}% Grounding Score)`}
     >
-      <AlertTriangle className="w-3.5 h-3.5" />
+      <AlertTriangle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
       <span>Uncertain</span>
       {confidencePct && <span className="opacity-75 font-mono">({confidencePct}%)</span>}
     </span>

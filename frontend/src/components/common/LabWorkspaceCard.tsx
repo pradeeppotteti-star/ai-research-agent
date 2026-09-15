@@ -44,31 +44,31 @@ export const LabWorkspaceCard: React.FC<LabWorkspaceCardProps> = ({ sessionTitle
   };
 
   return (
-    <div className="glass-panel p-8 rounded-3xl border border-slate-800 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
+    <div className="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-2">
-            <Users className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-bold mb-2">
+            <Users className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
             <span>Collaborative Lab Environment</span>
           </div>
-          <h3 className="text-2xl font-black text-white">Team Research Annotations</h3>
+          <h3 className="text-2xl font-black text-slate-900 dark:text-white">Team Research Annotations</h3>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
           <span>3 Active Lab Researchers Connected</span>
         </div>
       </div>
 
       {/* Add Annotation Form */}
-      <form onSubmit={handleAddAnnotation} className="glass-card p-4 rounded-2xl border border-slate-800 space-y-3">
-        <span className="text-xs font-bold text-slate-300 block">Add Peer Margin Note / Citation Tag</span>
+      <form onSubmit={handleAddAnnotation} className="glass-card p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-3">
+        <span className="text-xs font-bold text-slate-800 dark:text-slate-300 block">Add Peer Margin Note / Citation Tag</span>
         <textarea
           rows={2}
           value={newNote}
           onChange={(e) => setNewNote(e.target.value)}
           placeholder="Share an insight or flag a claim for team verification..."
-          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-900 text-slate-100 text-xs focus:outline-none focus:border-brand-500 font-sans"
+          className="w-full p-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 dark:bg-slate-950 dark:border-slate-900 dark:text-slate-100 text-xs focus:outline-none focus:border-brand-500 font-sans"
         />
         <div className="flex items-center justify-end">
           <button
@@ -85,15 +85,15 @@ export const LabWorkspaceCard: React.FC<LabWorkspaceCardProps> = ({ sessionTitle
       {/* Annotations List */}
       <div className="space-y-4">
         {annotations.map((ann) => (
-          <div key={ann.id} className="glass-card p-5 rounded-2xl border border-slate-800 space-y-2">
+          <div key={ann.id} className="glass-card p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-brand-400">{ann.userName}</span>
+              <span className="font-bold text-brand-700 dark:text-brand-400">{ann.userName}</span>
               <span className="text-slate-500 font-mono">{ann.timestamp}</span>
             </div>
-            <span className="text-[11px] font-mono text-slate-400 block font-semibold">
+            <span className="text-[11px] font-mono text-slate-600 dark:text-slate-400 block font-semibold">
               Paper: {ann.paperTitle}
             </span>
-            <p className="text-xs text-slate-200 leading-relaxed font-sans pt-1 border-t border-slate-900">
+            <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-sans pt-1 border-t border-slate-200 dark:border-slate-900">
               "{ann.noteText}"
             </p>
           </div>

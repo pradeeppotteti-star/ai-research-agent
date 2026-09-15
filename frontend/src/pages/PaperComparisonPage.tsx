@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { PaperComparisonItem } from '@research-agent/shared';
-import { GitCompare, ArrowLeft, Download, Table, Layers, Printer, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Printer, Copy, Check } from 'lucide-react';
 
 interface LiteratureSurveyRow {
   reference: string;
@@ -111,7 +111,6 @@ export const PaperComparisonPage: React.FC = () => {
 
   const [comparison, setComparison] = useState<PaperComparisonItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [viewMode, setViewMode] = useState<'survey' | 'multidim'>('survey');
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -140,7 +139,6 @@ export const PaperComparisonPage: React.FC = () => {
     fetchComparison();
   }, [state]);
 
-  // Convert custom comparison items to survey rows if custom papers are selected
   const surveyRows: LiteratureSurveyRow[] =
     comparison.length > 0
       ? comparison.map((item) => ({
@@ -167,197 +165,105 @@ export const PaperComparisonPage: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="py-20 text-center text-slate-400 font-mono text-sm">Constructing literature survey matrix across papers...</div>;
+    return (
+      <div className="py-20 text-center text-slate-400 font-mono text-sm">
+        Constructing literature survey matrix across papers...
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6 py-4 max-w-7xl mx-auto">
-      {/* Top Header Card */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-4">
-          <div>
-            <div className="text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1">
-              Project Title: <span className="text-brand-600 dark:text-brand-400">AI Smart Research Agent</span>
-            </div>
-            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-              Literature Survey
-            </h1>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-              Side-by-side comparative analysis of state-of-the-art autonomous research agent frameworks.
-            </p>
-          </div>
+      {/* Action Toolbar */}
+      <div className="flex items-center justify-between gap-4 no-print">
+        <Link
+          to="/dashboard"
+          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 text-slate-200 border border-slate-800 hover:bg-slate-800 text-xs font-bold transition-all"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to Dashboard</span>
+        </Link>
 
-          {/* Controls & Mode Switches */}
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold">
-              <button
-                onClick={() => setViewMode('survey')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-                  viewMode === 'survey'
-                    ? 'bg-brand-500 text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <Table className="w-3.5 h-3.5" />
-                <span>Survey Table</span>
-              </button>
-              <button
-                onClick={() => setViewMode('multidim')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-                  viewMode === 'multidim'
-                    ? 'bg-brand-500 text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <Layers className="w-3.5 h-3.5" />
-                <span>Multi-Dimension</span>
-              </button>
-            </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleCopyTable}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-200 hover:bg-slate-800 transition-all"
+          >
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            <span>{copied ? 'Copied TSV' : 'Copy Table'}</span>
+          </button>
 
-            <button
-              onClick={handleCopyTable}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all"
-              title="Copy table data as TSV"
-            >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copied ? 'Copied' : 'Copy Table'}</span>
-            </button>
-
-            <button
-              onClick={handlePrint}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all"
-              title="Print publication view"
-            >
-              <Printer className="w-3.5 h-3.5" />
-              <span>Print View</span>
-            </button>
-
-            <Link
-              to="/dashboard"
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all shadow-sm"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Dashboard</span>
-            </Link>
-          </div>
+          <button
+            onClick={handlePrint}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-brand-600 text-white text-xs font-bold hover:bg-brand-500 transition-all shadow-sm"
+          >
+            <Printer className="w-3.5 h-3.5" />
+            <span>Print / Save PDF</span>
+          </button>
         </div>
       </div>
 
-      {/* Main Literature Survey Matrix Table View */}
-      {viewMode === 'survey' ? (
-        <div className="glass-panel rounded-2xl border border-slate-300 dark:border-slate-800 overflow-hidden shadow-2xl bg-white dark:bg-slate-950">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse border border-slate-300 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200">
-              <thead>
-                <tr className="bg-slate-100 dark:bg-slate-900 border-b border-slate-300 dark:border-slate-700">
-                  <th className="p-3.5 font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 border-r border-slate-300 dark:border-slate-700 w-[20%]">
-                    Reference
-                  </th>
-                  <th className="p-3.5 font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 border-r border-slate-300 dark:border-slate-700 w-[7%] text-center">
-                    Year
-                  </th>
-                  <th className="p-3.5 font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 border-r border-slate-300 dark:border-slate-700 w-[25%]">
-                    Title
-                  </th>
-                  <th className="p-3.5 font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 border-r border-slate-300 dark:border-slate-700 w-[25%]">
-                    Contribution
-                  </th>
-                  <th className="p-3.5 font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 w-[23%]">
-                    Limitation
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-300 dark:divide-slate-800">
-                {surveyRows.map((row, idx) => (
-                  <tr
-                    key={idx}
-                    className="hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-colors border-b border-slate-300 dark:border-slate-800"
-                  >
-                    <td className="p-3.5 font-normal text-slate-800 dark:text-slate-300 border-r border-slate-300 dark:border-slate-700 leading-relaxed align-top">
-                      {row.reference}
-                    </td>
-                    <td className="p-3.5 font-bold text-slate-900 dark:text-slate-100 border-r border-slate-300 dark:border-slate-700 text-center font-mono align-top">
-                      {row.year}
-                    </td>
-                    <td className="p-3.5 font-bold text-slate-900 dark:text-white border-r border-slate-300 dark:border-slate-700 leading-snug align-top">
-                      {row.title}
-                    </td>
-                    <td className="p-3.5 text-slate-700 dark:text-slate-300 border-r border-slate-300 dark:border-slate-700 leading-relaxed align-top">
-                      {row.contribution}
-                    </td>
-                    <td className="p-3.5 text-slate-700 dark:text-slate-300 leading-relaxed align-top">
-                      {row.limitation}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      {/* Publication Academic Document Card */}
+      <div className="bg-white text-slate-900 p-8 sm:p-12 rounded-xl shadow-2xl border border-slate-300 font-sans tracking-tight">
+        {/* Header matching sample image */}
+        <div className="border-b-2 border-slate-900 pb-4 mb-6">
+          <h3 className="text-base font-bold text-slate-900 tracking-normal">
+            Project Title: <span className="font-normal text-slate-800">AI Smart Research Agent</span>
+          </h3>
+          <h1 className="text-3xl font-extrabold text-slate-950 mt-1">
+            Literature Survey
+          </h1>
         </div>
-      ) : (
-        /* Detailed Multi-Dimension Comparison View */
-        <div className="glass-panel rounded-2xl border border-slate-300 dark:border-slate-800 overflow-x-auto shadow-2xl bg-white dark:bg-slate-950">
-          <table className="w-full text-left border-collapse min-w-[800px]">
+
+        {/* 5-Column Table matching sample image */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse border border-slate-400 text-xs text-slate-900">
             <thead>
-              <tr className="border-b border-slate-300 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
-                <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-400 w-48 sticky left-0 bg-slate-100 dark:bg-slate-900 z-10">
-                  Dimension
+              <tr className="bg-slate-200 border-b border-slate-400">
+                <th className="p-3 font-bold border-r border-slate-400 w-[21%] text-slate-950">
+                  Reference
                 </th>
-                {(comparison.length > 0 ? comparison : DEFAULT_SURVEY_PAPERS.map((p, idx) => ({
-                  paperId: `p_${idx}`,
-                  paperTitle: p.title,
-                  authors: [p.reference],
-                  year: typeof p.year === 'number' ? p.year : 2025,
-                  researchProblem: p.title,
-                  methodology: p.contribution,
-                  modelArchitecture: 'LLM Multi-Agent System',
-                  datasetUsed: 'ArXiv / Semantic Scholar / Web',
-                  evaluationMetrics: 'Synthesis Quality & Hallucination Rate',
-                  keyResults: 'Autonomous literature review & report synthesis',
-                  strengths: p.contribution,
-                  limitations: p.limitation,
-                  futureWork: 'Multi-repository citation verification',
-                }))).map((item, idx) => (
-                  <th key={idx} className="p-4 text-sm font-bold text-slate-900 dark:text-white min-w-[280px]">
-                    <div className="line-clamp-2 text-brand-600 dark:text-brand-300 font-extrabold">{item.paperTitle}</div>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-normal block mt-1 font-mono">
-                      {item.authors[0]} ({item.year})
-                    </span>
-                  </th>
-                ))}
+                <th className="p-3 font-bold border-r border-slate-400 w-[7%] text-center text-slate-950">
+                  Year
+                </th>
+                <th className="p-3 font-bold border-r border-slate-400 w-[24%] text-slate-950">
+                  Title
+                </th>
+                <th className="p-3 font-bold border-r border-slate-400 w-[25%] text-slate-950">
+                  Contribution
+                </th>
+                <th className="p-3 font-bold w-[23%] text-slate-950">
+                  Limitation
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800 text-xs text-slate-700 dark:text-slate-300">
-              <tr>
-                <td className="p-4 font-bold text-slate-900 dark:text-slate-200 sticky left-0 bg-slate-50 dark:bg-slate-950 z-10">
-                  Research Problem / Scope
-                </td>
-                {(comparison.length > 0 ? comparison : DEFAULT_SURVEY_PAPERS.map((p) => p.title)).map((item: any, idx) => (
-                  <td key={idx} className="p-4 leading-relaxed">{typeof item === 'string' ? item : item.researchProblem}</td>
-                ))}
-              </tr>
-
-              <tr>
-                <td className="p-4 font-bold text-slate-900 dark:text-slate-200 sticky left-0 bg-slate-50 dark:bg-slate-950 z-10">
-                  Core Contribution & Methodology
-                </td>
-                {(comparison.length > 0 ? comparison : DEFAULT_SURVEY_PAPERS.map((p) => p.contribution)).map((item: any, idx) => (
-                  <td key={idx} className="p-4 leading-relaxed">{typeof item === 'string' ? item : item.methodology}</td>
-                ))}
-              </tr>
-
-              <tr>
-                <td className="p-4 font-bold text-slate-900 dark:text-slate-200 sticky left-0 bg-slate-50 dark:bg-slate-950 z-10">
-                  Core Limitation
-                </td>
-                {(comparison.length > 0 ? comparison : DEFAULT_SURVEY_PAPERS.map((p) => p.limitation)).map((item: any, idx) => (
-                  <td key={idx} className="p-4 leading-relaxed text-amber-600 dark:text-amber-300">{typeof item === 'string' ? item : item.limitations}</td>
-                ))}
-              </tr>
+            <tbody>
+              {surveyRows.map((row, idx) => (
+                <tr
+                  key={idx}
+                  className="border-b border-slate-400 hover:bg-slate-50 transition-colors"
+                >
+                  <td className="p-3 font-normal border-r border-slate-400 leading-snug align-top text-slate-900">
+                    {row.reference}
+                  </td>
+                  <td className="p-3 font-semibold border-r border-slate-400 text-center align-top text-slate-900">
+                    {row.year}
+                  </td>
+                  <td className="p-3 font-bold border-r border-slate-400 leading-snug align-top text-slate-950">
+                    {row.title}
+                  </td>
+                  <td className="p-3 leading-relaxed border-r border-slate-400 align-top text-slate-900">
+                    {row.contribution}
+                  </td>
+                  <td className="p-3 leading-relaxed align-top text-slate-900">
+                    {row.limitation}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
-      )}
+      </div>
     </div>
   );
 };

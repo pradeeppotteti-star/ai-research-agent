@@ -72,6 +72,7 @@ export const NewResearchPage: React.FC = () => {
   const [yearEnd, setYearEnd] = useState<number>(2026);
   const [preferredSources, setPreferredSources] = useState<string[]>([
     'Google Scholar',
+    'IEEE Xplore',
     'OpenAlex',
     'Crossref',
     'arXiv',
@@ -172,7 +173,7 @@ export const NewResearchPage: React.FC = () => {
         </h1>
 
         <p className="text-sm text-slate-300 max-w-2xl leading-relaxed">
-          Type any research topic or paper name. The agent automatically classifies the academic domain, executes multi-provider online search across <strong className="text-brand-300">Google Scholar</strong>, <strong className="text-emerald-300">OpenAlex</strong>, <strong className="text-amber-300">Crossref</strong>, and <strong className="text-purple-300">arXiv</strong>, and synthesizes a citation-grounded 11-section literature survey.
+          Type any research topic or paper name. The agent automatically classifies the academic domain, executes multi-provider online search across <strong className="text-cyan-300">IEEE Xplore</strong>, <strong className="text-brand-300">Google Scholar</strong>, <strong className="text-emerald-300">OpenAlex</strong>, <strong className="text-amber-300">Crossref</strong>, and <strong className="text-purple-300">arXiv</strong>, and synthesizes a citation-grounded literature survey.
         </p>
       </div>
 
@@ -379,9 +380,10 @@ export const NewResearchPage: React.FC = () => {
               <span>Live Academic Search Providers</span>
             </label>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               {[
                 { name: 'Google Scholar', color: 'text-brand-400', border: 'border-brand-500/40', bg: 'bg-brand-500/10' },
+                { name: 'IEEE Xplore', color: 'text-cyan-400', border: 'border-cyan-500/40', bg: 'bg-cyan-500/10' },
                 { name: 'OpenAlex', color: 'text-purple-400', border: 'border-purple-500/40', bg: 'bg-purple-500/10' },
                 { name: 'Crossref', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-500/10' },
                 { name: 'arXiv', color: 'text-emerald-400', border: 'border-emerald-500/40', bg: 'bg-emerald-500/10' },

@@ -457,7 +457,7 @@ Proposes a multi-stage machine learning pipeline combining user profiling, secti
         <h3 className="text-xs font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400 flex items-center gap-2">
           <BookOpen className="w-4 h-4" /> Original Abstract
         </h3>
-        <p className="text-slate-800 dark:text-slate-200 text-sm leading-relaxed font-sans">{paper.abstract}</p>
+        <p className="text-slate-800 dark:text-slate-200 text-sm leading-relaxed font-sans whitespace-pre-line">{paper.abstract}</p>
       </div>
 
       {/* Extracted Sections */}
@@ -472,7 +472,7 @@ Proposes a multi-stage machine learning pipeline combining user profiling, secti
             {paper.extractedSections.map((sec, idx) => (
               <div key={idx} className="glass-card p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-2">
                 <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base">{sec.title}</h4>
-                <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-sans">{sec.content}</p>
+                <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-sans whitespace-pre-line">{sec.content}</p>
               </div>
             ))}
           </div>

@@ -60,7 +60,7 @@ export interface Paper {
     pdf?: string;
     publisher?: string;
   };
-  source: 'arXiv' | 'Google Scholar' | 'Semantic Scholar' | 'OpenAlex' | 'Crossref' | 'Other';
+  source: 'arXiv' | 'Google Scholar' | 'Semantic Scholar' | 'OpenAlex' | 'Crossref' | 'IEEE Xplore' | 'Other';
   citationCount?: number;
   pdfAvailable: boolean;
   openAccess: boolean;

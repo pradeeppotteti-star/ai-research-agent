@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
             <div className="flex items-center gap-2 mb-3">
               <BrainCircuit className="w-5 h-5 text-brand-400" />
               <span className="font-bold text-slate-100 text-[15px]">
-                AI SMART RESEARCH AGENT: EVIDENCE-GROUNDED MULTI-SOURCE LITERATURE SURVEY SYNTHESIS
+                AI Smart Research Agent
               </span>
             </div>
             <p className="text-sm text-slate-400 max-w-md leading-relaxed">

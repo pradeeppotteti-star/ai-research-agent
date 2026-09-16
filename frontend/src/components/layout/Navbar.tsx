@@ -74,9 +74,6 @@ export const Navbar: React.FC = () => {
                   v1.0
                 </span>
               </div>
-              <span className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block font-mono">
-                Evidence-Grounded Multi-Source Literature Survey Synthesis
-              </span>
             </div>
           </Link>
 

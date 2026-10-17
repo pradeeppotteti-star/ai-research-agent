@@ -107,15 +107,15 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({ papers, claims, 
   const getNodeColor = (type: NodeItem['type']) => {
     switch (type) {
       case 'paper':
-        return '#6366f1'; // Indigo
+        return '#1E3A8A'; // Oxford Navy
       case 'claim_supported':
-        return '#10b981'; // Emerald
+        return '#15803D'; // Emerald
       case 'claim_inferred':
-        return '#f59e0b'; // Amber
+        return '#D97706'; // Amber
       case 'claim_uncertain':
-        return '#f43f5e'; // Rose
+        return '#E11D48'; // Rose
       case 'gap':
-        return '#a855f7'; // Purple
+        return '#7C3AED'; // Violet
     }
   };
 
@@ -128,35 +128,38 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({ papers, claims, 
   };
 
   return (
-    <div className="glass-panel p-6 rounded-3xl border border-slate-800 space-y-6">
+    <div className="glass-panel p-6 rounded-3xl border border-[#E8E2D8] bg-white space-y-6 shadow-xs">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-brand-400 font-mono">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#1E3A8A] font-mono">
             Interactive Knowledge Graph
           </span>
-          <h3 className="text-xl font-black text-white">Citation & Evidence Topology</h3>
+          <h3 className="text-xl font-black text-[#1E1C1A]">Citation & Evidence Topology</h3>
         </div>
 
         {/* Legend */}
         <div className="flex flex-wrap items-center gap-3 text-xs font-semibold">
-          <span className="inline-flex items-center gap-1 text-indigo-400">
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-500" /> Literature Node
+          <span className="inline-flex items-center gap-1.5 text-[#1E3A8A]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#1E3A8A]" /> Literature Node
           </span>
-          <span className="inline-flex items-center gap-1 text-emerald-400">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Supported Claim
+          <span className="inline-flex items-center gap-1.5 text-emerald-700">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" /> Supported Claim
           </span>
-          <span className="inline-flex items-center gap-1 text-amber-400">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Inferred Claim
+          <span className="inline-flex items-center gap-1.5 text-[#B45309]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#D97706]" /> Inferred Claim
           </span>
-          <span className="inline-flex items-center gap-1 text-purple-400">
-            <span className="w-2.5 h-2.5 rounded-full bg-purple-500" /> Candidate Gap
+          <span className="inline-flex items-center gap-1.5 text-purple-700">
+            <span className="w-2.5 h-2.5 rounded-full bg-purple-600" /> Candidate Gap
           </span>
         </div>
       </div>
 
       {/* SVG Canvas Area */}
-      <div className="relative bg-slate-950/80 rounded-2xl border border-slate-900 overflow-hidden flex items-center justify-center min-h-[480px]">
-        <svg viewBox="0 0 700 480" className="w-full h-full max-h-[500px]">
+      <div className="relative bg-[#F5F1EA] rounded-2xl border border-[#E8E2D8] overflow-hidden flex items-center justify-center min-h-[480px]">
+        {/* Subtle cream architectural dot-grid background */}
+        <div className="absolute inset-0 bg-[radial-gradient(#D8D0C4_1px,transparent_1px)] [background-size:18px_18px] opacity-70 pointer-events-none" />
+
+        <svg viewBox="0 0 700 480" className="w-full h-full max-h-[500px] relative z-10">
           {/* Render Connections Links */}
           {links.map((link, idx) => {
             const sourceNode = nodes.find((n) => n.id === link.source);
@@ -180,15 +183,15 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({ papers, claims, 
                 y2={targetNode.y}
                 stroke={
                   link.type === 'supported'
-                    ? '#10b981'
+                    ? '#15803D'
                     : link.type === 'gap'
-                    ? '#a855f7'
+                    ? '#7C3AED'
                     : link.type === 'inferred'
-                    ? '#f59e0b'
-                    : '#334155'
+                    ? '#D97706'
+                    : '#CBD5E1'
                 }
-                strokeWidth={isHighlighted ? 2.5 : 1}
-                strokeOpacity={selectedNode ? (isHighlighted ? 0.9 : 0.15) : 0.4}
+                strokeWidth={isHighlighted ? 2.5 : 1.2}
+                strokeOpacity={selectedNode ? (isHighlighted ? 0.95 : 0.2) : 0.55}
                 strokeDasharray={link.type === 'gap' ? '4 4' : 'none'}
               />
             );
@@ -209,18 +212,18 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({ papers, claims, 
                 <circle
                   r={node.type === 'paper' ? 18 : 14}
                   fill={getNodeColor(node.type)}
-                  fillOpacity={selectedNode ? (isRelated ? 0.9 : 0.25) : 0.8}
-                  stroke="#0f172a"
+                  fillOpacity={selectedNode ? (isRelated ? 1 : 0.25) : 0.9}
+                  stroke="#FFFFFF"
                   strokeWidth="3"
-                  className="transition-all"
+                  className="transition-all shadow-sm"
                 />
 
                 <text
                   y={node.type === 'paper' ? 32 : 26}
                   textAnchor="middle"
-                  fill={isSelected ? '#ffffff' : '#94a3b8'}
+                  fill={isSelected ? '#1E1C1A' : '#433E38'}
                   fontSize="10"
-                  fontWeight={isSelected ? 'bold' : 'normal'}
+                  fontWeight={isSelected ? 'bold' : '600'}
                   className="pointer-events-none select-none font-sans"
                 >
                   {node.label}
@@ -232,12 +235,12 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({ papers, claims, 
 
         {/* Floating Node Details Card */}
         {selectedNode && (
-          <div className="absolute bottom-4 left-4 right-4 bg-slate-900/95 p-4 rounded-xl border border-slate-800 backdrop-blur-md shadow-2xl space-y-2 max-w-lg mx-auto">
+          <div className="absolute bottom-4 left-4 right-4 bg-white/95 p-5 rounded-2xl border border-[#E8E2D8] backdrop-blur-md shadow-xl space-y-2 max-w-lg mx-auto z-20">
             <div className="flex items-center justify-between">
               <span
                 className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
                 style={{
-                  backgroundColor: `${getNodeColor(selectedNode.type)}20`,
+                  backgroundColor: `${getNodeColor(selectedNode.type)}15`,
                   color: getNodeColor(selectedNode.type),
                   border: `1px solid ${getNodeColor(selectedNode.type)}40`,
                 }}
@@ -246,13 +249,13 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphProps> = ({ papers, claims, 
               </span>
               <button
                 onClick={() => setSelectedNode(null)}
-                className="text-xs text-slate-400 hover:text-white"
+                className="text-xs font-bold text-[#766E65] hover:text-[#1E1C1A] transition-colors"
               >
                 Close ✕
               </button>
             </div>
-            <h4 className="font-bold text-sm text-white">{selectedNode.label}</h4>
-            <p className="text-xs text-slate-300 font-mono line-clamp-3 leading-relaxed whitespace-pre-line">
+            <h4 className="font-bold text-sm text-[#1E1C1A]">{selectedNode.label}</h4>
+            <p className="text-xs text-[#433E38] font-mono line-clamp-3 leading-relaxed whitespace-pre-line">
               {selectedNode.details}
             </p>
           </div>

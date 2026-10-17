@@ -67,24 +67,24 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="max-w-xl mx-auto py-8 space-y-6">
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">
-          <BrainCircuit className="w-4 h-4 text-brand-600 dark:text-brand-400" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F5F1EA] border border-[#E8E2D8] text-[#5C554E] text-xs font-semibold">
+          <BrainCircuit className="w-4 h-4 text-[#1E3A8A]" />
           <span>Academic Portal Authentication</span>
         </div>
-        <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Researcher Sign In</h1>
-        <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+        <h1 className="text-3xl font-black text-[#1E1C1A] tracking-tight">Researcher Sign In</h1>
+        <p className="text-sm text-[#5C554E] max-w-md mx-auto">
           Access your research history, citation verification graph, and literature survey reports.
         </p>
       </div>
 
       {/* 1-Click Demo Testing Accounts */}
-      <div className="glass-panel p-5 rounded-2xl border border-brand-500/20 bg-brand-500/5 dark:bg-brand-950/20 space-y-3">
+      <div className="glass-panel p-5 rounded-xl border border-[#E8E2D8] bg-[#F5F1EA] space-y-3 shadow-sm">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-700 dark:text-brand-300">
-            <Sparkles className="w-4 h-4 text-brand-600 dark:text-brand-400" />
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#1E3A8A]">
+            <Sparkles className="w-4 h-4 text-[#1E3A8A]" />
             <span>Select 1-Click Testing Account</span>
           </div>
-          <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">Pre-seeded Profiles</span>
+          <span className="text-[11px] font-mono text-[#766E65]">Pre-seeded Profiles</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -93,16 +93,16 @@ export const LoginPage: React.FC = () => {
             type="button"
             onClick={() => handleQuickDemoLogin('admin@research-agent.org', 'adminPassword123')}
             disabled={loading}
-            className="p-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 text-left transition-all group shadow-sm"
+            className="p-3.5 rounded-xl bg-white border border-[#E8E2D8] hover:border-[#1E3A8A]/50 text-left transition-all group shadow-sm"
           >
-            <div className="flex items-center gap-2 text-brand-600 dark:text-brand-400 font-bold text-xs mb-1">
+            <div className="flex items-center gap-2 text-amber-700 font-bold text-xs mb-1">
               <ShieldCheck className="w-4 h-4" />
               <span>Admin / Lead</span>
             </div>
-            <span className="text-xs font-bold text-slate-900 dark:text-slate-200 block truncate group-hover:text-brand-600 dark:group-hover:text-white">
+            <span className="text-xs font-bold text-[#1E1C1A] block truncate group-hover:text-[#1E3A8A]">
               Shaik Fazullah
             </span>
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate font-mono">Lead AI Researcher</span>
+            <span className="text-[10px] text-[#766E65] block truncate font-mono">Lead AI Researcher</span>
           </button>
 
           {/* Tester / Peer Reviewer Demo */}
@@ -110,16 +110,16 @@ export const LoginPage: React.FC = () => {
             type="button"
             onClick={() => handleQuickDemoLogin('tester@academic.org', 'testerPassword123')}
             disabled={loading}
-            className="p-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 text-left transition-all group shadow-sm"
+            className="p-3.5 rounded-xl bg-white border border-[#E8E2D8] hover:border-[#1E3A8A]/50 text-left transition-all group shadow-sm"
           >
-            <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs mb-1">
+            <div className="flex items-center gap-2 text-[#1E3A8A] font-bold text-xs mb-1">
               <FlaskConical className="w-4 h-4" />
               <span>Peer Reviewer</span>
             </div>
-            <span className="text-xs font-bold text-slate-900 dark:text-slate-200 block truncate group-hover:text-indigo-600 dark:group-hover:text-white">
+            <span className="text-xs font-bold text-[#1E1C1A] block truncate group-hover:text-[#1E3A8A]">
               Potteti Pradeep
             </span>
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate font-mono">Peer Reviewer Lab</span>
+            <span className="text-[10px] text-[#766E65] block truncate font-mono">Peer Reviewer Lab</span>
           </button>
 
           {/* Student Scholar Demo */}
@@ -127,24 +127,24 @@ export const LoginPage: React.FC = () => {
             type="button"
             onClick={() => handleQuickDemoLogin('student@university.edu', 'studentPassword123')}
             disabled={loading}
-            className="p-3.5 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/50 text-left transition-all group shadow-sm"
+            className="p-3.5 rounded-xl bg-white border border-[#E8E2D8] hover:border-[#1E3A8A]/50 text-left transition-all group shadow-sm"
           >
-            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-xs mb-1">
+            <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs mb-1">
               <GraduationCap className="w-4 h-4" />
               <span>Research Scholar</span>
             </div>
-            <span className="text-xs font-bold text-slate-900 dark:text-slate-200 block truncate group-hover:text-emerald-600 dark:group-hover:text-white">
+            <span className="text-xs font-bold text-[#1E1C1A] block truncate group-hover:text-[#1E3A8A]">
               Puli Prabhas
             </span>
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate font-mono">Data Science Lab</span>
+            <span className="text-[10px] text-[#766E65] block truncate font-mono">Data Science Lab</span>
           </button>
         </div>
       </div>
 
       {/* Manual Login Form */}
-      <div className="glass-panel p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl space-y-5 bg-white dark:bg-slate-900">
+      <div className="glass-panel p-8 rounded-xl border border-[#E8E2D8] shadow-sm space-y-5 bg-white">
         {error && (
-          <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-sm flex items-start gap-2">
+          <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-start gap-2">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -152,35 +152,35 @@ export const LoginPage: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1C1A] mb-1.5">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+              <Mail className="w-4 h-4 text-[#948B80] absolute left-3.5 top-3.5" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@example.com"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all font-mono placeholder-slate-400"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-[#1E1C1A] text-sm focus:outline-none focus:border-[#1E3A8A] focus:ring-1 focus:ring-[#1E3A8A] transition-all font-mono placeholder-[#948B80]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1C1A] mb-1.5">
               Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+              <Lock className="w-4 h-4 text-[#948B80] absolute left-3.5 top-3.5" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder-slate-400"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-[#1E1C1A] text-sm focus:outline-none focus:border-[#1E3A8A] focus:ring-1 focus:ring-[#1E3A8A] transition-all placeholder-[#948B80]"
               />
             </div>
           </div>
@@ -188,7 +188,7 @@ export const LoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl font-bold text-white bg-slate-900 hover:bg-slate-800 dark:bg-brand-600 dark:hover:bg-brand-500 transition-all flex items-center justify-center gap-2 text-sm shadow-md"
+            className="w-full py-3 rounded-xl font-bold text-white bg-[#1E3A8A] hover:bg-[#172E6F] transition-all flex items-center justify-center gap-2 text-sm shadow-sm"
           >
             {loading ? (
               <span>Authenticating...</span>
@@ -201,9 +201,9 @@ export const LoginPage: React.FC = () => {
           </button>
         </form>
 
-        <div className="text-center text-xs text-slate-600 dark:text-slate-400 pt-2 border-t border-slate-200 dark:border-slate-800">
+        <div className="text-center text-xs text-[#766E65] pt-2 border-t border-[#E8E2D8]">
           New researcher?{' '}
-          <Link to="/signup" className="text-brand-600 dark:text-brand-400 hover:underline font-semibold">
+          <Link to="/signup" className="text-[#1E3A8A] hover:underline font-semibold">
             Create Custom Account
           </Link>
         </div>

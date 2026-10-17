@@ -6,7 +6,8 @@ export interface DomainClassification {
 
 export class DomainClassifierService {
   classify(query: string): DomainClassification {
-    const clean = query.toLowerCase().trim();
+    const qStr = typeof query === 'string' ? query : String(query || '');
+    const clean = qStr.toLowerCase().trim();
 
     if (clean.includes('career') || clean.includes('guidance') || clean.includes('counseling') || clean.includes('education') || clean.includes('student')) {
       return {

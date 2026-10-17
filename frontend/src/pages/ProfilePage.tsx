@@ -57,16 +57,16 @@ export const ProfilePage: React.FC = () => {
   return (
     <div className="max-w-3xl mx-auto py-6 space-y-8">
       <div>
-        <h1 className="text-3xl font-black text-white">Researcher Profile & Preferences</h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <h1 className="text-3xl font-black text-[#1E1C1A]">Researcher Profile & Preferences</h1>
+        <p className="text-sm text-[#5C554E] mt-1">
           Customize agent defaults and personalized domain interests.
         </p>
       </div>
 
-      <div className="glass-panel p-8 rounded-2xl border border-slate-800 shadow-2xl space-y-6">
+      <div className="glass-panel p-8 rounded-xl border border-[#E8E2D8] bg-white shadow-sm space-y-6">
         {successMsg && (
-          <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm flex items-center gap-2 font-semibold">
-            <Check className="w-5 h-5" />
+          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-2 font-semibold">
+            <Check className="w-5 h-5 text-emerald-600" />
             <span>{successMsg}</span>
           </div>
         )}
@@ -74,8 +74,8 @@ export const ProfilePage: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <User className="w-3.5 h-3.5 text-slate-400" />
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#1E1C1A] mb-1.5 flex items-center gap-1.5">
+                <User className="w-3.5 h-3.5 text-[#766E65]" />
                 <span>Full Name</span>
               </label>
               <input
@@ -83,45 +83,45 @@ export const ProfilePage: React.FC = () => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-brand-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-[#1E1C1A] text-sm focus:outline-none focus:border-[#1E3A8A]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <Mail className="w-3.5 h-3.5 text-slate-400" />
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#1E1C1A] mb-1.5 flex items-center gap-1.5">
+                <Mail className="w-3.5 h-3.5 text-[#766E65]" />
                 <span>Email Address</span>
               </label>
               <input
                 type="email"
                 disabled
                 value={user?.email || ''}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-900 text-slate-500 text-sm cursor-not-allowed font-mono"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#F5F1EA] border border-[#E8E2D8] text-[#766E65] text-sm cursor-not-allowed font-mono"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center gap-1.5">
-              <Building className="w-3.5 h-3.5 text-slate-400" />
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#1E1C1A] mb-1.5 flex items-center gap-1.5">
+              <Building className="w-3.5 h-3.5 text-[#766E65]" />
               <span>Academic Institution / Organization</span>
             </label>
             <input
               type="text"
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-brand-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-[#1E1C1A] text-sm focus:outline-none focus:border-[#1E3A8A]"
             />
           </div>
 
-          <div className="pt-4 border-t border-slate-800/80 space-y-5">
-            <h3 className="text-sm font-extrabold uppercase tracking-wider text-brand-400">
+          <div className="pt-4 border-t border-[#E8E2D8] space-y-5">
+            <h3 className="text-sm font-extrabold uppercase tracking-wider text-[#1E3A8A]">
               Personalization & Agent Defaults
             </h3>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-slate-400" />
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#1E1C1A] mb-1.5 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#1E3A8A]" />
                 <span>Primary Research Interests (Comma-separated)</span>
               </label>
               <input
@@ -129,13 +129,13 @@ export const ProfilePage: React.FC = () => {
                 value={researchInterests}
                 onChange={(e) => setResearchInterests(e.target.value)}
                 placeholder="Autonomous Agents, Grounded AI..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-brand-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-[#1E1C1A] text-sm focus:outline-none focus:border-[#1E3A8A]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5 text-slate-400" />
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#1E1C1A] mb-1.5 flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-[#1E3A8A]" />
                 <span>Preferred Academic Domains</span>
               </label>
               <input
@@ -143,17 +143,17 @@ export const ProfilePage: React.FC = () => {
                 value={preferredDomains}
                 onChange={(e) => setPreferredDomains(e.target.value)}
                 placeholder="Computer Science, Artificial Intelligence..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-brand-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-[#1E1C1A] text-sm focus:outline-none focus:border-[#1E3A8A]"
               />
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                  <Sliders className="w-3.5 h-3.5 text-slate-400" />
+                <label className="text-xs font-bold uppercase tracking-wider text-[#1E1C1A] flex items-center gap-1.5">
+                  <Sliders className="w-3.5 h-3.5 text-[#1E3A8A]" />
                   <span>Default Paper Count Target</span>
                 </label>
-                <span className="text-xs font-mono font-bold text-brand-400 px-2 py-0.5 rounded bg-brand-500/10">
+                <span className="text-xs font-mono font-bold text-[#1E3A8A] px-2 py-0.5 rounded bg-[#EEF2FF] border border-[#C7D2FE]">
                   {defaultPaperCount} Papers
                 </span>
               </div>
@@ -163,7 +163,7 @@ export const ProfilePage: React.FC = () => {
                 max={12}
                 value={defaultPaperCount}
                 onChange={(e) => setDefaultPaperCount(parseInt(e.target.value, 10))}
-                className="w-full accent-brand-500 cursor-pointer"
+                className="w-full accent-[#1E3A8A] cursor-pointer"
               />
             </div>
           </div>
@@ -171,7 +171,7 @@ export const ProfilePage: React.FC = () => {
           <button
             type="submit"
             disabled={saving}
-            className="w-full py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 shadow-lg shadow-brand-500/20 transition-all flex items-center justify-center gap-2"
+            className="w-full py-3.5 rounded-xl font-bold text-white bg-[#1E3A8A] hover:bg-[#172E6F] shadow-sm transition-all flex items-center justify-center gap-2 border border-[#1E3A8A]"
           >
             {saving ? <span>Updating Preferences...</span> : <span>Save Preferences</span>}
           </button>

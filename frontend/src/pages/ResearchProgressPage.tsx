@@ -13,8 +13,6 @@ import {
   Compass,
   FileCheck2,
   Loader2,
-  ArrowRight,
-  AlertCircle,
 } from 'lucide-react';
 
 const STAGES: Array<{ key: PipelineStage; label: string; icon: React.ReactNode }> = [
@@ -99,16 +97,16 @@ export const ResearchProgressPage: React.FC = () => {
       <ResearchLoadingVisualizer query={query || 'Academic Literature Topic Search'} />
 
       {/* Progress Bar */}
-      <div className="glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
+      <div className="glass-panel p-6 rounded-xl border border-[#E8E2D8] bg-white space-y-4 shadow-sm">
         <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider">
-          <span className="text-slate-300 flex items-center gap-2">
-            <Loader2 className="w-4 h-4 text-brand-400 animate-spin" /> Total Autonomous Pipeline Execution
+          <span className="text-[#1E1C1A] flex items-center gap-2">
+            <Loader2 className="w-4 h-4 text-[#1E3A8A] animate-spin" /> Total Autonomous Pipeline Execution
           </span>
-          <span className="text-brand-400 font-mono text-sm font-black">{percent}%</span>
+          <span className="text-[#1E3A8A] font-mono text-sm font-black">{percent}%</span>
         </div>
-        <div className="w-full h-3.5 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+        <div className="w-full h-3 bg-[#F5F1EA] rounded-full overflow-hidden p-0.5 border border-[#E8E2D8]">
           <div
-            className="h-full bg-gradient-to-r from-brand-600 via-indigo-500 to-sky-400 rounded-full transition-all duration-500 shadow-lg shadow-brand-500/20"
+            className="h-full bg-[#1E3A8A] rounded-full transition-all duration-500 shadow-sm"
             style={{ width: `${percent}%` }}
           />
         </div>
@@ -121,18 +119,18 @@ export const ResearchProgressPage: React.FC = () => {
           return (
             <div
               key={s.key}
-              className={`p-4 rounded-2xl border transition-all ${
+              className={`p-4 rounded-xl border transition-all ${
                 st === 'completed'
-                  ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-300'
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
                   : st === 'active'
-                  ? 'bg-brand-500/10 border-brand-500/40 text-brand-300 shadow-lg shadow-brand-500/10 ring-1 ring-brand-500/30'
-                  : 'bg-slate-900/40 border-slate-800/80 text-slate-500'
+                  ? 'bg-[#EEF2FF] border-[#1E3A8A] text-[#1E3A8A] shadow-sm ring-1 ring-[#1E3A8A]/30'
+                  : 'bg-[#F5F1EA] border-[#E8E2D8] text-[#766E65]'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <div className="p-2 rounded-lg bg-slate-900/80 text-slate-300">{s.icon}</div>
-                {st === 'completed' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
-                {st === 'active' && <Loader2 className="w-4 h-4 text-brand-400 animate-spin" />}
+                <div className="p-2 rounded-lg bg-white border border-[#E8E2D8] text-[#1E1C1A]">{s.icon}</div>
+                {st === 'completed' && <CheckCircle2 className="w-4 h-4 text-emerald-600" />}
+                {st === 'active' && <Loader2 className="w-4 h-4 text-[#1E3A8A] animate-spin" />}
               </div>
               <span className="text-xs font-bold block">{s.label}</span>
               <span className="text-[10px] uppercase font-mono mt-1 block">
@@ -144,18 +142,18 @@ export const ResearchProgressPage: React.FC = () => {
       </div>
 
       {/* Execution Progress Logs */}
-      <div className="glass-panel p-6 rounded-3xl border border-slate-800 space-y-3">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-          <FileText className="w-4 h-4 text-brand-400" /> Live Backend Execution Trace
+      <div className="glass-panel p-6 rounded-xl border border-[#E8E2D8] bg-white space-y-3 shadow-sm">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-[#1E1C1A] flex items-center gap-2">
+          <FileText className="w-4 h-4 text-[#1E3A8A]" /> Live Backend Execution Trace
         </h3>
         <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
           {logs.map((log, idx) => (
-            <div key={idx} className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/80 text-xs font-mono flex items-start gap-3">
-              <span className="text-slate-500 text-[10px] shrink-0 pt-0.5">
+            <div key={idx} className="p-3 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-xs font-mono flex items-start gap-3">
+              <span className="text-[#948B80] text-[10px] shrink-0 pt-0.5">
                 {new Date(log.timestamp).toLocaleTimeString()}
               </span>
-              <span className="text-brand-400 font-bold shrink-0 uppercase">[{log.stage}]</span>
-              <span className="text-slate-200">{log.message}</span>
+              <span className="text-[#1E3A8A] font-bold shrink-0 uppercase">[{log.stage}]</span>
+              <span className="text-[#433E38]">{log.message}</span>
             </div>
           ))}
         </div>

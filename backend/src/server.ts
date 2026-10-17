@@ -38,7 +38,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
     timestamp: new Date().toISOString(),
-    service: 'AI SMART RESEARCH AGENT: EVIDENCE-GROUNDED MULTI-SOURCE LITERATURE SURVEY SYNTHESIS API',
+    service: 'AI SMART RESEARCH AGENT API',
     version: '1.0.0',
   });
 });

@@ -9,11 +9,9 @@ import {
   Sliders,
   Calendar,
   Layers,
-  BookOpen,
   AlertCircle,
   CheckCircle2,
   Zap,
-  Clock,
   ArrowRight,
   Globe,
   Tag,
@@ -161,26 +159,26 @@ export const NewResearchPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto py-8 space-y-10">
       {/* Top Header Banner */}
-      <div className="relative glass-panel p-8 sm:p-10 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-950 via-slate-900 to-brand-950/40 overflow-hidden space-y-4 shadow-2xl">
+      <div className="glass-panel p-8 sm:p-10 rounded-xl border border-[#E8E2D8] bg-white text-[#1E1C1A] overflow-hidden space-y-4 shadow-sm">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-brand-500/10 text-brand-400 border border-brand-500/20 font-mono">
-            <Zap className="w-3.5 h-3.5 text-brand-400 animate-pulse" /> Live Multi-Provider Academic Research Portal
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EEF2FF] text-[#1E3A8A] border border-[#C7D2FE] font-mono">
+            <Zap className="w-3.5 h-3.5 text-[#1E3A8A]" /> Live Multi-Provider Academic Research Portal
           </span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight">
+        <h1 className="text-3xl sm:text-4xl font-black text-[#1E1C1A] leading-tight">
           Launch Autonomous Deep Literature Survey
         </h1>
 
-        <p className="text-sm text-slate-300 max-w-2xl leading-relaxed">
-          Type any research topic or paper name. The agent automatically classifies the academic domain, executes multi-provider online search across <strong className="text-cyan-300">IEEE Xplore</strong>, <strong className="text-brand-300">Google Scholar</strong>, <strong className="text-emerald-300">OpenAlex</strong>, <strong className="text-amber-300">Crossref</strong>, and <strong className="text-purple-300">arXiv</strong>, and synthesizes a citation-grounded literature survey.
+        <p className="text-sm text-[#5C554E] max-w-2xl leading-relaxed">
+          Type any research topic or paper name. The agent automatically classifies the academic domain, executes multi-provider online search across <strong className="text-[#1E3A8A]">IEEE Xplore</strong>, <strong className="text-[#1E3A8A]">Google Scholar</strong>, <strong className="text-emerald-700">OpenAlex</strong>, <strong className="text-amber-700">Crossref</strong>, and <strong className="text-[#1E3A8A]">arXiv</strong>, and synthesizes a citation-grounded literature survey.
         </p>
       </div>
 
       {/* Main Console Box */}
-      <div className="glass-panel p-8 sm:p-10 rounded-3xl border border-slate-800 shadow-2xl space-y-8 bg-slate-950/60">
+      <div className="glass-panel p-8 sm:p-10 rounded-xl border border-[#E8E2D8] shadow-sm space-y-8 bg-white">
         {error && (
-          <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm flex items-start gap-3">
+          <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-start gap-3">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -190,11 +188,11 @@ export const NewResearchPage: React.FC = () => {
           {/* Main Topic Input Console */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
-                <Search className="w-4 h-4 text-brand-400" />
+              <label className="text-xs font-bold uppercase tracking-wider text-[#1E1C1A] flex items-center gap-2">
+                <Search className="w-4 h-4 text-[#1E3A8A]" />
                 <span>Research Paper Name or Topic Query</span>
               </label>
-              <span className="text-[11px] font-mono font-semibold text-brand-400 bg-brand-500/10 px-2.5 py-0.5 rounded-full border border-brand-500/20">
+              <span className="text-[11px] font-mono font-semibold text-[#1E3A8A] bg-[#EEF2FF] px-2.5 py-0.5 rounded-full border border-[#C7D2FE]">
                 100% Real-Time Live Online Search
               </span>
             </div>
@@ -206,13 +204,13 @@ export const NewResearchPage: React.FC = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Type any paper topic (e.g., Career Guidance System, Vision Transformers for Tomato Leaf Care AI, Quantum Machine Learning in Financial Portfolio Optimization...)"
-                className="w-full p-4 rounded-2xl bg-slate-900 border border-slate-800 text-slate-100 text-sm sm:text-base focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all font-medium leading-relaxed shadow-inner"
+                className="w-full p-4 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-[#1E1C1A] text-sm sm:text-base focus:outline-none focus:border-[#1E3A8A] focus:ring-1 focus:ring-[#1E3A8A] transition-all font-medium leading-relaxed placeholder-[#948B80]"
               />
               {query && (
                 <button
                   type="button"
                   onClick={() => setQuery('')}
-                  className="absolute top-3 right-3 p-1.5 rounded-lg bg-slate-800/80 text-slate-400 hover:text-white transition-all text-xs"
+                  className="absolute top-3 right-3 p-1.5 rounded-lg bg-[#F5F1EA] text-[#766E65] hover:text-[#1E1C1A] transition-all text-xs border border-[#E8E2D8]"
                   title="Clear input"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
@@ -222,14 +220,14 @@ export const NewResearchPage: React.FC = () => {
 
             {/* Categorized Sample Prompts Gallery */}
             <div className="space-y-2 pt-1">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+              <span className="text-xs font-bold text-[#766E65] uppercase tracking-wider block">
                 1-Click Sample Research Topics:
               </span>
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setQuery('Design and implementation of an intelligent career guidance system using machine learning')}
-                  className="text-xs text-brand-300 hover:text-brand-200 bg-brand-500/10 hover:bg-brand-500/20 px-3 py-1.5 rounded-xl border border-brand-500/20 transition-all font-semibold flex items-center gap-1.5"
+                  className="text-xs text-[#1E1C1A] hover:text-[#1E3A8A] bg-[#F5F1EA] hover:bg-[#EBE5DC] px-3 py-1.5 rounded-lg border border-[#E8E2D8] transition-all font-semibold flex items-center gap-1.5"
                 >
                   🎓 Career Guidance System
                 </button>
@@ -237,7 +235,7 @@ export const NewResearchPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setQuery('Vision transformer models for automated crop disease detection and tomato leaf care diagnosis')}
-                  className="text-xs text-emerald-300 hover:text-emerald-200 bg-emerald-500/10 hover:bg-emerald-500/20 px-3 py-1.5 rounded-xl border border-emerald-500/20 transition-all font-semibold flex items-center gap-1.5"
+                  className="text-xs text-[#1E1C1A] hover:text-[#1E3A8A] bg-[#F5F1EA] hover:bg-[#EBE5DC] px-3 py-1.5 rounded-lg border border-[#E8E2D8] transition-all font-semibold flex items-center gap-1.5"
                 >
                   🌾 Tomato Leaf Care AI
                 </button>
@@ -245,7 +243,7 @@ export const NewResearchPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setQuery('What are the latest approaches for autonomous AI research agents and multi-tool planning?')}
-                  className="text-xs text-indigo-300 hover:text-indigo-200 bg-indigo-500/10 hover:bg-indigo-500/20 px-3 py-1.5 rounded-xl border border-indigo-500/20 transition-all font-semibold flex items-center gap-1.5"
+                  className="text-xs text-[#1E1C1A] hover:text-[#1E3A8A] bg-[#F5F1EA] hover:bg-[#EBE5DC] px-3 py-1.5 rounded-lg border border-[#E8E2D8] transition-all font-semibold flex items-center gap-1.5"
                 >
                   🤖 Autonomous AI Agents
                 </button>
@@ -253,7 +251,7 @@ export const NewResearchPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setQuery('Quantum machine learning algorithms for high-frequency financial portfolio optimization')}
-                  className="text-xs text-amber-300 hover:text-amber-200 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1.5 rounded-xl border border-amber-500/20 transition-all font-semibold flex items-center gap-1.5"
+                  className="text-xs text-[#1E1C1A] hover:text-[#1E3A8A] bg-[#F5F1EA] hover:bg-[#EBE5DC] px-3 py-1.5 rounded-lg border border-[#E8E2D8] transition-all font-semibold flex items-center gap-1.5"
                 >
                   ⚛️ Quantum Financial AI
                 </button>
@@ -261,7 +259,7 @@ export const NewResearchPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setQuery('What are recent deep learning advances in genomic sequence transformers and protein folding?')}
-                  className="text-xs text-purple-300 hover:text-purple-200 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-1.5 rounded-xl border border-purple-500/20 transition-all font-semibold flex items-center gap-1.5"
+                  className="text-xs text-[#1E1C1A] hover:text-[#1E3A8A] bg-[#F5F1EA] hover:bg-[#EBE5DC] px-3 py-1.5 rounded-lg border border-[#E8E2D8] transition-all font-semibold flex items-center gap-1.5"
                 >
                   🧬 Genomic BioAI
                 </button>
@@ -269,7 +267,7 @@ export const NewResearchPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setQuery('Automated molecular generation and retrosynthetic analysis using ChemCrow AI')}
-                  className="text-xs text-rose-300 hover:text-rose-200 bg-rose-500/10 hover:bg-rose-500/20 px-3 py-1.5 rounded-xl border border-rose-500/20 transition-all font-semibold flex items-center gap-1.5"
+                  className="text-xs text-[#1E1C1A] hover:text-[#1E3A8A] bg-[#F5F1EA] hover:bg-[#EBE5DC] px-3 py-1.5 rounded-lg border border-[#E8E2D8] transition-all font-semibold flex items-center gap-1.5"
                 >
                   💊 AI Drug Discovery
                 </button>
@@ -278,31 +276,31 @@ export const NewResearchPage: React.FC = () => {
           </div>
 
           {/* Auto-Detected Domain & Keywords Panel */}
-          <div className="glass-card p-6 rounded-2xl border border-brand-500/30 bg-gradient-to-r from-slate-900 via-slate-900 to-brand-950/30 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-400 font-mono flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-brand-400 animate-pulse" /> Real-time Classification & Extraction
+          <div className="glass-card p-6 rounded-xl border border-[#E8E2D8] bg-[#F5F1EA] space-y-4">
+            <div className="flex items-center justify-between border-b border-[#E8E2D8] pb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#1E1C1A] font-mono flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#1E3A8A]" /> Real-time Classification & Extraction
               </span>
-              <span className="text-[11px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1">
+              <span className="text-[11px] font-mono font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5" /> 99% NLP Alignment Verified
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs">
               <div className="space-y-1">
-                <span className="text-slate-400 font-semibold flex items-center gap-1">
-                  <Layers className="w-3.5 h-3.5 text-slate-400" /> Inferred Academic Domain:
+                <span className="text-[#766E65] font-semibold flex items-center gap-1">
+                  <Layers className="w-3.5 h-3.5 text-[#766E65]" /> Inferred Academic Domain:
                 </span>
-                <span className="font-bold text-white text-sm block">{detectedDomain}</span>
+                <span className="font-bold text-[#1E1C1A] text-sm block">{detectedDomain}</span>
               </div>
 
               <div className="space-y-1">
-                <span className="text-slate-400 font-semibold flex items-center gap-1">
-                  <Tag className="w-3.5 h-3.5 text-slate-400" /> Extracted Search Keywords:
+                <span className="text-[#766E65] font-semibold flex items-center gap-1">
+                  <Tag className="w-3.5 h-3.5 text-[#766E65]" /> Extracted Search Keywords:
                 </span>
-                <div className="flex flex-wrap items-center gap-1.5 font-mono text-brand-300 pt-0.5">
+                <div className="flex flex-wrap items-center gap-1.5 font-mono text-[#1E3A8A] pt-0.5">
                   {detectedKeywords.split(',').map((kw, idx) => (
-                    <span key={idx} className="px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 font-medium">
+                    <span key={idx} className="px-2 py-0.5 rounded-md bg-white border border-[#E8E2D8] font-medium text-xs">
                       {kw.trim()}
                     </span>
                   ))}
@@ -312,15 +310,15 @@ export const NewResearchPage: React.FC = () => {
           </div>
 
           {/* Configuration Parameters Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2 border-t border-slate-800/80">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2 border-t border-[#E8E2D8]">
             {/* Target Paper Count Slider */}
-            <div className="glass-card p-5 rounded-2xl border border-slate-800 space-y-3">
+            <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] bg-white space-y-3 shadow-sm">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                  <Sliders className="w-4 h-4 text-brand-400" />
+                <label className="text-xs font-bold uppercase tracking-wider text-[#1E1C1A] flex items-center gap-1.5">
+                  <Sliders className="w-4 h-4 text-[#1E3A8A]" />
                   <span>Target Paper Count</span>
                 </label>
-                <span className="text-xs font-mono font-black text-brand-300 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20">
+                <span className="text-xs font-mono font-black text-[#1E3A8A] px-3 py-1 rounded-full bg-[#EEF2FF] border border-[#C7D2FE]">
                   {targetPaperCount} Papers
                 </span>
               </div>
@@ -330,24 +328,24 @@ export const NewResearchPage: React.FC = () => {
                 max={25}
                 value={targetPaperCount}
                 onChange={(e) => setTargetPaperCount(parseInt(e.target.value, 10))}
-                className="w-full accent-brand-500 cursor-pointer"
+                className="w-full accent-[#1E3A8A] cursor-pointer"
               />
-              <span className="text-[11px] text-slate-400 font-mono block text-right">Range: 3 to 25 papers</span>
+              <span className="text-[11px] text-[#766E65] font-mono block text-right">Range: 3 to 25 papers</span>
             </div>
 
             {/* Publication Timeline Pre-sets */}
-            <div className="glass-card p-5 rounded-2xl border border-slate-800 space-y-3">
+            <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] bg-white space-y-3 shadow-sm">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4 text-brand-400" />
+                <label className="text-xs font-bold uppercase tracking-wider text-[#1E1C1A] flex items-center gap-1.5">
+                  <Calendar className="w-4 h-4 text-[#1E3A8A]" />
                   <span>Publication Timeline Range</span>
                 </label>
-                <div className="flex items-center gap-1 text-[11px] font-mono font-bold text-slate-400">
-                  <button type="button" onClick={() => handleYearPreset(2023)} className="hover:text-brand-300">3Y</button>
+                <div className="flex items-center gap-1 text-[11px] font-mono font-bold text-[#766E65]">
+                  <button type="button" onClick={() => handleYearPreset(2023)} className="hover:text-[#1E3A8A]">3Y</button>
                   <span>•</span>
-                  <button type="button" onClick={() => handleYearPreset(2020)} className="hover:text-brand-300">5Y</button>
+                  <button type="button" onClick={() => handleYearPreset(2020)} className="hover:text-[#1E3A8A]">5Y</button>
                   <span>•</span>
-                  <button type="button" onClick={() => handleYearPreset(2015)} className="hover:text-brand-300">All</button>
+                  <button type="button" onClick={() => handleYearPreset(2015)} className="hover:text-[#1E3A8A]">All</button>
                 </div>
               </div>
 
@@ -358,16 +356,16 @@ export const NewResearchPage: React.FC = () => {
                   max={2026}
                   value={yearStart}
                   onChange={(e) => setYearStart(parseInt(e.target.value, 10))}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-xs font-mono text-center font-bold"
+                  className="w-full px-3 py-2 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-[#1E1C1A] text-xs font-mono text-center font-bold"
                 />
-                <span className="text-slate-500 text-xs font-bold">to</span>
+                <span className="text-[#766E65] text-xs font-bold">to</span>
                 <input
                   type="number"
                   min={1990}
                   max={2026}
                   value={yearEnd}
                   onChange={(e) => setYearEnd(parseInt(e.target.value, 10))}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 text-xs font-mono text-center font-bold"
+                  className="w-full px-3 py-2 rounded-xl bg-[#FBF9F5] border border-[#E8E2D8] text-[#1E1C1A] text-xs font-mono text-center font-bold"
                 />
               </div>
             </div>
@@ -375,18 +373,18 @@ export const NewResearchPage: React.FC = () => {
 
           {/* Academic Provider Toggle Cards */}
           <div className="space-y-3">
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-              <Globe className="w-4 h-4 text-brand-400" />
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#1E1C1A] flex items-center gap-1.5">
+              <Globe className="w-4 h-4 text-[#1E3A8A]" />
               <span>Live Academic Search Providers</span>
             </label>
 
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               {[
-                { name: 'Google Scholar', color: 'text-brand-400', border: 'border-brand-500/40', bg: 'bg-brand-500/10' },
-                { name: 'IEEE Xplore', color: 'text-cyan-400', border: 'border-cyan-500/40', bg: 'bg-cyan-500/10' },
-                { name: 'OpenAlex', color: 'text-purple-400', border: 'border-purple-500/40', bg: 'bg-purple-500/10' },
-                { name: 'Crossref', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-500/10' },
-                { name: 'arXiv', color: 'text-emerald-400', border: 'border-emerald-500/40', bg: 'bg-emerald-500/10' },
+                { name: 'Google Scholar' },
+                { name: 'IEEE Xplore' },
+                { name: 'OpenAlex' },
+                { name: 'Crossref' },
+                { name: 'arXiv' },
               ].map((provider) => {
                 const isSelected = preferredSources.includes(provider.name);
                 return (
@@ -394,17 +392,17 @@ export const NewResearchPage: React.FC = () => {
                     type="button"
                     key={provider.name}
                     onClick={() => toggleSource(provider.name)}
-                    className={`p-4 rounded-2xl border text-xs font-bold transition-all text-left flex flex-col justify-between h-20 ${
+                    className={`p-4 rounded-xl border text-xs font-bold transition-all text-left flex flex-col justify-between h-20 ${
                       isSelected
-                        ? `${provider.bg} ${provider.border} shadow-lg shadow-brand-500/10 scale-102`
-                        : 'bg-slate-900/60 text-slate-400 border-slate-800 hover:border-slate-700 opacity-60'
+                        ? 'bg-[#EEF2FF] border-[#1E3A8A] text-[#1E3A8A] shadow-sm'
+                        : 'bg-[#F5F1EA] text-[#766E65] border-[#E8E2D8] hover:border-[#D8D0C4]'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className={isSelected ? 'text-white' : 'text-slate-400'}>{provider.name}</span>
-                      <span className={`w-2.5 h-2.5 rounded-full ${isSelected ? 'bg-emerald-400' : 'bg-slate-700'}`} />
+                      <span className={isSelected ? 'text-[#1E3A8A]' : 'text-[#766E65]'}>{provider.name}</span>
+                      <span className={`w-2.5 h-2.5 rounded-full ${isSelected ? 'bg-[#1E3A8A]' : 'bg-[#D8D0C4]'}`} />
                     </div>
-                    <span className="text-[10px] font-mono text-slate-400">
+                    <span className="text-[10px] font-mono text-[#766E65]">
                       {isSelected ? 'Active Provider' : 'Click to Enable'}
                     </span>
                   </button>
@@ -414,11 +412,11 @@ export const NewResearchPage: React.FC = () => {
           </div>
 
           {/* Big Action Submit Button */}
-          <div className="pt-4 border-t border-slate-800">
+          <div className="pt-4 border-t border-[#E8E2D8]">
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4.5 rounded-2xl font-black text-white text-base sm:text-lg bg-gradient-to-r from-brand-600 via-indigo-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 transition-all shadow-2xl shadow-brand-500/25 disabled:opacity-50 flex items-center justify-center gap-3 group"
+              className="w-full py-4 rounded-xl font-bold text-white text-base sm:text-lg bg-[#1E3A8A] hover:bg-[#172E6F] transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-3 group border border-[#1E3A8A]"
             >
               {loading ? (
                 <div className="flex items-center gap-2">

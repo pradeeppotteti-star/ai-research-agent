@@ -5,7 +5,15 @@
 @layer base {
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200;
+    background-color: #FBF9F5;
+    color: #433E38;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #1E1C1A;
+    font-weight: 800;
   }
 
   code, pre, .font-mono {
@@ -13,44 +21,61 @@
   }
 }
 
-/* High-Contrast Dual-Theme Glass Panels & Cards */
+/* Academic Atelier Cards & Panels */
 .glass-panel {
-  @apply bg-white text-slate-900 border border-slate-200 dark:bg-slate-900 dark:text-slate-100 dark:border-slate-800 shadow-xl transition-colors duration-200;
+  background-color: #FFFFFF;
+  color: #1E1C1A;
+  border: 1px solid #E8E2D8;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(30, 28, 26, 0.04), 0 1px 2px -1px rgba(30, 28, 26, 0.04);
 }
 
 .glass-card {
-  @apply bg-white text-slate-900 border border-slate-200 dark:bg-slate-900 dark:text-slate-100 dark:border-slate-800 shadow-md hover:border-brand-500/50 dark:hover:border-brand-500/50 hover:shadow-brand-500/10 transition-all duration-200;
+  background-color: #FFFFFF;
+  color: #1E1C1A;
+  border: 1px solid #E8E2D8;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(30, 28, 26, 0.04), 0 1px 2px -1px rgba(30, 28, 26, 0.04);
+  transition: all 0.2s ease;
 }
 
 .glass-card:hover {
-  @apply border-brand-500/50 dark:border-brand-500/50;
+  border-color: #D8D0C4;
+  box-shadow: 0 4px 12px 0 rgba(30, 28, 26, 0.06), 0 2px 4px -2px rgba(30, 28, 26, 0.04);
 }
 
-
-/* Dense Data Table & Code Styling */
+/* Dense Academic Data Table Styling */
 .academic-table th {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.75rem;
+  color: #766E65;
+  background-color: #F5F1EA;
+  border-bottom: 1px solid #E8E2D8;
 }
 
-/* Custom crisp scrollbars */
+.academic-table td {
+  border-bottom: 1px solid #E8E2D8;
+}
+
+/* Custom warm cream scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-cyan-50 dark:bg-[#061723];
+  background: #F5F1EA;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-cyan-200 dark:bg-cyan-900/60 rounded;
+  background: #D8D0C4;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-cyan-300 dark:bg-cyan-800;
+  background: #B8AEA0;
 }
 
 

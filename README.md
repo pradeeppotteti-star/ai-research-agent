@@ -1,4 +1,4 @@
-# AI SMART RESEARCH AGENT: EVIDENCE-GROUNDED MULTI-SOURCE LITERATURE SURVEY SYNTHESIS
+# AI SMART RESEARCH AGENT
 
 A production-ready full-stack academic research application inspired by the limitations and future directions identified in the research survey: **"Deep Research: A Survey of Autonomous Research Agents"**.
 

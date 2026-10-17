@@ -224,7 +224,7 @@ export const PaperComparisonPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="py-20 text-center text-slate-600 dark:text-slate-300 font-mono text-sm">
+      <div className="py-20 text-center text-[#766E65] font-mono text-sm">
         Constructing literature survey matrix across papers...
       </div>
     );
@@ -236,7 +236,7 @@ export const PaperComparisonPage: React.FC = () => {
       <div className="flex items-center justify-between gap-4 no-print">
         <Link
           to="/dashboard"
-          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold transition-all"
+          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white text-[#1E1C1A] border border-[#E8E2D8] hover:bg-[#F5F1EA] text-xs font-bold transition-all shadow-sm"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Dashboard</span>
@@ -245,15 +245,15 @@ export const PaperComparisonPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={handleCopyTable}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-[#E8E2D8] text-xs font-bold text-[#1E1C1A] hover:bg-[#F5F1EA] transition-all shadow-sm"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-[#1E3A8A]" />}
             <span>{copied ? 'Copied TSV' : 'Copy Table'}</span>
           </button>
 
           <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-brand-600 text-white text-xs font-bold hover:bg-brand-500 transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#1E3A8A] text-white text-xs font-bold hover:bg-[#172E6F] transition-all shadow-sm"
           >
             <Printer className="w-3.5 h-3.5" />
             <span>Print / Save PDF</span>
@@ -261,62 +261,62 @@ export const PaperComparisonPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Dual Theme Publication Academic Document Card */}
-      <div className="glass-panel p-6 sm:p-10 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl bg-white text-slate-900 dark:bg-slate-900/95 dark:text-slate-100 font-sans tracking-tight">
+      {/* Academic Publication Document Card */}
+      <div className="glass-panel p-6 sm:p-10 rounded-xl border border-[#E8E2D8] shadow-sm bg-white text-[#1E1C1A] font-sans tracking-tight">
         {/* Header */}
-        <div className="border-b border-slate-200 dark:border-slate-800 pb-4 mb-6">
-          <div className="text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
-            Project Title: <span className="text-brand-600 dark:text-brand-400 font-extrabold">AI Smart Research Agent</span>
+        <div className="border-b border-[#E8E2D8] pb-4 mb-6">
+          <div className="text-xs font-mono font-bold text-[#766E65] uppercase tracking-wider mb-1">
+            Project Title: <span className="text-[#1E3A8A] font-extrabold">AI Smart Research Agent</span>
           </div>
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white mt-1 tracking-tight">
+          <h1 className="text-3xl font-black text-[#1E1C1A] mt-1 tracking-tight">
             Literature Survey
           </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs text-[#766E65] mt-1">
             Side-by-side literature survey matrix ordered chronologically year-wise (2026 to 2022).
           </p>
         </div>
 
-        {/* 5-Column Table with Dual Theme Styling */}
-        <div className="overflow-x-auto rounded-xl border border-slate-300 dark:border-slate-800 shadow-inner">
+        {/* 5-Column Table with Academic Atelier Styling */}
+        <div className="overflow-x-auto rounded-xl border border-[#E8E2D8] shadow-sm">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-100 border-b border-slate-300 text-slate-900 dark:bg-slate-950 dark:border-slate-800 dark:text-slate-100">
-                <th className="p-3.5 font-bold border-r border-slate-300 dark:border-slate-800 w-[20%] uppercase tracking-wider text-slate-900 dark:text-slate-200">
+              <tr className="bg-[#F5F1EA] border-b border-[#E8E2D8] text-[#1E1C1A]">
+                <th className="p-3.5 font-bold border-r border-[#E8E2D8] w-[20%] uppercase tracking-wider text-[#1E1C1A]">
                   Reference
                 </th>
-                <th className="p-3.5 font-bold border-r border-slate-300 dark:border-slate-800 w-[7%] text-center uppercase tracking-wider text-slate-900 dark:text-slate-200">
+                <th className="p-3.5 font-bold border-r border-[#E8E2D8] w-[7%] text-center uppercase tracking-wider text-[#1E1C1A]">
                   Year
                 </th>
-                <th className="p-3.5 font-bold border-r border-slate-300 dark:border-slate-800 w-[24%] uppercase tracking-wider text-slate-900 dark:text-slate-200">
+                <th className="p-3.5 font-bold border-r border-[#E8E2D8] w-[24%] uppercase tracking-wider text-[#1E1C1A]">
                   Title
                 </th>
-                <th className="p-3.5 font-bold border-r border-slate-300 dark:border-slate-800 w-[25%] uppercase tracking-wider text-slate-900 dark:text-slate-200">
+                <th className="p-3.5 font-bold border-r border-[#E8E2D8] w-[25%] uppercase tracking-wider text-[#1E1C1A]">
                   Contribution
                 </th>
-                <th className="p-3.5 font-bold w-[24%] uppercase tracking-wider text-slate-900 dark:text-slate-200">
+                <th className="p-3.5 font-bold w-[24%] uppercase tracking-wider text-[#1E1C1A]">
                   Limitation
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+            <tbody className="divide-y divide-[#E8E2D8]">
               {surveyRows.map((row, idx) => (
                 <tr
                   key={idx}
-                  className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors border-b border-slate-200 dark:border-slate-800/90"
+                  className="hover:bg-[#FBF9F5] transition-colors border-b border-[#E8E2D8]"
                 >
-                  <td className="p-3.5 font-normal text-slate-800 dark:text-slate-300 border-r border-slate-200 dark:border-slate-800/90 leading-relaxed align-top">
+                  <td className="p-3.5 font-normal text-[#433E38] border-r border-[#E8E2D8] leading-relaxed align-top">
                     {row.reference}
                   </td>
-                  <td className="p-3.5 font-bold text-brand-600 dark:text-brand-300 border-r border-slate-200 dark:border-slate-800/90 text-center align-top font-mono text-sm">
+                  <td className="p-3.5 font-bold text-[#1E3A8A] border-r border-[#E8E2D8] text-center align-top font-mono text-sm">
                     {row.year}
                   </td>
-                  <td className="p-3.5 font-bold text-slate-950 dark:text-white border-r border-slate-200 dark:border-slate-800/90 leading-snug align-top">
+                  <td className="p-3.5 font-bold text-[#1E1C1A] border-r border-[#E8E2D8] leading-snug align-top">
                     {row.title}
                   </td>
-                  <td className="p-3.5 leading-relaxed text-slate-800 dark:text-slate-200 border-r border-slate-200 dark:border-slate-800/90 align-top">
+                  <td className="p-3.5 leading-relaxed text-[#433E38] border-r border-[#E8E2D8] align-top">
                     {row.contribution}
                   </td>
-                  <td className="p-3.5 leading-relaxed text-amber-700 dark:text-amber-300/95 align-top">
+                  <td className="p-3.5 leading-relaxed text-[#92400E] font-medium align-top">
                     {row.limitation}
                   </td>
                 </tr>

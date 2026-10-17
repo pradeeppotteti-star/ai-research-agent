@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   BrainCircuit,
-  CheckCircle2,
   Sparkles,
   ShieldCheck,
   Volume2,
@@ -101,20 +100,20 @@ Inspired by the landmark survey paper *"Deep Research: A Survey of Autonomous Re
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
-      <div className="glass-panel w-full max-w-4xl rounded-3xl border border-brand-500/30 p-8 shadow-2xl space-y-6 max-h-[92vh] overflow-y-auto relative text-slate-100 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fadeIn">
+      <div className="glass-panel w-full max-w-4xl rounded-2xl border border-[#E8E2D8] p-8 shadow-2xl space-y-6 max-h-[92vh] overflow-y-auto relative text-[#433E38] bg-white">
         
         {/* Header */}
-        <div className="flex items-start justify-between border-b border-slate-800/80 pb-5">
+        <div className="flex items-start justify-between border-b border-[#E8E2D8] pb-5">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-brand-600/20 border border-brand-500/30 text-brand-400 flex items-center justify-center shadow-lg shadow-brand-500/10">
+            <div className="w-12 h-12 rounded-xl bg-[#EEF2FF] border border-[#C7D2FE] text-[#1E3A8A] flex items-center justify-center shadow-sm">
               <BrainCircuit className="w-6 h-6" />
             </div>
             <div>
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-400 font-mono tracking-wider uppercase">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3A8A] font-mono tracking-wider uppercase">
                 <Sparkles className="w-3.5 h-3.5" /> EXECUTIVE BRIEFING
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-white">Project Synthesis & Architecture</h2>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1E1C1A]">Project Synthesis & Architecture</h2>
             </div>
           </div>
 
@@ -124,7 +123,7 @@ Inspired by the landmark survey paper *"Deep Research: A Survey of Autonomous Re
               setIsPlayingAudio(false);
               onClose();
             }}
-            className="p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-2.5 rounded-xl text-[#766E65] hover:text-[#1E1C1A] hover:bg-[#F5F1EA] transition-colors"
             title="Close summary"
           >
             <X className="w-5 h-5" />
@@ -132,140 +131,140 @@ Inspired by the landmark survey paper *"Deep Research: A Survey of Autonomous Re
         </div>
 
         {/* Audio Executive Briefing Widget */}
-        <div className="glass-card p-5 rounded-2xl border border-brand-500/30 bg-gradient-to-r from-brand-950/40 via-slate-900 to-indigo-950/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] bg-[#F5F1EA] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-3">
             <button
               onClick={handleToggleAudio}
-              className={`p-3.5 rounded-2xl border transition-all ${
+              className={`p-3.5 rounded-xl border transition-all ${
                 isPlayingAudio
-                  ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-xl shadow-emerald-500/20 scale-105'
-                  : 'bg-brand-600 text-white border-brand-500 hover:bg-brand-500'
+                  ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm'
+                  : 'bg-[#1E3A8A] text-white border-[#1E3A8A] hover:bg-[#172E6F]'
               }`}
             >
               {isPlayingAudio ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5 animate-pulse" />}
             </button>
             <div>
-              <span className="text-xs font-bold text-slate-200 block">
+              <span className="text-xs font-bold text-[#1E1C1A] block">
                 {isPlayingAudio ? 'Playing Audio Briefing Stream...' : 'Listen to AI Voice Synthesis Briefing'}
               </span>
-              <span className="text-[11px] text-slate-400 font-mono">
+              <span className="text-[11px] text-[#766E65] font-mono">
                 {isPlayingAudio ? 'Audio Stream Active • 1m 45s' : 'Synthesized audio executive overview of platform architecture'}
               </span>
             </div>
           </div>
 
           {isPlayingAudio && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-emerald-500/30">
-              <span className="w-1.5 h-4 bg-emerald-400 rounded animate-bounce" />
-              <span className="w-1.5 h-6 bg-emerald-400 rounded animate-bounce delay-75" />
-              <span className="w-1.5 h-3 bg-emerald-400 rounded animate-bounce delay-150" />
-              <span className="w-1.5 h-5 bg-emerald-400 rounded animate-bounce delay-100" />
-              <span className="text-xs font-mono text-emerald-400 font-bold ml-1">Streaming...</span>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-emerald-200">
+              <span className="w-1.5 h-4 bg-emerald-600 rounded animate-bounce" />
+              <span className="w-1.5 h-6 bg-emerald-600 rounded animate-bounce delay-75" />
+              <span className="w-1.5 h-3 bg-emerald-600 rounded animate-bounce delay-150" />
+              <span className="w-1.5 h-5 bg-emerald-600 rounded animate-bounce delay-100" />
+              <span className="text-xs font-mono text-emerald-700 font-bold ml-1">Streaming...</span>
             </div>
           )}
         </div>
 
         {/* Impact Metrics Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="glass-card p-4 rounded-2xl border border-slate-800 text-center space-y-1">
-            <span className="text-2xl sm:text-3xl font-black text-emerald-400 font-mono block">-34.2%</span>
-            <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Hallucination Reduction</span>
+          <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] text-center space-y-1 bg-white shadow-sm">
+            <span className="text-2xl sm:text-3xl font-black text-emerald-700 font-mono block">-34.2%</span>
+            <span className="text-[11px] text-[#766E65] font-bold uppercase tracking-wider block">Hallucination Reduction</span>
           </div>
 
-          <div className="glass-card p-4 rounded-2xl border border-slate-800 text-center space-y-1">
-            <span className="text-2xl sm:text-3xl font-black text-brand-400 font-mono block">92.4%</span>
-            <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Citation Grounding</span>
+          <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] text-center space-y-1 bg-white shadow-sm">
+            <span className="text-2xl sm:text-3xl font-black text-[#1E3A8A] font-mono block">92.4%</span>
+            <span className="text-[11px] text-[#766E65] font-bold uppercase tracking-wider block">Citation Grounding</span>
           </div>
 
-          <div className="glass-card p-4 rounded-2xl border border-slate-800 text-center space-y-1">
-            <span className="text-2xl sm:text-3xl font-black text-indigo-400 font-mono block">105+</span>
-            <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Open-Access Papers</span>
+          <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] text-center space-y-1 bg-white shadow-sm">
+            <span className="text-2xl sm:text-3xl font-black text-[#1E3A8A] font-mono block">105+</span>
+            <span className="text-[11px] text-[#766E65] font-bold uppercase tracking-wider block">Open-Access Papers</span>
           </div>
 
-          <div className="glass-card p-4 rounded-2xl border border-slate-800 text-center space-y-1">
-            <span className="text-2xl sm:text-3xl font-black text-purple-400 font-mono block">88%</span>
-            <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Field Consensus Score</span>
+          <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] text-center space-y-1 bg-white shadow-sm">
+            <span className="text-2xl sm:text-3xl font-black text-amber-700 font-mono block">88%</span>
+            <span className="text-[11px] text-[#766E65] font-bold uppercase tracking-wider block">Field Consensus Score</span>
           </div>
         </div>
 
         {/* 8 Core Architectural Capabilities Grid */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 font-mono">
-              <Zap className="w-3.5 h-3.5 text-brand-400" /> Core Autonomous Capabilities & Solutions
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#1E1C1A] flex items-center gap-1.5 font-mono">
+              <Zap className="w-3.5 h-3.5 text-[#1E3A8A]" /> Core Autonomous Capabilities & Solutions
             </h3>
-            <span className="text-[11px] text-slate-500 font-mono">8 Solved Agent Bottlenecks</span>
+            <span className="text-[11px] text-[#766E65] font-mono">8 Solved Agent Bottlenecks</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div className="glass-card p-4 rounded-2xl border border-slate-800 space-y-1.5 hover:border-brand-500/30 transition-all">
-              <span className="font-bold text-brand-400 flex items-center gap-1.5 text-sm">
+            <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] space-y-1.5 bg-white hover:border-[#D8D0C4] transition-all shadow-sm">
+              <span className="font-bold text-[#1E3A8A] flex items-center gap-1.5 text-sm">
                 <BookOpen className="w-4 h-4" /> 1. Multi-Provider Search Engine
               </span>
-              <p className="text-slate-300 leading-relaxed font-sans">
+              <p className="text-[#5C554E] leading-relaxed font-sans">
                 Concurrently queries arXiv, Semantic Scholar, OpenAlex, and Crossref APIs with Levenshtein fuzzy deduplication.
               </p>
             </div>
 
-            <div className="glass-card p-4 rounded-2xl border border-slate-800 space-y-1.5 hover:border-emerald-500/30 transition-all">
-              <span className="font-bold text-emerald-400 flex items-center gap-1.5 text-sm">
-                <ShieldCheck className="w-4 h-4" /> 2. Factuality & Citation Anchors
+            <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] space-y-1.5 bg-white hover:border-[#D8D0C4] transition-all shadow-sm">
+              <span className="font-bold text-emerald-800 flex items-center gap-1.5 text-sm">
+                <ShieldCheck className="w-4 h-4 text-emerald-700" /> 2. Factuality & Citation Anchors
               </span>
-              <p className="text-slate-300 leading-relaxed font-sans">
+              <p className="text-[#5C554E] leading-relaxed font-sans">
                 Extracts PDF paragraph text anchors and classifies claims into Supported, Inferred, or Uncertain.
               </p>
             </div>
 
-            <div className="glass-card p-4 rounded-2xl border border-slate-800 space-y-1.5 hover:border-indigo-500/30 transition-all">
-              <span className="font-bold text-indigo-400 flex items-center gap-1.5 text-sm">
-                <PieChart className="w-4 h-4" /> 3. Consensus & Contradictions
+            <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] space-y-1.5 bg-white hover:border-[#D8D0C4] transition-all shadow-sm">
+              <span className="font-bold text-[#1E3A8A] flex items-center gap-1.5 text-sm">
+                <PieChart className="w-4 h-4 text-[#1E3A8A]" /> 3. Consensus & Contradictions
               </span>
-              <p className="text-slate-300 leading-relaxed font-sans">
+              <p className="text-[#5C554E] leading-relaxed font-sans">
                 Evaluates multi-document pairwise alignment scores, isolating field consensus % vs contrasting viewpoints.
               </p>
             </div>
 
-            <div className="glass-card p-4 rounded-2xl border border-slate-800 space-y-1.5 hover:border-amber-500/30 transition-all">
-              <span className="font-bold text-amber-400 flex items-center gap-1.5 text-sm">
-                <Compass className="w-4 h-4" /> 4. Research Gaps & Trend Forecast
+            <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] space-y-1.5 bg-white hover:border-[#D8D0C4] transition-all shadow-sm">
+              <span className="font-bold text-amber-800 flex items-center gap-1.5 text-sm">
+                <Compass className="w-4 h-4 text-amber-700" /> 4. Research Gaps & Trend Forecast
               </span>
-              <p className="text-slate-300 leading-relaxed font-sans">
+              <p className="text-[#5C554E] leading-relaxed font-sans">
                 Detects unaddressed paper limitations and forecasts YoY publication volume velocity over 2021–2025 timelines.
               </p>
             </div>
 
-            <div className="glass-card p-4 rounded-2xl border border-slate-800 space-y-1.5 hover:border-purple-500/30 transition-all">
-              <span className="font-bold text-purple-400 flex items-center gap-1.5 text-sm">
-                <Award className="w-4 h-4" /> 5. AI Peer-Reviewer Panel
+            <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] space-y-1.5 bg-white hover:border-[#D8D0C4] transition-all shadow-sm">
+              <span className="font-bold text-[#1E3A8A] flex items-center gap-1.5 text-sm">
+                <Award className="w-4 h-4 text-[#1E3A8A]" /> 5. AI Peer-Reviewer Panel
               </span>
-              <p className="text-slate-300 leading-relaxed font-sans">
+              <p className="text-[#5C554E] leading-relaxed font-sans">
                 Simulates 3 AI peer reviewers evaluating Methodology Rigor, Gap Novelty, and Citation Factuality scores out of 10.
               </p>
             </div>
 
-            <div className="glass-card p-4 rounded-2xl border border-slate-800 space-y-1.5 hover:border-rose-500/30 transition-all">
-              <span className="font-bold text-rose-400 flex items-center gap-1.5 text-sm">
-                <FileCheck2 className="w-4 h-4" /> 6. BibTeX One-Click Export
+            <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] space-y-1.5 bg-white hover:border-[#D8D0C4] transition-all shadow-sm">
+              <span className="font-bold text-rose-800 flex items-center gap-1.5 text-sm">
+                <FileCheck2 className="w-4 h-4 text-rose-700" /> 6. BibTeX One-Click Export
               </span>
-              <p className="text-slate-300 leading-relaxed font-sans">
-                Generates formatted LaTeX <code className="text-rose-300">@article&#123;...&#125;</code> citations with 1-click clipboard copy and <code className="text-rose-300">.bib</code> download.
+              <p className="text-[#5C554E] leading-relaxed font-sans">
+                Generates formatted LaTeX <code className="text-rose-800 bg-rose-50 px-1 py-0.5 rounded">@article&#123;...&#125;</code> citations with 1-click clipboard copy and <code className="text-rose-800 bg-rose-50 px-1 py-0.5 rounded">.bib</code> download.
               </p>
             </div>
 
-            <div className="glass-card p-4 rounded-2xl border border-slate-800 space-y-1.5 hover:border-sky-500/30 transition-all">
-              <span className="font-bold text-sky-400 flex items-center gap-1.5 text-sm">
-                <Layers className="w-4 h-4" /> 7. Interactive Knowledge Topology Graph
+            <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] space-y-1.5 bg-white hover:border-[#D8D0C4] transition-all shadow-sm">
+              <span className="font-bold text-[#1E3A8A] flex items-center gap-1.5 text-sm">
+                <Layers className="w-4 h-4 text-[#1E3A8A]" /> 7. Interactive Knowledge Topology Graph
               </span>
-              <p className="text-slate-300 leading-relaxed font-sans">
+              <p className="text-[#5C554E] leading-relaxed font-sans">
                 Interactive SVG topology visualizer connecting papers, supported/uncertain claims, and candidate research gaps.
               </p>
             </div>
 
-            <div className="glass-card p-4 rounded-2xl border border-slate-800 space-y-1.5 hover:border-teal-500/30 transition-all">
-              <span className="font-bold text-teal-400 flex items-center gap-1.5 text-sm">
-                <Users className="w-4 h-4" /> 8. Collaborative Lab Workspaces
+            <div className="glass-card p-4 rounded-xl border border-[#E8E2D8] space-y-1.5 bg-white hover:border-[#D8D0C4] transition-all shadow-sm">
+              <span className="font-bold text-emerald-800 flex items-center gap-1.5 text-sm">
+                <Users className="w-4 h-4 text-emerald-700" /> 8. Collaborative Lab Workspaces
               </span>
-              <p className="text-slate-300 leading-relaxed font-sans">
+              <p className="text-[#5C554E] leading-relaxed font-sans">
                 Real-time inline peer annotations, claim tagging, and lab note collaboration across research team members.
               </p>
             </div>
@@ -273,26 +272,26 @@ Inspired by the landmark survey paper *"Deep Research: A Survey of Autonomous Re
         </div>
 
         {/* Lead Contributors & Export Actions */}
-        <div className="pt-5 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="pt-5 border-t border-[#E8E2D8] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#766E65]">
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-brand-400 shrink-0" />
+            <Users className="w-4 h-4 text-[#1E3A8A] shrink-0" />
             <span>
-              Lead Contributors: <strong className="text-slate-200">Shaik Fazullah</strong> (Admin), <strong className="text-slate-200">Potteti Pradeep</strong> (Reviewer), <strong className="text-slate-200">Puli Prabhas</strong> (Scholar)
+              Lead Contributors: <strong className="text-[#1E1C1A]">Shaik Fazullah</strong> (Admin), <strong className="text-[#1E1C1A]">Potteti Pradeep</strong> (Reviewer), <strong className="text-[#1E1C1A]">Puli Prabhas</strong> (Scholar)
             </span>
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleCopy}
-              className="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 font-bold text-slate-200 inline-flex items-center gap-1.5 transition-all"
+              className="px-4 py-2.5 rounded-xl bg-white border border-[#E8E2D8] hover:bg-[#F5F1EA] font-bold text-[#1E1C1A] inline-flex items-center gap-1.5 transition-all shadow-sm"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-brand-400" />}
+              {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-[#1E3A8A]" />}
               <span>{copied ? 'Copied Briefing' : 'Copy Briefing'}</span>
             </button>
 
             <button
               onClick={handleDownload}
-              className="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 font-bold text-white inline-flex items-center gap-1.5 transition-all shadow-md shadow-brand-500/10"
+              className="px-4 py-2.5 rounded-xl bg-[#1E3A8A] hover:bg-[#172E6F] font-bold text-white inline-flex items-center gap-1.5 transition-all shadow-sm"
             >
               <Download className="w-4 h-4" />
               <span>Download .md</span>

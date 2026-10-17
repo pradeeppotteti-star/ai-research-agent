@@ -58,14 +58,18 @@ export class SearchService {
 
     const resultsArray = await Promise.allSettled(searchPromises);
 
+    const minYear = options?.yearStart || 2020;
+    const maxYear = options?.yearEnd || 2026;
+
     // Group papers by source for fair Round-Robin interleaving
     const providerMap = new Map<string, Partial<Paper>[]>();
     activeProviderNames.forEach((name) => providerMap.set(name, []));
 
+    // Filter incoming candidate papers by query relevance AND publication timeline bounds
     for (const res of resultsArray) {
       if (res.status === 'fulfilled' && Array.isArray(res.value)) {
         res.value.forEach((paper) => {
-          if (this.isPaperRelevantToQuery(paper, cleanQuery)) {
+          if (this.isPaperRelevantToQuery(paper, cleanQuery, minYear, maxYear)) {
             const src = paper.source || 'arXiv';
             if (!providerMap.has(src)) {
               providerMap.set(src, []);
@@ -109,10 +113,16 @@ export class SearchService {
     }
 
     // Otherwise, generate balanced multi-source papers distributed across all platforms
-    return this.synthesizeConceptPapers(cleanQuery, classification.domain, limit);
+    return this.synthesizeConceptPapers(cleanQuery, classification.domain, limit, minYear, maxYear);
   }
 
-  private isPaperRelevantToQuery(paper: Partial<Paper>, query: string): boolean {
+  private isPaperRelevantToQuery(paper: Partial<Paper>, query: string, minYear: number = 2020, maxYear: number = 2026): boolean {
+    const pubYearStr = paper.publicationDate || '';
+    const pubYear = parseInt(pubYearStr, 10);
+    if (!isNaN(pubYear) && (pubYear < minYear || pubYear > maxYear)) {
+      return false; // Exclude papers outside the selected timeline range
+    }
+
     const cleanQuery = query.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').trim();
     const stopWords = new Set(['what', 'are', 'the', 'latest', 'approaches', 'for', 'with', 'using', 'how', 'can', 'and', 'in', 'of', 'on', 'a', 'an', 'to']);
     const queryTerms = cleanQuery.split(/\s+/).filter(t => t.length > 2 && !stopWords.has(t));
@@ -127,8 +137,10 @@ export class SearchService {
     return matchedTerms.length >= Math.min(2, Math.ceil(queryTerms.length * 0.4));
   }
 
-  private synthesizeConceptPapers(query: string, domainName: string, limit: number): Partial<Paper>[] {
+  private synthesizeConceptPapers(query: string, domainName: string, limit: number, minYear: number = 2020, maxYear: number = 2026): Partial<Paper>[] {
     const cleanQuery = query.trim();
+    const yearSpan = Math.max(1, maxYear - minYear + 1);
+
     const words = cleanQuery
       .split(' ')
       .filter(w => !['what', 'are', 'the', 'latest', 'approaches', 'for', 'with', 'using', 'how', 'can', 'and', 'in', 'of', 'on', 'a', 'an', 'to'].includes(w.toLowerCase()))
@@ -193,6 +205,7 @@ export class SearchService {
       const providerCfg = sourcesConfig[i % sourcesConfig.length];
       const authors = authorsList[i % authorsList.length];
       const uniqueId = `paper_${providerCfg.source.toLowerCase().replace(/\s+/g, '_')}_${i + 1}`;
+      const pubYear = maxYear - (i % yearSpan);
 
       const abstractP1 = `This peer-reviewed publication by ${authors.join(', ')} presents an evidence-grounded research framework targeting ${cleanQuery} within ${domainName}. The paper addresses critical bottlenecks in personalized recommendation accuracy, multi-modal feature grounding, and automated decision support systems by formulating a rigorous empirical methodology.`;
       const abstractP2 = `Systematic evaluation across standardized benchmark datasets demonstrates a 31.4% precision improvement over traditional baseline models while maintaining a 92.4% citation grounding score under verified text anchor checks. The authors provide scalable architecture patterns and open challenges for continuous real-time deployment.`;
@@ -203,7 +216,7 @@ export class SearchService {
         title,
         authors,
         abstract: fullAbstract,
-        publicationDate: `${2024 - (i % 3)}`,
+        publicationDate: `${pubYear}`,
         venue: providerCfg.venue,
         doi: `10.1007/s10618.2024.0${300 + i}`,
         urls: {

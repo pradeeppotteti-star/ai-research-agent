@@ -1,12 +1,30 @@
 import { Paper } from '@research-agent/shared';
 
 export class RankingService {
-  rankPapers(papers: Partial<Paper>[], query: string, targetCount: number = 10): Partial<Paper>[] {
-    if (!query || !query.trim()) {
+  rankPapers(
+    papers: Partial<Paper>[],
+    query: string,
+    targetCount: number = 10,
+    yearRange?: { start?: number; end?: number }
+  ): Partial<Paper>[] {
+    // 0. YEAR FILTER: Exclude any papers outside the selected timeline range
+    if (yearRange && (yearRange.start || yearRange.end)) {
+      const minYear = yearRange.start || 2020;
+      const maxYear = yearRange.end || 2026;
+      papers = papers.filter((paper) => {
+        const yr = parseInt(paper.publicationDate || '', 10);
+        if (isNaN(yr)) return true;
+        return yr >= minYear && yr <= maxYear;
+      });
+    }
+
+    const queryString = typeof query === 'string' ? query : typeof query === 'object' && query !== null ? JSON.stringify(query) : String(query || '');
+
+    if (!queryString || !queryString.trim()) {
       return papers.slice(0, targetCount);
     }
 
-    const cleanQuery = query.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').trim();
+    const cleanQuery = queryString.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').trim();
     const stopWords = new Set(['what', 'are', 'the', 'latest', 'approaches', 'for', 'with', 'using', 'how', 'can', 'and', 'in', 'of', 'on', 'a', 'an', 'to']);
     const queryTerms = cleanQuery.split(/\s+/).filter(t => t.length > 2 && !stopWords.has(t));
 

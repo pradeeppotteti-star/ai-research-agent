@@ -35,11 +35,29 @@ export const startResearch = async (req: AuthRequest, res: Response) => {
     const domain = req.body.domain || classification.domain;
     const keywords = req.body.keywords && req.body.keywords.length > 0 ? req.body.keywords : classification.keywords;
 
-    const sessionId = 'session_' + Math.random().toString(36).substring(2, 9);
+    const startYear = yearRange?.start ? parseInt(String(yearRange.start), 10) : 2020;
+    const endYear = yearRange?.end ? parseInt(String(yearRange.end), 10) : 2026;
 
-    // Retrieve/synthesize papers 100% matching cleanQuery concept
-    const rawPapers = await searchService.searchMultiProvider(cleanQuery, classification.decomposedQuestions, preferredSources, { limit: targetPaperCount || 10 });
-    const rankedPapers = rankingService.rankPapers(rawPapers, cleanQuery, targetPaperCount || 10) as Paper[];
+    // Retrieve/synthesize papers 100% matching cleanQuery concept within selected timeline range
+    const rawPapers = await searchService.searchMultiProvider(
+      cleanQuery,
+      classification.decomposedQuestions,
+      preferredSources,
+      {
+        limit: targetPaperCount || 10,
+        yearStart: startYear,
+        yearEnd: endYear,
+      }
+    );
+
+    const rankedPapers = rankingService.rankPapers(
+      rawPapers,
+      cleanQuery,
+      targetPaperCount || 10,
+      { start: startYear, end: endYear }
+    ) as Paper[];
+
+    const sessionId = 'session_' + Math.random().toString(36).substring(2, 9);
 
     const mockSession = {
       id: sessionId,

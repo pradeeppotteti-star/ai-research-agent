@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Paper } from '@research-agent/shared';
-import { Bookmark, ExternalLink, FileText, Check, Award, Lock, Unlock, Eye } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Bookmark, FileText, Award, Lock, Unlock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import { PaperPdfViewerModal } from './PaperPdfViewerModal';
 
@@ -61,41 +61,41 @@ export const PaperCard: React.FC<PaperCardProps> = ({
   return (
     <>
       <div
-        className={`glass-card p-5 rounded-xl border relative transition-all cursor-pointer ${
+        className={`glass-card p-5 rounded-xl border relative transition-all cursor-pointer bg-white ${
           isSelected
-            ? 'border-brand-500 bg-brand-500/10 shadow-lg shadow-brand-500/10'
-            : 'border-emerald-900/10 dark:border-slate-800 hover:border-emerald-500/30 dark:hover:border-emerald-500/30'
+            ? 'border-[#1E3A8A] bg-[#EEF2FF] shadow-sm'
+            : 'border-[#E8E2D8] hover:border-[#D8D0C4]'
         }`}
         onClick={handlePaperClick}
       >
         <div className="flex items-start justify-between gap-4 mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap mb-2">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF2FF] text-[#1E3A8A] border border-[#C7D2FE]">
                 {paper.source}
               </span>
-              <span className="text-xs text-slate-600 dark:text-slate-400 font-mono font-medium">{paper.publicationDate}</span>
+              <span className="text-xs text-[#766E65] font-mono font-medium">{paper.publicationDate}</span>
               {paper.openAccess ? (
-                <span className="inline-flex items-center gap-1 text-xs text-emerald-800 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 font-bold">
-                  <Unlock className="w-3 h-3 text-emerald-600 dark:text-emerald-400" /> Open Access
+                <span className="inline-flex items-center gap-1 text-xs text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">
+                  <Unlock className="w-3 h-3 text-emerald-600" /> Open Access
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 text-xs text-amber-800 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20 font-bold">
-                  <Lock className="w-3 h-3 text-amber-600 dark:text-amber-400" /> Metadata Only
+                <span className="inline-flex items-center gap-1 text-xs text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 font-bold">
+                  <Lock className="w-3 h-3 text-amber-600" /> Metadata Only
                 </span>
               )}
               {paper.relevanceScore && (
-                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  <Award className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Score: {Math.round(paper.relevanceScore * 100)}%
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <Award className="w-3.5 h-3.5 text-emerald-600" /> Score: {Math.round(paper.relevanceScore * 100)}%
                 </span>
               )}
             </div>
 
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors line-clamp-2">
+            <h3 className="text-base font-bold text-[#1E1C1A] hover:text-[#1E3A8A] transition-colors line-clamp-2">
               {paper.title}
             </h3>
 
-            <p className="text-xs text-brand-700 dark:text-brand-300 mt-1 font-bold">
+            <p className="text-xs text-[#766E65] mt-1 font-semibold">
               By {paper.authors ? paper.authors.slice(0, 3).join(', ') : 'Author'}
               {paper.authors && paper.authors.length > 3 ? ' et al.' : ''} • {paper.venue || 'Academic Journal'}
             </p>
@@ -110,7 +110,7 @@ export const PaperCard: React.FC<PaperCardProps> = ({
                   e.stopPropagation();
                   if (onSelect) onSelect(paperId);
                 }}
-                className="w-5 h-5 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-600 focus:ring-brand-500 cursor-pointer"
+                className="w-5 h-5 rounded border-[#E8E2D8] bg-white text-[#1E3A8A] focus:ring-[#1E3A8A] cursor-pointer"
               />
             )}
             <button
@@ -118,8 +118,8 @@ export const PaperCard: React.FC<PaperCardProps> = ({
               disabled={loading}
               className={`p-2 rounded-lg border transition-all ${
                 saved
-                  ? 'bg-brand-600 text-white border-brand-500'
-                  : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
+                  ? 'bg-[#1E3A8A] text-white border-[#1E3A8A]'
+                  : 'bg-[#F5F1EA] text-[#766E65] border-[#E8E2D8] hover:text-[#1E1C1A]'
               }`}
               title={saved ? 'Remove from Saved' : 'Save Paper'}
             >
@@ -128,22 +128,21 @@ export const PaperCard: React.FC<PaperCardProps> = ({
           </div>
         </div>
 
-        <p className="text-xs text-slate-800 dark:text-slate-200 line-clamp-3 leading-relaxed mb-4 font-sans">{paper.abstract}</p>
+        <p className="text-xs text-[#5C554E] line-clamp-3 leading-relaxed mb-4 font-sans">{paper.abstract}</p>
 
-        <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-800/80 text-xs">
-          <span className="font-bold text-brand-700 dark:text-brand-400 hover:text-brand-800 flex items-center gap-1">
+        <div className="flex items-center justify-between pt-3 border-t border-[#E8E2D8] text-xs">
+          <span className="font-bold text-[#1E3A8A] hover:text-[#172E6F] flex items-center gap-1">
             View Details & AI Summary →
           </span>
 
           <button
             onClick={handlePdfClick}
-            className="text-emerald-800 dark:text-emerald-400 hover:text-emerald-900 font-bold flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20"
+            className="text-[#1E1C1A] hover:text-[#1E3A8A] font-bold flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#F5F1EA] border border-[#E8E2D8] hover:bg-[#EBE5DC]"
           >
-            <FileText className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> PDF Reader
+            <FileText className="w-3.5 h-3.5 text-[#1E3A8A]" /> PDF Reader
           </button>
         </div>
       </div>
-
 
       {/* Official In-App Scientific PDF Document Reader Modal */}
       <PaperPdfViewerModal

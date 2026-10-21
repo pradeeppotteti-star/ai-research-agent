@@ -63,10 +63,10 @@ export const Navbar: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base tracking-tight text-[#1E1C1A] font-sans">
-                  AI Smart Research Agent
+                <span className="font-extrabold text-xs sm:text-sm md:text-base tracking-tight text-[#1E1C1A] font-sans">
+                  AI Powered Research Paper Analysis and Recommendation System
                 </span>
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#F5F1EA] text-[#766E65] border border-[#E8E2D8]">
+                <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#F5F1EA] text-[#766E65] border border-[#E8E2D8]">
                   v1.0
                 </span>
               </div>

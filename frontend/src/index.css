@@ -78,8 +78,45 @@
   background: #B8AEA0;
 }
 
+/* Publication Grade Print Styles */
+@media print {
+  header,
+  footer,
+  .no-print,
+  button,
+  nav {
+    display: none !important;
+  }
 
+  body {
+    background-color: #FFFFFF !important;
+    color: #1E1C1A !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 
+  .glass-panel {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
 
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
 
+  th, td {
+    border: 1px solid #D8D0C4 !important;
+    page-break-inside: avoid !important;
+  }
 
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+  }
+}

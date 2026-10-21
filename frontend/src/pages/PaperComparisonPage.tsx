@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { PaperComparisonItem } from '@research-agent/shared';
-import { ArrowLeft, Printer, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Printer, Copy, Check, Pencil, RotateCcw, Sparkles } from 'lucide-react';
 
 interface LiteratureSurveyRow {
   reference: string;
@@ -156,6 +156,8 @@ const DEFAULT_SURVEY_PAPERS: LiteratureSurveyRow[] = [
   },
 ];
 
+const DEFAULT_PROJECT_TITLE = 'AI POWERED RESEARCH PAPER ANALYSIS AND RECOMMENDATION SYSTEM';
+
 export const PaperComparisonPage: React.FC = () => {
   const location = useLocation();
   const state = location.state as { paperIds?: string[]; query?: string } | undefined;
@@ -163,6 +165,30 @@ export const PaperComparisonPage: React.FC = () => {
   const [comparison, setComparison] = useState<PaperComparisonItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [copied, setCopied] = useState(false);
+
+  // Editable Project Title state with localStorage persistence
+  const [projectTitle, setProjectTitle] = useState<string>(() => {
+    const saved = localStorage.getItem('survey_matrix_custom_title');
+    if (saved) return saved;
+    if (state?.query) return state.query;
+    return DEFAULT_PROJECT_TITLE;
+  });
+  const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
+  const [tempTitle, setTempTitle] = useState<string>(projectTitle);
+
+  const handleSaveTitle = () => {
+    const finalVal = tempTitle.trim() || DEFAULT_PROJECT_TITLE;
+    setProjectTitle(finalVal);
+    localStorage.setItem('survey_matrix_custom_title', finalVal);
+    setIsEditingTitle(false);
+  };
+
+  const handleResetTitle = () => {
+    setProjectTitle(DEFAULT_PROJECT_TITLE);
+    setTempTitle(DEFAULT_PROJECT_TITLE);
+    localStorage.removeItem('survey_matrix_custom_title');
+    setIsEditingTitle(false);
+  };
 
   useEffect(() => {
     const fetchComparison = async () => {
@@ -209,7 +235,7 @@ export const PaperComparisonPage: React.FC = () => {
   });
 
   const handleCopyTable = () => {
-    let tsv = 'Reference\tYear\tTitle\tContribution\tLimitation\n';
+    let tsv = `PROJECT TITLE: ${projectTitle}\nLITERATURE SURVEY MATRIX\n\nReference\tYear\tTitle\tContribution\tLimitation\n`;
     surveyRows.forEach((r) => {
       tsv += `${r.reference}\t${r.year}\t${r.title}\t${r.contribution}\t${r.limitation}\n`;
     });
@@ -219,7 +245,12 @@ export const PaperComparisonPage: React.FC = () => {
   };
 
   const handlePrint = () => {
+    const originalDocTitle = document.title;
+    document.title = `${projectTitle} - Literature Survey Matrix`;
     window.print();
+    setTimeout(() => {
+      document.title = originalDocTitle;
+    }, 1000);
   };
 
   if (loading) {
@@ -233,7 +264,7 @@ export const PaperComparisonPage: React.FC = () => {
   return (
     <div className="space-y-6 py-4 max-w-7xl mx-auto">
       {/* Action Toolbar */}
-      <div className="flex items-center justify-between gap-4 no-print">
+      <div className="flex flex-wrap items-center justify-between gap-4 no-print print:hidden">
         <Link
           to="/dashboard"
           className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white text-[#1E1C1A] border border-[#E8E2D8] hover:bg-[#F5F1EA] text-xs font-bold transition-all shadow-sm"
@@ -242,7 +273,20 @@ export const PaperComparisonPage: React.FC = () => {
           <span>Back to Dashboard</span>
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Quick Edit Title Button in Toolbar */}
+          <button
+            onClick={() => {
+              setTempTitle(projectTitle);
+              setIsEditingTitle((prev) => !prev);
+            }}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-[#E8E2D8] text-xs font-bold text-[#1E3A8A] hover:bg-[#EEF2FF] hover:border-[#C7D2FE] transition-all shadow-sm"
+            title="Edit project title for document and PDF export"
+          >
+            <Pencil className="w-3.5 h-3.5 text-[#1E3A8A]" />
+            <span>{isEditingTitle ? 'Close Title Editor' : 'Edit Project Title'}</span>
+          </button>
+
           <button
             onClick={handleCopyTable}
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-[#E8E2D8] text-xs font-bold text-[#1E1C1A] hover:bg-[#F5F1EA] transition-all shadow-sm"
@@ -265,9 +309,106 @@ export const PaperComparisonPage: React.FC = () => {
       <div className="glass-panel p-6 sm:p-10 rounded-xl border border-[#E8E2D8] shadow-sm bg-white text-[#1E1C1A] font-sans tracking-tight">
         {/* Header */}
         <div className="border-b border-[#E8E2D8] pb-4 mb-6">
-          <div className="text-xs font-mono font-bold text-[#766E65] uppercase tracking-wider mb-1">
-            Project Title: <span className="text-[#1E3A8A] font-extrabold">AI Smart Research Agent</span>
+          {/* Static Title for Print Media */}
+          <div className="hidden print:block text-xs font-mono font-bold text-[#766E65] uppercase tracking-wider mb-2">
+            Project Title: <span className="text-[#1E3A8A] font-extrabold">{projectTitle}</span>
           </div>
+
+          {/* Screen Title Display & Edit Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2 print:hidden">
+            <div className="flex flex-wrap items-baseline gap-2">
+              <span className="text-xs font-mono font-bold text-[#766E65] uppercase tracking-wider shrink-0">
+                Project Title:
+              </span>
+              <span className="text-sm sm:text-base font-extrabold text-[#1E3A8A] font-sans tracking-tight">
+                {projectTitle}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setTempTitle(projectTitle);
+                  setIsEditingTitle(!isEditingTitle);
+                }}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-[#F5F1EA] text-[#1E3A8A] border border-[#E8E2D8] hover:bg-[#EEF2FF] hover:border-[#C7D2FE] transition-all shadow-xs"
+                title="Change project title for PDF export and printing"
+              >
+                <Pencil className="w-3 h-3 text-[#1E3A8A]" />
+                <span>{isEditingTitle ? 'Close Editor' : 'Change Title'}</span>
+              </button>
+
+              {projectTitle !== DEFAULT_PROJECT_TITLE && (
+                <button
+                  type="button"
+                  onClick={handleResetTitle}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold text-[#766E65] hover:text-[#991B1B] hover:bg-red-50 border border-transparent hover:border-red-200 transition-colors"
+                  title="Reset title to default system title"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>Reset Default</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Interactive Title Editor Box when active */}
+          {isEditingTitle && (
+            <div className="mb-4 p-4 rounded-xl bg-[#F5F1EA] border border-[#C7D2FE] shadow-sm space-y-3 print:hidden">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold font-mono text-[#1E3A8A] uppercase tracking-wider flex items-center gap-1.5">
+                  <Pencil className="w-3.5 h-3.5" />
+                  Customize Title for PDF / Print Output
+                </span>
+                <span className="text-[11px] text-[#766E65]">Press Enter to Save • Esc to Cancel</span>
+              </div>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <input
+                  type="text"
+                  value={tempTitle}
+                  onChange={(e) => setTempTitle(e.target.value)}
+                  placeholder="Enter your custom project or thesis title..."
+                  className="flex-1 px-3.5 py-2 text-xs font-bold text-[#1E1C1A] bg-white border border-[#C7D2FE] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleSaveTitle();
+                    if (e.key === 'Escape') setIsEditingTitle(false);
+                  }}
+                />
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={handleSaveTitle}
+                    className="px-3.5 py-2 rounded-lg text-xs font-bold text-white bg-[#1E3A8A] hover:bg-[#172E6F] transition-all shadow-xs flex items-center gap-1.5"
+                  >
+                    <Check className="w-3.5 h-3.5" />
+                    <span>Apply Title</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingTitle(false)}
+                    className="px-3 py-2 rounded-lg text-xs font-semibold text-[#5C554E] bg-white border border-[#E8E2D8] hover:bg-[#EBE5DC] transition-all"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+              {state?.query && state.query !== projectTitle && (
+                <div className="pt-1 flex flex-wrap items-center gap-2">
+                  <span className="text-[11px] font-mono text-[#766E65]">Quick Suggestion:</span>
+                  <button
+                    type="button"
+                    onClick={() => setTempTitle(state.query!)}
+                    className="text-[11px] font-bold text-[#1E3A8A] hover:underline bg-white px-2 py-0.5 rounded border border-[#E8E2D8]"
+                  >
+                    Use Research Query: "{state.query}"
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
           <h1 className="text-3xl font-black text-[#1E1C1A] mt-1 tracking-tight">
             Literature Survey
           </h1>

@@ -26,7 +26,7 @@ export const LandingPage: React.FC = () => {
         </div>
 
         <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-[#1E1C1A] leading-tight mb-6">
-          AI Smart Research Agent
+          AI Powered Research Paper Analysis and Recommendation System
         </h1>
 
         <p className="text-lg sm:text-xl text-[#5C554E] max-w-2xl mx-auto leading-relaxed mb-8">

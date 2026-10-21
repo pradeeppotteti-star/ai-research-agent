@@ -1,4 +1,4 @@
-# AI SMART RESEARCH AGENT
+# AI POWERED RESEARCH PAPER ANALYSIS AND RECOMMENDATION SYSTEM
 
 A production-ready full-stack academic research application inspired by the limitations and future directions identified in the research survey: **"Deep Research: A Survey of Autonomous Research Agents"**.
 

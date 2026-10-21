@@ -68,7 +68,7 @@ export const DashboardPage: React.FC = () => {
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#EEF2FF] border border-[#E8E2D8] text-[#1E3A8A] text-xs font-bold font-mono">
               <Sparkles className="w-3.5 h-3.5 text-[#1E3A8A]" />
-              <span>AI Smart Research Agent Workstation</span>
+              <span>AI Powered Research Paper Analysis and Recommendation System Workstation</span>
             </span>
             {user?.role && (
               <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider bg-[#F5F1EA] text-[#5C554E] border border-[#E8E2D8] font-mono">

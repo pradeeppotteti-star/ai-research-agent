@@ -38,7 +38,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
     timestamp: new Date().toISOString(),
-    service: 'AI SMART RESEARCH AGENT API',
+    service: 'AI POWERED RESEARCH PAPER ANALYSIS AND RECOMMENDATION SYSTEM API',
     version: '1.0.0',
   });
 });
@@ -57,7 +57,7 @@ const PORT = parseInt(env.PORT, 10) || 5000;
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     console.log(`=======================================================`);
-    console.log(`[Research Agent Backend Server Active]`);
+    console.log(`[AI POWERED RESEARCH PAPER ANALYSIS AND RECOMMENDATION SYSTEM API Active]`);
     console.log(`Port: http://localhost:${PORT}`);
     console.log(`API Base: http://localhost:${PORT}/api`);
     console.log(`Health Check: http://localhost:${PORT}/api/health`);

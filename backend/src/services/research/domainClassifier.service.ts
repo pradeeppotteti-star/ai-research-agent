@@ -21,7 +21,73 @@ export class DomainClassifierService {
       };
     }
 
-    if (clean.includes('leaf') || clean.includes('crop') || clean.includes('plant') || clean.includes('tomato') || clean.includes('disease') || clean.includes('agriculture')) {
+    // Critical Care & Intensive Care Medicine (Sepsis, ICU, Dynamic Treatment Regimes, Emergency Care)
+    if (
+      clean.includes('sepsis') ||
+      clean.includes('icu') ||
+      clean.includes('intensive care') ||
+      clean.includes('critical care') ||
+      clean.includes('treatment regime') ||
+      clean.includes('vasopressor') ||
+      clean.includes('mimic')
+    ) {
+      return {
+        domain: 'Critical Care Medicine & Intensive Care Informatics (ICU AI)',
+        keywords: [
+          'Sepsis Management',
+          'Safe Offline Deep Reinforcement Learning',
+          'Dynamic Treatment Regimes (DTR)',
+          'Multimodal ICU Telemetry (MIMIC-IV)',
+          'Vasopressor & Fluid Dosing Optimization',
+          'Off-Policy Policy Evaluation'
+        ],
+        decomposedQuestions: [
+          `What safe offline reinforcement learning algorithms prevent policy distribution shift in sepsis management?`,
+          `How are multimodal physiological time-series from ICU databases (MIMIC-IV) modeled for dynamic treatment regimes?`,
+          `What clinical safety constraints and off-policy evaluation metrics evaluate RL-guided vasopressor and fluid dosing?`
+        ]
+      };
+    }
+
+    // Clinical & Biomedical Healthcare AI (e.g. Kidney, Cancer, Patient, Clinical Decision Support)
+    if (
+      clean.includes('kidney') ||
+      clean.includes('renal') ||
+      clean.includes('clinical') ||
+      clean.includes('patient') ||
+      clean.includes('hospital') ||
+      clean.includes('medical') ||
+      clean.includes('healthcare') ||
+      clean.includes('ehr') ||
+      clean.includes('ckd') ||
+      clean.includes('chronic disease')
+    ) {
+      return {
+        domain: 'Clinical Decision Support & Biomedical Health Informatics',
+        keywords: [
+          'Chronic Kidney Disease (CKD)',
+          'Federated Learning',
+          'Clinical Decision Support',
+          'Privacy-Preserving Machine Learning',
+          'Safe Reinforcement Learning',
+          'Disease Progression Prediction'
+        ],
+        decomposedQuestions: [
+          `What federated learning protocols preserve patient privacy in chronic kidney disease progression modeling?`,
+          `How does safe deep reinforcement learning optimize clinical treatment decision paths in CKD?`,
+          `What fairness and bias mitigation metrics evaluate hybrid ML-DL models on longitudinal clinical EHR datasets?`
+        ]
+      };
+    }
+
+    if (
+      clean.includes('leaf') ||
+      clean.includes('crop') ||
+      clean.includes('plant') ||
+      clean.includes('tomato') ||
+      clean.includes('agriculture') ||
+      (clean.includes('disease') && (clean.includes('leaf') || clean.includes('crop') || clean.includes('plant') || clean.includes('foliar')))
+    ) {
       return {
         domain: 'Bioinformatics & Agricultural Computer Vision',
         keywords: ['Crop Disease Detection', 'Vision Transformers', 'Plant Pathology', 'Leaf Diagnosis', 'Agricultural AI'],

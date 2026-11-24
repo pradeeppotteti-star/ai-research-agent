@@ -28,10 +28,10 @@ export const DashboardPage: React.FC = () => {
     totalSavedPapers: number;
     totalVerifiedClaims: number;
   }>({
-    totalSessions: 5,
-    completedSessions: 5,
-    totalSavedPapers: 4,
-    totalVerifiedClaims: 12,
+    totalSessions: 0,
+    completedSessions: 0,
+    totalSavedPapers: 0,
+    totalVerifiedClaims: 0,
   });
   const [loading, setLoading] = useState<boolean>(true);
 

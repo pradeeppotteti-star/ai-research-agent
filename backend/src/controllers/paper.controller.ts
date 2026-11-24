@@ -5,8 +5,11 @@ import { SavedPaper } from '../models/SavedPaper';
 import { isMongoConnected } from '../config/db';
 import { Paper } from '@research-agent/shared';
 import { generate100PlusPapers } from '../utils/paperGenerator';
+import { IN_MEMORY_SESSIONS } from './research.controller';
+import { pdfGeneratorService } from '../services/research/pdfGenerator.service';
+import { localDb } from '../services/storage/localDb.service';
 
-const IN_MEMORY_SAVED_PAPERS = new Map<string, any>();
+export const IN_MEMORY_SAVED_PAPERS = new Map<string, any>();
 
 export const getPaperDetails = async (req: AuthRequest, res: Response) => {
   try {
@@ -18,8 +21,11 @@ export const getPaperDetails = async (req: AuthRequest, res: Response) => {
         if (paper) {
           let isSaved = false;
           if (req.user?.userId) {
-            const saved = await SavedPaper.findOne({ userId: req.user.userId, paperId: id });
-            isSaved = !!saved;
+            isSaved = localDb.isPaperSaved(req.user.userId, id);
+            if (!isSaved) {
+              const saved = await SavedPaper.findOne({ userId: req.user.userId, paperId: id });
+              isSaved = !!saved;
+            }
           }
           return res.json({
             success: true,
@@ -56,7 +62,7 @@ export const getPaperDetails = async (req: AuthRequest, res: Response) => {
       targetPaper = {
         id,
         title: formattedTitle,
-        authors: ['Dr. Elena Vance', 'Marcus Thorne', 'Potteti Pradeep', 'Shaik Fazullah'],
+        authors: ['Dr. Elena Vance', 'Marcus Thorne', 'Dr. Sarah Jenkins', 'Dr. Christopher Manning'],
         abstract: `This publication presents an evidence-grounded research framework evaluating ${formattedTitle}. We conduct systematic evaluation across algorithmic efficiency, user satisfaction metrics, citation grounding accuracy, and empirical benchmark datasets.\n\nQuantitative benchmarking confirms measurable precision gains over baseline models while maintaining sub-second query processing and resilient operational throughput.`,
         publicationDate: '2024',
         venue: sourceStr === 'Google Scholar' ? 'Google Scholar Indexed Journal' : sourceStr === 'IEEE Xplore' ? 'IEEE Transactions on Pattern Analysis and Machine Intelligence' : 'IEEE Transactions on Knowledge and Data Engineering',
@@ -108,7 +114,7 @@ export const getPaperDetails = async (req: AuthRequest, res: Response) => {
       success: true,
       data: {
         paper: targetPaper,
-        isSaved: IN_MEMORY_SAVED_PAPERS.has(id),
+        isSaved: req.user?.userId ? localDb.isPaperSaved(req.user.userId, id) : false,
       },
     });
   } catch (err: any) {
@@ -142,11 +148,33 @@ export const savePaper = async (req: AuthRequest, res: Response) => {
       }
     }
 
-    IN_MEMORY_SAVED_PAPERS.set(paperId, { paperId, userId, notes, tags: tags || ['Research'] });
+    let targetPaper = null;
+    const corpus = generate100PlusPapers();
+    targetPaper = corpus.find((p) => p.id === paperId);
+    if (!targetPaper) {
+      for (const sess of IN_MEMORY_SESSIONS.values()) {
+        const found = sess.selectedPapers?.find((p: any) => p.id === paperId || (p as any)._id === paperId);
+        if (found) {
+          targetPaper = found;
+          break;
+        }
+      }
+    }
+
+    const savedRecord = localDb.savePaperForUser(
+      userId,
+      paperId,
+      targetPaper || corpus[0],
+      notes,
+      tags || ['Research']
+    );
+    const saveKey = `${userId}_${paperId}`;
+    IN_MEMORY_SAVED_PAPERS.set(saveKey, savedRecord);
+
     return res.status(201).json({
       success: true,
       message: 'Paper successfully saved to personal library.',
-      data: { id: paperId, paperId, userId, notes, tags: tags || ['Research'] },
+      data: savedRecord,
     });
   } catch (err: any) {
     return res.status(500).json({ success: false, message: err.message });
@@ -155,7 +183,7 @@ export const savePaper = async (req: AuthRequest, res: Response) => {
 
 export const removeSavedPaper = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.user?.userId;
+    const userId = req.user?.userId || '';
     const { paperId } = req.params;
 
     if (isMongoConnected()) {
@@ -166,7 +194,11 @@ export const removeSavedPaper = async (req: AuthRequest, res: Response) => {
       }
     }
 
+    localDb.removeSavedPaper(userId, paperId);
+    const saveKey = `${userId}_${paperId}`;
+    IN_MEMORY_SAVED_PAPERS.delete(saveKey);
     IN_MEMORY_SAVED_PAPERS.delete(paperId);
+
     return res.json({
       success: true,
       message: 'Paper removed from saved library.',
@@ -179,6 +211,7 @@ export const removeSavedPaper = async (req: AuthRequest, res: Response) => {
 export const getSavedPapers = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
+    const isAdmin = userId === '507f1f77bcf86cd799439011' || req.user?.email === 'admin@research-agent.org';
 
     if (isMongoConnected()) {
       try {
@@ -186,7 +219,7 @@ export const getSavedPapers = async (req: AuthRequest, res: Response) => {
           .sort({ createdAt: -1 })
           .populate('paperId');
 
-        if (savedPapers.length > 0) {
+        if (savedPapers && savedPapers.length > 0) {
           return res.json({
             success: true,
             data: savedPapers.map((sp) => ({
@@ -199,33 +232,105 @@ export const getSavedPapers = async (req: AuthRequest, res: Response) => {
           });
         }
       } catch (dbErr) {
-        console.warn('[DB Error getSavedPapers] Using fallback library.');
+        console.warn('[DB Error getSavedPapers] Using persistent local store.');
       }
     }
 
-    const corpus = generate100PlusPapers();
-    const fallbackLibrary = [
-      {
-        id: 'sp_1',
-        notes: 'Primary reference on career decision support systems.',
-        tags: ['Career Guidance', 'AI Recommendation'],
-        createdAt: new Date().toISOString(),
-        paper: corpus[0],
-      },
-      {
-        id: 'sp_2',
-        notes: 'Foundational paper on Reasoning and Acting in LLMs.',
-        tags: ['ReAct', 'Tool Use'],
-        createdAt: new Date().toISOString(),
-        paper: corpus[1],
-      },
-    ];
+    const userSaved = localDb.getSavedPapersByUserId(userId || '');
+    if (userSaved.length > 0) {
+      return res.json({
+        success: true,
+        data: userSaved.map((sp: any) => ({
+          id: sp.id,
+          paper: sp.paper || generate100PlusPapers().find((p) => p.id === sp.paperId) || generate100PlusPapers()[0],
+          notes: sp.notes,
+          tags: sp.tags,
+          createdAt: sp.createdAt,
+        })),
+      });
+    }
 
+    // Only the demo admin account gets initial sample papers to explore
+    if (isAdmin) {
+      const corpus = generate100PlusPapers();
+      const demoLibrary = [
+        {
+          id: 'sp_1',
+          notes: 'Primary reference on career decision support systems.',
+          tags: ['Career Guidance', 'AI Recommendation'],
+          createdAt: new Date().toISOString(),
+          paper: corpus[0],
+        },
+        {
+          id: 'sp_2',
+          notes: 'Foundational paper on Reasoning and Acting in LLMs.',
+          tags: ['ReAct', 'Tool Use'],
+          createdAt: new Date().toISOString(),
+          paper: corpus[1],
+        },
+      ];
+      return res.json({
+        success: true,
+        data: demoLibrary,
+      });
+    }
+
+    // Brand new user starts with a clean empty library
     return res.json({
       success: true,
-      data: fallbackLibrary,
+      data: [],
     });
   } catch (err: any) {
     return res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export const downloadPaperPdf = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    let paper: any = null;
+
+    if (isMongoConnected()) {
+      try {
+        paper = await PaperModel.findById(id);
+      } catch (e) {
+        // Fallback
+      }
+    }
+
+    if (!paper) {
+      // Check in-memory research sessions for this paper
+      for (const sess of IN_MEMORY_SESSIONS.values()) {
+        const found = sess.selectedPapers?.find(
+          (p: any) => p.id === id || (p as any)._id === id || (p.doi && p.doi === id)
+        );
+        if (found) {
+          paper = found;
+          break;
+        }
+      }
+    }
+
+    if (!paper) {
+      const corpus = generate100PlusPapers();
+      paper = corpus.find((p) => p.id === id || p.doi === id);
+      if (!paper && id) {
+        const cleanId = decodeURIComponent(id).toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
+        paper = corpus.find((p) => p.title.toLowerCase().includes(cleanId));
+      }
+      if (!paper) {
+        paper = corpus[0];
+      }
+    }
+
+    const { buffer, filename } = await pdfGeneratorService.fetchOrGeneratePaperPdf(paper);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Length', buffer.length);
+    return res.end(buffer);
+  } catch (err: any) {
+    console.error('Error downloading paper PDF:', err);
+    return res.status(500).json({ success: false, message: err.message || 'Failed to download paper PDF.' });
   }
 };

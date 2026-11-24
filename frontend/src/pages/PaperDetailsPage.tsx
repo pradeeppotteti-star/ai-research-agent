@@ -231,7 +231,13 @@ Proposes a multi-stage machine learning pipeline combining user profiling, secti
       {/* Back Button */}
       <div>
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            if (window.history.length > 1) {
+              navigate(-1);
+            } else {
+              navigate('/dashboard');
+            }
+          }}
           className="text-xs font-semibold text-[#1E1C1A] hover:text-[#1E3A8A] px-3 py-1.5 rounded-xl bg-white border border-[#E8E2D8] hover:bg-[#F5F1EA] inline-flex items-center gap-1.5 transition-all shadow-sm"
         >
           <ArrowLeft className="w-4 h-4 text-[#1E3A8A]" /> Back to Research Results

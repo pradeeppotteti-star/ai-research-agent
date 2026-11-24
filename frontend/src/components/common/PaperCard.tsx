@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Paper } from '@research-agent/shared';
-import { Bookmark, FileText, Award, Lock, Unlock } from 'lucide-react';
+import { Bookmark, FileText, Award, Lock, Unlock, ExternalLink, CheckCircle, Download, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import { PaperPdfViewerModal } from './PaperPdfViewerModal';
@@ -12,6 +12,8 @@ interface PaperCardProps {
   selectable?: boolean;
   isSelected?: boolean;
   onSelect?: (paperId: string) => void;
+  onOpen?: (paper: Paper) => void;
+  isActive?: boolean;
 }
 
 export const PaperCard: React.FC<PaperCardProps> = ({
@@ -21,16 +23,52 @@ export const PaperCard: React.FC<PaperCardProps> = ({
   selectable = false,
   isSelected = false,
   onSelect,
+  onOpen,
+  isActive = false,
 }) => {
   const navigate = useNavigate();
   const [saved, setSaved] = useState<boolean>(isSaved);
   const [loading, setLoading] = useState<boolean>(false);
+  const [downloadingPdf, setDownloadingPdf] = useState<boolean>(false);
   const [showPdfModal, setShowPdfModal] = useState<boolean>(false);
 
   const paperId = paper.id || (paper as any)._id || `paper_${(paper.title || 'detail').toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 35)}`;
 
+  const handleDirectDownloadPdf = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      setDownloadingPdf(true);
+      const res = await api.get(`/papers/${encodeURIComponent(paperId)}/download-pdf`, {
+        responseType: 'blob',
+      });
+      const blob = new Blob([res.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const cleanTitle = (paper.title || 'Paper')
+        .replace(/[^a-zA-Z0-9\s]/g, ' ')
+        .trim()
+        .slice(0, 35)
+        .replace(/\s+/g, '_');
+      link.download = `${cleanTitle}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error downloading paper PDF:', err);
+      alert('Failed to download paper PDF directly.');
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
   const handlePaperClick = () => {
-    navigate(`/papers/${encodeURIComponent(paperId)}`, { state: { paper } });
+    if (onOpen) {
+      onOpen(paper);
+    } else {
+      navigate(`/papers/${encodeURIComponent(paperId)}`, { state: { paper } });
+    }
   };
 
   const handlePdfClick = (e: React.MouseEvent) => {
@@ -62,7 +100,9 @@ export const PaperCard: React.FC<PaperCardProps> = ({
     <>
       <div
         className={`glass-card p-5 rounded-xl border relative transition-all cursor-pointer bg-white ${
-          isSelected
+          isActive
+            ? 'border-2 border-[#1E3A8A] bg-[#EEF2FF]/70 shadow-md ring-2 ring-[#1E3A8A]/20'
+            : isSelected
             ? 'border-[#1E3A8A] bg-[#EEF2FF] shadow-sm'
             : 'border-[#E8E2D8] hover:border-[#D8D0C4]'
         }`}
@@ -71,6 +111,11 @@ export const PaperCard: React.FC<PaperCardProps> = ({
         <div className="flex items-start justify-between gap-4 mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap mb-2">
+              {isActive && (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#1E3A8A] text-white flex items-center gap-1 shadow-sm">
+                  <CheckCircle className="w-3 h-3 text-emerald-400" /> Reading Now
+                </span>
+              )}
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EEF2FF] text-[#1E3A8A] border border-[#C7D2FE]">
                 {paper.source}
               </span>
@@ -132,15 +177,48 @@ export const PaperCard: React.FC<PaperCardProps> = ({
 
         <div className="flex items-center justify-between pt-3 border-t border-[#E8E2D8] text-xs">
           <span className="font-bold text-[#1E3A8A] hover:text-[#172E6F] flex items-center gap-1">
-            View Details & AI Summary →
+            {isActive ? 'Currently Opened Beside ←' : 'Open in Side Panel →'}
           </span>
 
-          <button
-            onClick={handlePdfClick}
-            className="text-[#1E1C1A] hover:text-[#1E3A8A] font-bold flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#F5F1EA] border border-[#E8E2D8] hover:bg-[#EBE5DC]"
-          >
-            <FileText className="w-3.5 h-3.5 text-[#1E3A8A]" /> PDF Reader
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href={`/papers/${encodeURIComponent(paperId)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              title="Open in a separate browser tab"
+              className="p-1.5 rounded-lg text-[#766E65] hover:text-[#1E3A8A] hover:bg-[#F5F1EA] border border-transparent hover:border-[#E8E2D8] transition-all flex items-center gap-1 text-[11px]"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">New Tab</span>
+            </a>
+
+            <button
+              onClick={handleDirectDownloadPdf}
+              disabled={downloadingPdf}
+              title="Download this paper's PDF directly from this website"
+              className="text-emerald-800 hover:text-white hover:bg-emerald-700 font-bold flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-200 transition-all text-xs disabled:opacity-60"
+            >
+              {downloadingPdf ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-800" />
+                  <span>PDF...</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Download PDF</span>
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={handlePdfClick}
+              className="text-[#1E1C1A] hover:text-[#1E3A8A] font-bold flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#F5F1EA] border border-[#E8E2D8] hover:bg-[#EBE5DC]"
+            >
+              <FileText className="w-3.5 h-3.5 text-[#1E3A8A]" /> PDF Reader
+            </button>
+          </div>
         </div>
       </div>
 

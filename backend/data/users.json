@@ -1,0 +1,100 @@
+[
+  {
+    "id": "507f1f77bcf86cd799439011",
+    "_id": "507f1f77bcf86cd799439011",
+    "name": "Shaik Fazullah",
+    "email": "admin@research-agent.org",
+    "passwordHash": "$2a$10$OSmaTzkrB03Y0PgeCqhCBeRjzIusqTARXYpaq4x3ql4GoK50F3duq",
+    "role": "Lead Researcher (Admin)",
+    "institution": "Institute for Autonomous AI Research",
+    "preferences": {
+      "researchInterests": [
+        "Autonomous Research Agents",
+        "Multi-Agent Frameworks",
+        "Citation Verification"
+      ],
+      "preferredDomains": [
+        "Computer Science",
+        "Artificial Intelligence"
+      ],
+      "preferredYearRange": {
+        "start": 2020,
+        "end": 2026
+      },
+      "defaultPaperCount": 5,
+      "preferredSources": [
+        "arXiv",
+        "Semantic Scholar",
+        "OpenAlex",
+        "Crossref",
+        "Google Scholar",
+        "IEEE Xplore"
+      ]
+    },
+    "createdAt": "2026-11-24T17:06:03.256Z"
+  },
+  {
+    "id": "507f1f77bcf86cd799439012",
+    "_id": "507f1f77bcf86cd799439012",
+    "name": "Potteti Pradeep",
+    "email": "tester@academic.org",
+    "passwordHash": "$2a$10$/pUNHRrMBCZ1AeeXVH/WquBZ3Qfq2euv0nmT97ES5/TqswidC7v6W",
+    "role": "Peer Reviewer (Tester)",
+    "institution": "Academic AI Research Lab",
+    "preferences": {
+      "researchInterests": [
+        "LLM Factuality Benchmarks",
+        "Multimodal PDF Parsing",
+        "Gap Detection"
+      ],
+      "preferredDomains": [
+        "Computer Science",
+        "Artificial Intelligence"
+      ],
+      "preferredYearRange": {
+        "start": 2020,
+        "end": 2026
+      },
+      "defaultPaperCount": 5,
+      "preferredSources": [
+        "arXiv",
+        "Semantic Scholar",
+        "OpenAlex",
+        "Crossref"
+      ]
+    },
+    "createdAt": "2026-11-24T17:06:03.257Z"
+  },
+  {
+    "id": "507f1f77bcf86cd799439013",
+    "_id": "507f1f77bcf86cd799439013",
+    "name": "Puli Prabhas",
+    "email": "student@university.edu",
+    "passwordHash": "$2a$10$BgQMK0rCucKT8YWVz7Lb0unsJmHvJlTAktwCBObE3.ti9T8SB9uum",
+    "role": "Research Scholar",
+    "institution": "Data Science Research Lab",
+    "preferences": {
+      "researchInterests": [
+        "Literature Surveys",
+        "arXiv Mining",
+        "Crossref DOI Indexing"
+      ],
+      "preferredDomains": [
+        "Computer Science",
+        "Artificial Intelligence"
+      ],
+      "preferredYearRange": {
+        "start": 2020,
+        "end": 2026
+      },
+      "defaultPaperCount": 5,
+      "preferredSources": [
+        "arXiv",
+        "Semantic Scholar",
+        "OpenAlex",
+        "Crossref"
+      ]
+    },
+    "createdAt": "2026-11-24T17:06:03.257Z"
+  }
+]

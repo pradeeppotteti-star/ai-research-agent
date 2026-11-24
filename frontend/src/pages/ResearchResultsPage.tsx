@@ -11,6 +11,7 @@ import {
   TemporalTrendForecast,
 } from '@research-agent/shared';
 import { PaperCard } from '../components/common/PaperCard';
+import { PaperSidePanel } from '../components/common/PaperSidePanel';
 import { GapCard } from '../components/common/GapCard';
 import { KnowledgeGraph } from '../components/common/KnowledgeGraph';
 import { PeerReviewPanelCard } from '../components/common/PeerReviewPanelCard';
@@ -18,6 +19,7 @@ import { TrendForecastCard } from '../components/common/TrendForecastCard';
 import { LabWorkspaceCard } from '../components/common/LabWorkspaceCard';
 import { ResearchLoadingVisualizer } from '../components/common/ResearchLoadingVisualizer';
 import { generateMultiBibTeX, downloadBibTeXFile } from '../utils/bibtex';
+import { downloadAllPapersDocument, downloadAllPapersCSV, downloadAllPapersJSON } from '../utils/paperExport';
 import {
   FileCheck2,
   GitCompare,
@@ -31,6 +33,8 @@ import {
   Award,
   TrendingUp,
   Users,
+  Archive,
+  Loader2,
 } from 'lucide-react';
 
 export const ResearchResultsPage: React.FC = () => {
@@ -45,17 +49,47 @@ export const ResearchResultsPage: React.FC = () => {
   const [peerReview, setPeerReview] = useState<PeerReviewPanel | null>(null);
   const [trendForecast, setTrendForecast] = useState<TemporalTrendForecast | null>(null);
   const [selectedPaperIds, setSelectedPaperIds] = useState<string[]>([]);
+  const [openedPaper, setOpenedPaper] = useState<Paper | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<
     'papers' | 'graph' | 'consensus' | 'review' | 'trends' | 'lab' | 'gaps'
   >('papers');
   const [bibtexCopied, setBibtexCopied] = useState<boolean>(false);
+  const [downloadingZip, setDownloadingZip] = useState<boolean>(false);
 
   useEffect(() => {
+    // Instant cache retrieval from sessionStorage to eliminate reload delays
+    if (id) {
+      try {
+        const cachedRaw = sessionStorage.getItem(`research_session_${id}`);
+        if (cachedRaw) {
+          const cached = JSON.parse(cachedRaw);
+          if (cached && cached.session && cached.papers) {
+            setSession(cached.session);
+            const loaded = cached.papers || [];
+            setPapers(loaded);
+            setReport(cached.report || null);
+            setGaps(cached.researchGaps || []);
+            setSelectedPaperIds(loaded.map((p: Paper) => p.id));
+            setLoading(false);
+          }
+        }
+      } catch (cacheErr) {
+        console.warn('Cache parse error:', cacheErr);
+      }
+    }
+
     const fetchDetails = async () => {
       try {
         const res = await api.get(`/research/${id}`);
         if (res.data.success) {
+          // Store in sessionStorage for instant subsequent loads
+          try {
+            sessionStorage.setItem(`research_session_${id}`, JSON.stringify(res.data.data));
+          } catch (storageErr) {
+            // Storage quota warning - ignore gracefully
+          }
+
           setSession(res.data.data.session);
           const loadedPapers = res.data.data.papers || [];
           setPapers(loadedPapers);
@@ -187,6 +221,36 @@ export const ResearchResultsPage: React.FC = () => {
     downloadBibTeXFile(`research_references_${id}.bib`, bibStr);
   };
 
+  const handleDownloadAllZip = async () => {
+    try {
+      setDownloadingZip(true);
+      const res = await api.get(`/research/${id}/export-zip`, {
+        responseType: 'blob',
+        params: { query: session?.query },
+        timeout: 180000, // 3 minutes timeout for generating all 25 publication PDFs
+      });
+      const blob = new Blob([res.data], { type: 'application/zip' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const cleanName = (session?.query || 'Research_Papers')
+        .replace(/[^a-zA-Z0-9\s]/g, ' ')
+        .trim()
+        .slice(0, 30)
+        .replace(/\s+/g, '_');
+      link.download = `Research_Papers_${cleanName}_${papers.length}_PDFs.zip`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error downloading research papers ZIP:', err);
+      alert('Failed to download research papers ZIP archive.');
+    } finally {
+      setDownloadingZip(false);
+    }
+  };
+
   if (loading) {
     return <ResearchLoadingVisualizer query={session?.query || 'Research Topic Search'} />;
   }
@@ -222,6 +286,25 @@ export const ResearchResultsPage: React.FC = () => {
           )}
 
           <button
+            onClick={handleDownloadAllZip}
+            disabled={downloadingZip || papers.length === 0}
+            className="px-6 py-3 rounded-xl font-bold text-white bg-[#1E3A8A] hover:bg-[#172E6F] shadow-sm inline-flex items-center gap-2 border border-[#1E3A8A] text-sm transition-all disabled:opacity-60"
+            title="Download all research paper PDFs packaged inside a single ZIP file directly from this website"
+          >
+            {downloadingZip ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin text-white" />
+                <span>Packaging {papers.length} PDFs...</span>
+              </>
+            ) : (
+              <>
+                <Archive className="w-4 h-4 text-white" />
+                <span>Download All {papers.length} PDFs (.ZIP)</span>
+              </>
+            )}
+          </button>
+
+          <button
             onClick={handleCompareClick}
             disabled={selectedPaperIds.length < 2}
             className="px-4 py-3 rounded-xl font-semibold text-[#1E1C1A] bg-white border border-[#E8E2D8] hover:bg-[#F5F1EA] disabled:opacity-50 inline-flex items-center gap-2 text-xs shadow-sm"
@@ -236,6 +319,24 @@ export const ResearchResultsPage: React.FC = () => {
           >
             {bibtexCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-[#1E3A8A]" />}
             <span>{bibtexCopied ? 'Copied BibTeX' : 'Copy BibTeX'}</span>
+          </button>
+
+          <button
+            onClick={() => downloadAllPapersDocument(papers, session?.query || 'Research_Papers')}
+            className="px-5 py-3 rounded-xl font-bold text-white bg-emerald-700 hover:bg-emerald-800 shadow-sm inline-flex items-center gap-2 text-xs transition-all"
+            title="Download formatted compendium document with all papers, abstracts, and sections (.doc)"
+          >
+            <Download className="w-4 h-4 text-white" />
+            <span>Download All {papers.length} Papers (.DOC)</span>
+          </button>
+
+          <button
+            onClick={() => downloadAllPapersCSV(papers, session?.query || 'Research_Papers')}
+            className="px-4 py-3 rounded-xl font-semibold text-[#1E1C1A] bg-white border border-[#E8E2D8] hover:bg-[#F5F1EA] inline-flex items-center gap-2 text-xs shadow-sm transition-all"
+            title="Export all papers metadata as an Excel / CSV spreadsheet"
+          >
+            <Download className="w-4 h-4 text-emerald-600" />
+            <span>Export Spreadsheet (.CSV)</span>
           </button>
 
           <button
@@ -338,22 +439,71 @@ export const ResearchResultsPage: React.FC = () => {
       {/* Tab 1: Selected Papers */}
       {activeTab === 'papers' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs text-[#766E65]">
-            <span>Select papers using checkboxes to launch comparative matrix</span>
-            <span>Checkboxes selected: {selectedPaperIds.length}</span>
+          <div className="flex items-center justify-between text-xs text-[#766E65] flex-wrap gap-2">
+            <span>
+              {openedPaper
+                ? 'Split-View Active: Reading paper beside the full papers list. Click any paper to switch.'
+                : 'Click any paper to open details side-by-side, or use checkboxes for comparison matrix.'}
+            </span>
+            <div className="flex items-center gap-4">
+              <span>Selected for comparison: {selectedPaperIds.length}</span>
+              {openedPaper && (
+                <button
+                  onClick={() => setOpenedPaper(null)}
+                  className="font-bold text-[#1E3A8A] hover:underline"
+                >
+                  ✕ Close Side Panel
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {papers.map((p) => (
-              <PaperCard
-                key={p.id}
-                paper={p}
-                selectable={true}
-                isSelected={selectedPaperIds.includes(p.id)}
-                onSelect={togglePaperSelection}
-              />
-            ))}
-          </div>
+          {openedPaper ? (
+            /* Split View: All Papers on the Left + Active Paper Side Panel on the Right */
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* Left Column: All 25 Papers List */}
+              <div className="lg:col-span-5 space-y-4 max-h-[calc(100vh-160px)] overflow-y-auto pr-2 custom-scrollbar">
+                <div className="sticky top-0 bg-[#FBF9F5] z-10 py-2 border-b border-[#E8E2D8] mb-1 flex items-center justify-between text-xs">
+                  <span className="font-bold text-[#1E1C1A]">All {papers.length} Papers</span>
+                  <span className="text-[#766E65] text-[11px]">Click to view details</span>
+                </div>
+                {papers.map((p) => (
+                  <PaperCard
+                    key={p.id}
+                    paper={p}
+                    selectable={true}
+                    isSelected={selectedPaperIds.includes(p.id)}
+                    onSelect={togglePaperSelection}
+                    onOpen={(selected) => setOpenedPaper(selected)}
+                    isActive={openedPaper.id === p.id}
+                  />
+                ))}
+              </div>
+
+              {/* Right Column: Active Paper Reader Panel */}
+              <div className="lg:col-span-7">
+                <PaperSidePanel
+                  paper={openedPaper}
+                  onClose={() => setOpenedPaper(null)}
+                />
+              </div>
+            </div>
+          ) : (
+            /* Full Width View: All 25 Papers in 2-Column Grid */
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {papers.map((p) => (
+                <PaperCard
+                  key={p.id}
+                  paper={p}
+                  selectable={true}
+                  isSelected={selectedPaperIds.includes(p.id)}
+                  onSelect={togglePaperSelection}
+                  onOpen={(selected) => setOpenedPaper(selected)}
+                  isActive={false}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
 

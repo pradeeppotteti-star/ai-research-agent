@@ -1,0 +1,1875 @@
+[
+  {
+    "id": "session_career_01",
+    "_id": "session_career_01",
+    "userId": "507f1f77bcf86cd799439011",
+    "query": "Design and implementation of an intelligent career guidance system using machine learning",
+    "domain": "Interdisciplinary General Science & Educational Technology",
+    "keywords": [
+      "Machine Learning",
+      "Career Guidance",
+      "Intelligent Tutoring",
+      "Decision Support"
+    ],
+    "targetPaperCount": 10,
+    "yearRange": {
+      "start": 2020,
+      "end": 2026
+    },
+    "preferredSources": [
+      "arXiv",
+      "Semantic Scholar"
+    ],
+    "status": "completed",
+    "currentStage": "completed",
+    "stageProgressPercent": 100,
+    "selectedPapers": [
+      {
+        "id": "paper-1",
+        "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+        "authors": [
+          "Shunyu Yao",
+          "Jeffrey Zhao",
+          "Dian Yu",
+          "Nan Du",
+          "Izhak Shafran",
+          "Karthik Narasimhan",
+          "Yuan Cao"
+        ],
+        "abstract": "While large language models (LLMs) have shown impressive performance across reasoning and decision making tasks, their ability to synergize reasoning and acting remains underexplored. We propose ReAct, a general framework to combine reasoning traces and task-specific actions.\n\nThis landmark research by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, Yuan Cao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ICLR 2023",
+        "doi": "10.48550/arXiv.2210.03629",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2210.03629",
+          "publisher": "https://arxiv.org/abs/2210.03629",
+          "pdf": "https://arxiv.org/pdf/2210.03629.pdf"
+        },
+        "source": "arXiv",
+        "citationCount": 450,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "arXiv"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "While large language models (LLMs) have shown impressive performance across reasoning and decision making tasks, their ability to synergize reasoning and acting remains underexplored. We propose ReAct, a general framework to combine reasoning traces and task-specific actions.\n\nThis landmark research by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, Yuan Cao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of ReAct: Synergizing Reasoning and Acting in Language Models."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-2",
+        "title": "Reflexion: Language Agents with Verbal Reinforcement Learning",
+        "authors": [
+          "Noah Shinn",
+          "Federico Cassano",
+          "Edward Berman",
+          "Ashwin Gopinath",
+          "Karthik Narasimhan",
+          "Shunyu Yao"
+        ],
+        "abstract": "Language agents have shown promise in decision-making tasks, but struggle with self-correction. We present Reflexion, a novel framework that equips language agents with dynamic verbal reinforcement learning without updating neural weights.\n\nThis landmark research by Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, Shunyu Yao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "NeurIPS 2023",
+        "doi": "10.48550/arXiv.2303.11366",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2303.11366",
+          "publisher": "https://arxiv.org/abs/2303.11366",
+          "pdf": "https://arxiv.org/pdf/2303.11366.pdf"
+        },
+        "source": "Google Scholar",
+        "citationCount": 535,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "Google Scholar"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "Language agents have shown promise in decision-making tasks, but struggle with self-correction. We present Reflexion, a novel framework that equips language agents with dynamic verbal reinforcement learning without updating neural weights.\n\nThis landmark research by Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, Shunyu Yao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Reflexion: Language Agents with Verbal Reinforcement Learning."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-3",
+        "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+        "authors": [
+          "Joon Sung Park",
+          "Joseph C. O'Brien",
+          "Carrie J. Cai",
+          "Meredith Ringel Morris",
+          "Percy Liang",
+          "Michael S. Bernstein"
+        ],
+        "abstract": "We introduce Generative Agents: computational software agents that simulate believable human behavior. Generative agents draw on memory storage, reflection, and planning to form habits, execute social interactions, and adapt.\n\nThis landmark research by Joon Sung Park, Joseph C. O'Brien, Carrie J. Cai, Meredith Ringel Morris, Percy Liang, Michael S. Bernstein sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ACM UIST 2023",
+        "doi": "10.48550/arXiv.2304.03442",
+        "urls": {
+          "primary": "https://ieeexplore.ieee.org/document/980002",
+          "publisher": "https://ieeexplore.ieee.org/document/980002",
+          "pdf": "https://arxiv.org/pdf/2304.03442.pdf"
+        },
+        "source": "IEEE Xplore",
+        "citationCount": 620,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "IEEE Xplore"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "We introduce Generative Agents: computational software agents that simulate believable human behavior. Generative agents draw on memory storage, reflection, and planning to form habits, execute social interactions, and adapt.\n\nThis landmark research by Joon Sung Park, Joseph C. O'Brien, Carrie J. Cai, Meredith Ringel Morris, Percy Liang, Michael S. Bernstein sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Generative Agents: Interactive Simulacra of Human Behavior."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-4",
+        "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+        "authors": [
+          "Timo Schick",
+          "Jane Dwivedi-Yu",
+          "Roberto Dessì",
+          "Roberta Raileanu",
+          "Maria Lomeli",
+          "Luke Zettlemoyer",
+          "Thomas Scialom"
+        ],
+        "abstract": "Language models demonstrate remarkable abilities to solve new tasks from just a few examples. We introduce Toolformer, a model trained to decide which tools to call, when to call them, and how to pass parameters.\n\nThis landmark research by Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Thomas Scialom sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "NeurIPS 2023",
+        "doi": "10.48550/arXiv.2302.04761",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2302.04761",
+          "publisher": "https://arxiv.org/abs/2302.04761",
+          "pdf": "https://arxiv.org/pdf/2302.04761.pdf"
+        },
+        "source": "OpenAlex",
+        "citationCount": 705,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "OpenAlex"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "Language models demonstrate remarkable abilities to solve new tasks from just a few examples. We introduce Toolformer, a model trained to decide which tools to call, when to call them, and how to pass parameters.\n\nThis landmark research by Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Thomas Scialom sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Toolformer: Language Models Can Teach Themselves to Use Tools."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-5",
+        "title": "Tree of Thoughts: Deliberate Problem Solving with Large Language Models",
+        "authors": [
+          "Shunyu Yao",
+          "Dian Yu",
+          "Jeffrey Zhao",
+          "Izhak Shafran",
+          "Thomas L. Griffiths",
+          "Yuan Cao",
+          "Karthik Narasimhan"
+        ],
+        "abstract": "We introduce Tree of Thoughts (ToT), which generalizes over popular chain-of-thought prompting for language models. ToT enables deliberate problem solving by exploring multiple reasoning paths and self-evaluating choices.\n\nThis landmark research by Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L. Griffiths, Yuan Cao, Karthik Narasimhan sets an empirical benchmark in Factuality & Citation Grounding. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "NeurIPS 2023",
+        "doi": "10.48550/arXiv.2305.10601",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2305.10601",
+          "publisher": "https://arxiv.org/abs/2305.10601",
+          "pdf": "https://arxiv.org/pdf/2305.10601.pdf"
+        },
+        "source": "Crossref",
+        "citationCount": 790,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Factuality & Citation Grounding",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "Crossref"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "We introduce Tree of Thoughts (ToT), which generalizes over popular chain-of-thought prompting for language models. ToT enables deliberate problem solving by exploring multiple reasoning paths and self-evaluating choices.\n\nThis landmark research by Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L. Griffiths, Yuan Cao, Karthik Narasimhan sets an empirical benchmark in Factuality & Citation Grounding. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Factuality & Citation Grounding, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Factuality & Citation Grounding.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Factuality & Citation Grounding.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Tree of Thoughts: Deliberate Problem Solving with Large Language Models."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-6",
+        "title": "Nougat: Neural Optical Understanding for Academic PDF Parsing",
+        "authors": [
+          "Lukas Blecher",
+          "Guillaume Mialon",
+          "Thomas Scialom",
+          "Gaetan Loridant",
+          "Raphaël Thomas",
+          "Roman Pascal"
+        ],
+        "abstract": "As human knowledge is predominantly stored in books and scientific articles, PDF visual extraction is critical. We present Nougat (Neural Optical Understanding for Academic Documents), a Visual Transformer model that converts scientific PDFs to lightweight markup.\n\nThis landmark research by Lukas Blecher, Guillaume Mialon, Thomas Scialom, Gaetan Loridant, Raphaël Thomas, Roman Pascal sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ICLR 2024",
+        "doi": "10.48550/arXiv.2308.13418",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2308.13418",
+          "publisher": "https://arxiv.org/abs/2308.13418",
+          "pdf": "https://arxiv.org/pdf/2308.13418.pdf"
+        },
+        "source": "arXiv",
+        "citationCount": 875,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Multimodal Vision & Document OCR",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "arXiv"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "As human knowledge is predominantly stored in books and scientific articles, PDF visual extraction is critical. We present Nougat (Neural Optical Understanding for Academic Documents), a Visual Transformer model that converts scientific PDFs to lightweight markup.\n\nThis landmark research by Lukas Blecher, Guillaume Mialon, Thomas Scialom, Gaetan Loridant, Raphaël Thomas, Roman Pascal sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Multimodal Vision & Document OCR, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Multimodal Vision & Document OCR.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Multimodal Vision & Document OCR.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Nougat: Neural Optical Understanding for Academic PDF Parsing."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-7",
+        "title": "LayoutLMv3: Pre-training for Document AI with Unstructured PDF Text and Image Masking",
+        "authors": [
+          "Yupan Huang",
+          "Tengchao Lv",
+          "Lei Cui",
+          "Yutong Lu",
+          "Furu Wei"
+        ],
+        "abstract": "LayoutLMv3 is a multimodal transformer model that unifies text, layout, and image pre-training for visual document understanding, achieving state-of-the-art results on scientific chart and document table benchmarks.\n\nThis landmark research by Yupan Huang, Tengchao Lv, Lei Cui, Yutong Lu, Furu Wei sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2022",
+        "venue": "ACM MM 2022",
+        "doi": "10.48550/arXiv.2204.08387",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2204.08387",
+          "publisher": "https://arxiv.org/abs/2204.08387",
+          "pdf": "https://arxiv.org/pdf/2204.08387.pdf"
+        },
+        "source": "Google Scholar",
+        "citationCount": 960,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Multimodal Vision & Document OCR",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "Google Scholar"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "LayoutLMv3 is a multimodal transformer model that unifies text, layout, and image pre-training for visual document understanding, achieving state-of-the-art results on scientific chart and document table benchmarks.\n\nThis landmark research by Yupan Huang, Tengchao Lv, Lei Cui, Yutong Lu, Furu Wei sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Multimodal Vision & Document OCR, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Multimodal Vision & Document OCR.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Multimodal Vision & Document OCR.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of LayoutLMv3: Pre-training for Document AI with Unstructured PDF Text and Image Masking."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-8",
+        "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+        "authors": [
+          "Carlos E. Jimenez",
+          "John Yang",
+          "Alexander Wettig",
+          "Shunyu Yao",
+          "Kexin Pei",
+          "Ofir Press",
+          "Karthik Narasimhan"
+        ],
+        "abstract": "We introduce SWE-bench, an evaluation framework that tests language models on resolving end-to-end software engineering problems from real GitHub issues.\n\nThis landmark research by Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, Karthik Narasimhan sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ICLR 2024",
+        "doi": "10.48550/arXiv.2310.06770",
+        "urls": {
+          "primary": "https://ieeexplore.ieee.org/document/980007",
+          "publisher": "https://ieeexplore.ieee.org/document/980007",
+          "pdf": "https://arxiv.org/pdf/2310.06770.pdf"
+        },
+        "source": "IEEE Xplore",
+        "citationCount": 1045,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "IEEE Xplore"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "We introduce SWE-bench, an evaluation framework that tests language models on resolving end-to-end software engineering problems from real GitHub issues.\n\nThis landmark research by Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, Karthik Narasimhan sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of SWE-bench: Can Language Models Resolve Real-World GitHub Issues?."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      }
+    ],
+    "progressLogs": [
+      {
+        "timestamp": "2026-11-24T12:00:00.000Z",
+        "stage": "planning",
+        "message": "Formulated grounded career guidance search strategy."
+      },
+      {
+        "timestamp": "2026-11-24T12:01:00.000Z",
+        "stage": "searching",
+        "message": "Retrieved 10 papers across arXiv and Semantic Scholar."
+      },
+      {
+        "timestamp": "2026-11-24T12:02:00.000Z",
+        "stage": "completed",
+        "message": "Literature survey report successfully generated."
+      }
+    ],
+    "createdAt": "2026-11-24T12:00:00.000Z"
+  },
+  {
+    "id": "session_agents_02",
+    "_id": "session_agents_02",
+    "userId": "507f1f77bcf86cd799439011",
+    "query": "What are the latest approaches for autonomous AI research agents and citation verification?",
+    "domain": "Artificial Intelligence & Agentic Workflows",
+    "keywords": [
+      "Autonomous Agents",
+      "Citation Verification",
+      "LLM Factuality",
+      "Multi-Agent Frameworks"
+    ],
+    "targetPaperCount": 25,
+    "yearRange": {
+      "start": 2020,
+      "end": 2026
+    },
+    "preferredSources": [
+      "Google Scholar",
+      "IEEE Xplore"
+    ],
+    "status": "completed",
+    "currentStage": "completed",
+    "stageProgressPercent": 100,
+    "selectedPapers": [
+      {
+        "id": "paper-1",
+        "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+        "authors": [
+          "Shunyu Yao",
+          "Jeffrey Zhao",
+          "Dian Yu",
+          "Nan Du",
+          "Izhak Shafran",
+          "Karthik Narasimhan",
+          "Yuan Cao"
+        ],
+        "abstract": "While large language models (LLMs) have shown impressive performance across reasoning and decision making tasks, their ability to synergize reasoning and acting remains underexplored. We propose ReAct, a general framework to combine reasoning traces and task-specific actions.\n\nThis landmark research by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, Yuan Cao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ICLR 2023",
+        "doi": "10.48550/arXiv.2210.03629",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2210.03629",
+          "publisher": "https://arxiv.org/abs/2210.03629",
+          "pdf": "https://arxiv.org/pdf/2210.03629.pdf"
+        },
+        "source": "arXiv",
+        "citationCount": 450,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "arXiv"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "While large language models (LLMs) have shown impressive performance across reasoning and decision making tasks, their ability to synergize reasoning and acting remains underexplored. We propose ReAct, a general framework to combine reasoning traces and task-specific actions.\n\nThis landmark research by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, Yuan Cao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of ReAct: Synergizing Reasoning and Acting in Language Models."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-2",
+        "title": "Reflexion: Language Agents with Verbal Reinforcement Learning",
+        "authors": [
+          "Noah Shinn",
+          "Federico Cassano",
+          "Edward Berman",
+          "Ashwin Gopinath",
+          "Karthik Narasimhan",
+          "Shunyu Yao"
+        ],
+        "abstract": "Language agents have shown promise in decision-making tasks, but struggle with self-correction. We present Reflexion, a novel framework that equips language agents with dynamic verbal reinforcement learning without updating neural weights.\n\nThis landmark research by Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, Shunyu Yao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "NeurIPS 2023",
+        "doi": "10.48550/arXiv.2303.11366",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2303.11366",
+          "publisher": "https://arxiv.org/abs/2303.11366",
+          "pdf": "https://arxiv.org/pdf/2303.11366.pdf"
+        },
+        "source": "Google Scholar",
+        "citationCount": 535,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "Google Scholar"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "Language agents have shown promise in decision-making tasks, but struggle with self-correction. We present Reflexion, a novel framework that equips language agents with dynamic verbal reinforcement learning without updating neural weights.\n\nThis landmark research by Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, Shunyu Yao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Reflexion: Language Agents with Verbal Reinforcement Learning."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-3",
+        "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+        "authors": [
+          "Joon Sung Park",
+          "Joseph C. O'Brien",
+          "Carrie J. Cai",
+          "Meredith Ringel Morris",
+          "Percy Liang",
+          "Michael S. Bernstein"
+        ],
+        "abstract": "We introduce Generative Agents: computational software agents that simulate believable human behavior. Generative agents draw on memory storage, reflection, and planning to form habits, execute social interactions, and adapt.\n\nThis landmark research by Joon Sung Park, Joseph C. O'Brien, Carrie J. Cai, Meredith Ringel Morris, Percy Liang, Michael S. Bernstein sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ACM UIST 2023",
+        "doi": "10.48550/arXiv.2304.03442",
+        "urls": {
+          "primary": "https://ieeexplore.ieee.org/document/980002",
+          "publisher": "https://ieeexplore.ieee.org/document/980002",
+          "pdf": "https://arxiv.org/pdf/2304.03442.pdf"
+        },
+        "source": "IEEE Xplore",
+        "citationCount": 620,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "IEEE Xplore"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "We introduce Generative Agents: computational software agents that simulate believable human behavior. Generative agents draw on memory storage, reflection, and planning to form habits, execute social interactions, and adapt.\n\nThis landmark research by Joon Sung Park, Joseph C. O'Brien, Carrie J. Cai, Meredith Ringel Morris, Percy Liang, Michael S. Bernstein sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Generative Agents: Interactive Simulacra of Human Behavior."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-4",
+        "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+        "authors": [
+          "Timo Schick",
+          "Jane Dwivedi-Yu",
+          "Roberto Dessì",
+          "Roberta Raileanu",
+          "Maria Lomeli",
+          "Luke Zettlemoyer",
+          "Thomas Scialom"
+        ],
+        "abstract": "Language models demonstrate remarkable abilities to solve new tasks from just a few examples. We introduce Toolformer, a model trained to decide which tools to call, when to call them, and how to pass parameters.\n\nThis landmark research by Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Thomas Scialom sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "NeurIPS 2023",
+        "doi": "10.48550/arXiv.2302.04761",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2302.04761",
+          "publisher": "https://arxiv.org/abs/2302.04761",
+          "pdf": "https://arxiv.org/pdf/2302.04761.pdf"
+        },
+        "source": "OpenAlex",
+        "citationCount": 705,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "OpenAlex"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "Language models demonstrate remarkable abilities to solve new tasks from just a few examples. We introduce Toolformer, a model trained to decide which tools to call, when to call them, and how to pass parameters.\n\nThis landmark research by Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Thomas Scialom sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Toolformer: Language Models Can Teach Themselves to Use Tools."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-5",
+        "title": "Tree of Thoughts: Deliberate Problem Solving with Large Language Models",
+        "authors": [
+          "Shunyu Yao",
+          "Dian Yu",
+          "Jeffrey Zhao",
+          "Izhak Shafran",
+          "Thomas L. Griffiths",
+          "Yuan Cao",
+          "Karthik Narasimhan"
+        ],
+        "abstract": "We introduce Tree of Thoughts (ToT), which generalizes over popular chain-of-thought prompting for language models. ToT enables deliberate problem solving by exploring multiple reasoning paths and self-evaluating choices.\n\nThis landmark research by Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L. Griffiths, Yuan Cao, Karthik Narasimhan sets an empirical benchmark in Factuality & Citation Grounding. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "NeurIPS 2023",
+        "doi": "10.48550/arXiv.2305.10601",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2305.10601",
+          "publisher": "https://arxiv.org/abs/2305.10601",
+          "pdf": "https://arxiv.org/pdf/2305.10601.pdf"
+        },
+        "source": "Crossref",
+        "citationCount": 790,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Factuality & Citation Grounding",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "Crossref"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "We introduce Tree of Thoughts (ToT), which generalizes over popular chain-of-thought prompting for language models. ToT enables deliberate problem solving by exploring multiple reasoning paths and self-evaluating choices.\n\nThis landmark research by Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L. Griffiths, Yuan Cao, Karthik Narasimhan sets an empirical benchmark in Factuality & Citation Grounding. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Factuality & Citation Grounding, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Factuality & Citation Grounding.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Factuality & Citation Grounding.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Tree of Thoughts: Deliberate Problem Solving with Large Language Models."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-6",
+        "title": "Nougat: Neural Optical Understanding for Academic PDF Parsing",
+        "authors": [
+          "Lukas Blecher",
+          "Guillaume Mialon",
+          "Thomas Scialom",
+          "Gaetan Loridant",
+          "Raphaël Thomas",
+          "Roman Pascal"
+        ],
+        "abstract": "As human knowledge is predominantly stored in books and scientific articles, PDF visual extraction is critical. We present Nougat (Neural Optical Understanding for Academic Documents), a Visual Transformer model that converts scientific PDFs to lightweight markup.\n\nThis landmark research by Lukas Blecher, Guillaume Mialon, Thomas Scialom, Gaetan Loridant, Raphaël Thomas, Roman Pascal sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ICLR 2024",
+        "doi": "10.48550/arXiv.2308.13418",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2308.13418",
+          "publisher": "https://arxiv.org/abs/2308.13418",
+          "pdf": "https://arxiv.org/pdf/2308.13418.pdf"
+        },
+        "source": "arXiv",
+        "citationCount": 875,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Multimodal Vision & Document OCR",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "arXiv"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "As human knowledge is predominantly stored in books and scientific articles, PDF visual extraction is critical. We present Nougat (Neural Optical Understanding for Academic Documents), a Visual Transformer model that converts scientific PDFs to lightweight markup.\n\nThis landmark research by Lukas Blecher, Guillaume Mialon, Thomas Scialom, Gaetan Loridant, Raphaël Thomas, Roman Pascal sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Multimodal Vision & Document OCR, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Multimodal Vision & Document OCR.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Multimodal Vision & Document OCR.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Nougat: Neural Optical Understanding for Academic PDF Parsing."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-7",
+        "title": "LayoutLMv3: Pre-training for Document AI with Unstructured PDF Text and Image Masking",
+        "authors": [
+          "Yupan Huang",
+          "Tengchao Lv",
+          "Lei Cui",
+          "Yutong Lu",
+          "Furu Wei"
+        ],
+        "abstract": "LayoutLMv3 is a multimodal transformer model that unifies text, layout, and image pre-training for visual document understanding, achieving state-of-the-art results on scientific chart and document table benchmarks.\n\nThis landmark research by Yupan Huang, Tengchao Lv, Lei Cui, Yutong Lu, Furu Wei sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2022",
+        "venue": "ACM MM 2022",
+        "doi": "10.48550/arXiv.2204.08387",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2204.08387",
+          "publisher": "https://arxiv.org/abs/2204.08387",
+          "pdf": "https://arxiv.org/pdf/2204.08387.pdf"
+        },
+        "source": "Google Scholar",
+        "citationCount": 960,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Multimodal Vision & Document OCR",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "Google Scholar"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "LayoutLMv3 is a multimodal transformer model that unifies text, layout, and image pre-training for visual document understanding, achieving state-of-the-art results on scientific chart and document table benchmarks.\n\nThis landmark research by Yupan Huang, Tengchao Lv, Lei Cui, Yutong Lu, Furu Wei sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Multimodal Vision & Document OCR, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Multimodal Vision & Document OCR.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Multimodal Vision & Document OCR.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of LayoutLMv3: Pre-training for Document AI with Unstructured PDF Text and Image Masking."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-8",
+        "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+        "authors": [
+          "Carlos E. Jimenez",
+          "John Yang",
+          "Alexander Wettig",
+          "Shunyu Yao",
+          "Kexin Pei",
+          "Ofir Press",
+          "Karthik Narasimhan"
+        ],
+        "abstract": "We introduce SWE-bench, an evaluation framework that tests language models on resolving end-to-end software engineering problems from real GitHub issues.\n\nThis landmark research by Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, Karthik Narasimhan sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ICLR 2024",
+        "doi": "10.48550/arXiv.2310.06770",
+        "urls": {
+          "primary": "https://ieeexplore.ieee.org/document/980007",
+          "publisher": "https://ieeexplore.ieee.org/document/980007",
+          "pdf": "https://arxiv.org/pdf/2310.06770.pdf"
+        },
+        "source": "IEEE Xplore",
+        "citationCount": 1045,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "IEEE Xplore"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "We introduce SWE-bench, an evaluation framework that tests language models on resolving end-to-end software engineering problems from real GitHub issues.\n\nThis landmark research by Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, Karthik Narasimhan sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of SWE-bench: Can Language Models Resolve Real-World GitHub Issues?."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      }
+    ],
+    "progressLogs": [
+      {
+        "timestamp": "2026-11-24T13:30:00.000Z",
+        "stage": "planning",
+        "message": "Initiated multi-agent query decomposition."
+      },
+      {
+        "timestamp": "2026-11-24T13:31:00.000Z",
+        "stage": "searching",
+        "message": "Harvested 25 publication-grade papers."
+      },
+      {
+        "timestamp": "2026-11-24T13:32:00.000Z",
+        "stage": "completed",
+        "message": "Survey completed and citation graph synthesized."
+      }
+    ],
+    "createdAt": "2026-11-24T13:30:00.000Z"
+  },
+  {
+    "id": "session_kidney_03",
+    "_id": "session_kidney_03",
+    "userId": "507f1f77bcf86cd799439011",
+    "query": "A Fair and Privacy-Preserving Federated Hybrid ML–DL Framework with Safe Deep Reinforcement Learning for Personalized Chronic Kidney Disease Progression Prediction and Clinical Decision Support",
+    "domain": "Clinical Decision Support & Biomedical Health Information",
+    "keywords": [
+      "Federated Learning",
+      "Differential Privacy",
+      "Safe Reinforcement Learning",
+      "Chronic Kidney Disease"
+    ],
+    "targetPaperCount": 25,
+    "yearRange": {
+      "start": 2020,
+      "end": 2026
+    },
+    "preferredSources": [
+      "Google Scholar",
+      "IEEE Xplore",
+      "Crossref"
+    ],
+    "status": "completed",
+    "currentStage": "completed",
+    "stageProgressPercent": 100,
+    "selectedPapers": [
+      {
+        "id": "paper-1",
+        "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+        "authors": [
+          "Shunyu Yao",
+          "Jeffrey Zhao",
+          "Dian Yu",
+          "Nan Du",
+          "Izhak Shafran",
+          "Karthik Narasimhan",
+          "Yuan Cao"
+        ],
+        "abstract": "While large language models (LLMs) have shown impressive performance across reasoning and decision making tasks, their ability to synergize reasoning and acting remains underexplored. We propose ReAct, a general framework to combine reasoning traces and task-specific actions.\n\nThis landmark research by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, Yuan Cao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ICLR 2023",
+        "doi": "10.48550/arXiv.2210.03629",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2210.03629",
+          "publisher": "https://arxiv.org/abs/2210.03629",
+          "pdf": "https://arxiv.org/pdf/2210.03629.pdf"
+        },
+        "source": "arXiv",
+        "citationCount": 450,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "arXiv"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "While large language models (LLMs) have shown impressive performance across reasoning and decision making tasks, their ability to synergize reasoning and acting remains underexplored. We propose ReAct, a general framework to combine reasoning traces and task-specific actions.\n\nThis landmark research by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, Yuan Cao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of ReAct: Synergizing Reasoning and Acting in Language Models."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-2",
+        "title": "Reflexion: Language Agents with Verbal Reinforcement Learning",
+        "authors": [
+          "Noah Shinn",
+          "Federico Cassano",
+          "Edward Berman",
+          "Ashwin Gopinath",
+          "Karthik Narasimhan",
+          "Shunyu Yao"
+        ],
+        "abstract": "Language agents have shown promise in decision-making tasks, but struggle with self-correction. We present Reflexion, a novel framework that equips language agents with dynamic verbal reinforcement learning without updating neural weights.\n\nThis landmark research by Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, Shunyu Yao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "NeurIPS 2023",
+        "doi": "10.48550/arXiv.2303.11366",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2303.11366",
+          "publisher": "https://arxiv.org/abs/2303.11366",
+          "pdf": "https://arxiv.org/pdf/2303.11366.pdf"
+        },
+        "source": "Google Scholar",
+        "citationCount": 535,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "Google Scholar"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "Language agents have shown promise in decision-making tasks, but struggle with self-correction. We present Reflexion, a novel framework that equips language agents with dynamic verbal reinforcement learning without updating neural weights.\n\nThis landmark research by Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, Shunyu Yao sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Reflexion: Language Agents with Verbal Reinforcement Learning."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-3",
+        "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+        "authors": [
+          "Joon Sung Park",
+          "Joseph C. O'Brien",
+          "Carrie J. Cai",
+          "Meredith Ringel Morris",
+          "Percy Liang",
+          "Michael S. Bernstein"
+        ],
+        "abstract": "We introduce Generative Agents: computational software agents that simulate believable human behavior. Generative agents draw on memory storage, reflection, and planning to form habits, execute social interactions, and adapt.\n\nThis landmark research by Joon Sung Park, Joseph C. O'Brien, Carrie J. Cai, Meredith Ringel Morris, Percy Liang, Michael S. Bernstein sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ACM UIST 2023",
+        "doi": "10.48550/arXiv.2304.03442",
+        "urls": {
+          "primary": "https://ieeexplore.ieee.org/document/980002",
+          "publisher": "https://ieeexplore.ieee.org/document/980002",
+          "pdf": "https://arxiv.org/pdf/2304.03442.pdf"
+        },
+        "source": "IEEE Xplore",
+        "citationCount": 620,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "IEEE Xplore"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "We introduce Generative Agents: computational software agents that simulate believable human behavior. Generative agents draw on memory storage, reflection, and planning to form habits, execute social interactions, and adapt.\n\nThis landmark research by Joon Sung Park, Joseph C. O'Brien, Carrie J. Cai, Meredith Ringel Morris, Percy Liang, Michael S. Bernstein sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Generative Agents: Interactive Simulacra of Human Behavior."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-4",
+        "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+        "authors": [
+          "Timo Schick",
+          "Jane Dwivedi-Yu",
+          "Roberto Dessì",
+          "Roberta Raileanu",
+          "Maria Lomeli",
+          "Luke Zettlemoyer",
+          "Thomas Scialom"
+        ],
+        "abstract": "Language models demonstrate remarkable abilities to solve new tasks from just a few examples. We introduce Toolformer, a model trained to decide which tools to call, when to call them, and how to pass parameters.\n\nThis landmark research by Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Thomas Scialom sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "NeurIPS 2023",
+        "doi": "10.48550/arXiv.2302.04761",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2302.04761",
+          "publisher": "https://arxiv.org/abs/2302.04761",
+          "pdf": "https://arxiv.org/pdf/2302.04761.pdf"
+        },
+        "source": "OpenAlex",
+        "citationCount": 705,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "OpenAlex"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "Language models demonstrate remarkable abilities to solve new tasks from just a few examples. We introduce Toolformer, a model trained to decide which tools to call, when to call them, and how to pass parameters.\n\nThis landmark research by Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Thomas Scialom sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Toolformer: Language Models Can Teach Themselves to Use Tools."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-5",
+        "title": "Tree of Thoughts: Deliberate Problem Solving with Large Language Models",
+        "authors": [
+          "Shunyu Yao",
+          "Dian Yu",
+          "Jeffrey Zhao",
+          "Izhak Shafran",
+          "Thomas L. Griffiths",
+          "Yuan Cao",
+          "Karthik Narasimhan"
+        ],
+        "abstract": "We introduce Tree of Thoughts (ToT), which generalizes over popular chain-of-thought prompting for language models. ToT enables deliberate problem solving by exploring multiple reasoning paths and self-evaluating choices.\n\nThis landmark research by Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L. Griffiths, Yuan Cao, Karthik Narasimhan sets an empirical benchmark in Factuality & Citation Grounding. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "NeurIPS 2023",
+        "doi": "10.48550/arXiv.2305.10601",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2305.10601",
+          "publisher": "https://arxiv.org/abs/2305.10601",
+          "pdf": "https://arxiv.org/pdf/2305.10601.pdf"
+        },
+        "source": "Crossref",
+        "citationCount": 790,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Factuality & Citation Grounding",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "Crossref"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "We introduce Tree of Thoughts (ToT), which generalizes over popular chain-of-thought prompting for language models. ToT enables deliberate problem solving by exploring multiple reasoning paths and self-evaluating choices.\n\nThis landmark research by Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L. Griffiths, Yuan Cao, Karthik Narasimhan sets an empirical benchmark in Factuality & Citation Grounding. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Factuality & Citation Grounding, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Factuality & Citation Grounding.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Factuality & Citation Grounding.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Tree of Thoughts: Deliberate Problem Solving with Large Language Models."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-6",
+        "title": "Nougat: Neural Optical Understanding for Academic PDF Parsing",
+        "authors": [
+          "Lukas Blecher",
+          "Guillaume Mialon",
+          "Thomas Scialom",
+          "Gaetan Loridant",
+          "Raphaël Thomas",
+          "Roman Pascal"
+        ],
+        "abstract": "As human knowledge is predominantly stored in books and scientific articles, PDF visual extraction is critical. We present Nougat (Neural Optical Understanding for Academic Documents), a Visual Transformer model that converts scientific PDFs to lightweight markup.\n\nThis landmark research by Lukas Blecher, Guillaume Mialon, Thomas Scialom, Gaetan Loridant, Raphaël Thomas, Roman Pascal sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ICLR 2024",
+        "doi": "10.48550/arXiv.2308.13418",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2308.13418",
+          "publisher": "https://arxiv.org/abs/2308.13418",
+          "pdf": "https://arxiv.org/pdf/2308.13418.pdf"
+        },
+        "source": "arXiv",
+        "citationCount": 875,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Multimodal Vision & Document OCR",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "arXiv"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "As human knowledge is predominantly stored in books and scientific articles, PDF visual extraction is critical. We present Nougat (Neural Optical Understanding for Academic Documents), a Visual Transformer model that converts scientific PDFs to lightweight markup.\n\nThis landmark research by Lukas Blecher, Guillaume Mialon, Thomas Scialom, Gaetan Loridant, Raphaël Thomas, Roman Pascal sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Multimodal Vision & Document OCR, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Multimodal Vision & Document OCR.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Multimodal Vision & Document OCR.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of Nougat: Neural Optical Understanding for Academic PDF Parsing."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-7",
+        "title": "LayoutLMv3: Pre-training for Document AI with Unstructured PDF Text and Image Masking",
+        "authors": [
+          "Yupan Huang",
+          "Tengchao Lv",
+          "Lei Cui",
+          "Yutong Lu",
+          "Furu Wei"
+        ],
+        "abstract": "LayoutLMv3 is a multimodal transformer model that unifies text, layout, and image pre-training for visual document understanding, achieving state-of-the-art results on scientific chart and document table benchmarks.\n\nThis landmark research by Yupan Huang, Tengchao Lv, Lei Cui, Yutong Lu, Furu Wei sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2022",
+        "venue": "ACM MM 2022",
+        "doi": "10.48550/arXiv.2204.08387",
+        "urls": {
+          "primary": "https://arxiv.org/abs/2204.08387",
+          "publisher": "https://arxiv.org/abs/2204.08387",
+          "pdf": "https://arxiv.org/pdf/2204.08387.pdf"
+        },
+        "source": "Google Scholar",
+        "citationCount": 960,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Multimodal Vision & Document OCR",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "Google Scholar"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "LayoutLMv3 is a multimodal transformer model that unifies text, layout, and image pre-training for visual document understanding, achieving state-of-the-art results on scientific chart and document table benchmarks.\n\nThis landmark research by Yupan Huang, Tengchao Lv, Lei Cui, Yutong Lu, Furu Wei sets an empirical benchmark in Multimodal Vision & Document OCR. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Multimodal Vision & Document OCR, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Multimodal Vision & Document OCR.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Multimodal Vision & Document OCR.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of LayoutLMv3: Pre-training for Document AI with Unstructured PDF Text and Image Masking."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      },
+      {
+        "id": "paper-8",
+        "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+        "authors": [
+          "Carlos E. Jimenez",
+          "John Yang",
+          "Alexander Wettig",
+          "Shunyu Yao",
+          "Kexin Pei",
+          "Ofir Press",
+          "Karthik Narasimhan"
+        ],
+        "abstract": "We introduce SWE-bench, an evaluation framework that tests language models on resolving end-to-end software engineering problems from real GitHub issues.\n\nThis landmark research by Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, Karthik Narasimhan sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+        "publicationDate": "2023",
+        "venue": "ICLR 2024",
+        "doi": "10.48550/arXiv.2310.06770",
+        "urls": {
+          "primary": "https://ieeexplore.ieee.org/document/980007",
+          "publisher": "https://ieeexplore.ieee.org/document/980007",
+          "pdf": "https://arxiv.org/pdf/2310.06770.pdf"
+        },
+        "source": "IEEE Xplore",
+        "citationCount": 1045,
+        "pdfAvailable": true,
+        "openAccess": true,
+        "keywords": [
+          "Autonomous AI Agents",
+          "Autonomous Agents",
+          "Citation Grounding",
+          "Machine Learning",
+          "IEEE Xplore"
+        ],
+        "extractedSections": [
+          {
+            "title": "Abstract",
+            "content": "We introduce SWE-bench, an evaluation framework that tests language models on resolving end-to-end software engineering problems from real GitHub issues.\n\nThis landmark research by Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, Karthik Narasimhan sets an empirical benchmark in Autonomous AI Agents. The authors conduct systematic quantitative evaluations, demonstrating superior performance metrics and verifiable citation grounding under rigorous experimental protocols.",
+            "type": "abstract"
+          },
+          {
+            "title": "Introduction & Problem Statement",
+            "content": "This paper investigates core bottlenecks in Autonomous AI Agents, addressing real-world limitations in scaling autonomous AI models and multi-tool planning pipelines.\n\nThe authors analyze fundamental theoretical trade-offs, establishing key design requirements and research hypotheses tested throughout the publication.",
+            "type": "introduction"
+          },
+          {
+            "title": "Methodology & Theoretical Architecture",
+            "content": "We formulate a structured evaluation metric and experimental framework designed for high-precision inference in Autonomous AI Agents.\n\nThe proposed model integrates dynamic reasoning loops, citation verification anchors, and state-space reflection vectors to optimize execution precision.",
+            "type": "methodology"
+          },
+          {
+            "title": "Empirical Results & Benchmark Comparisons",
+            "content": "Experimental evaluation demonstrates strong empirical precision and citation grounding across standard benchmark testbeds.\n\nQuantitative analysis confirms statistically significant gains over prior state-of-the-art baselines across all evaluated task domains.",
+            "type": "results"
+          },
+          {
+            "title": "Conclusion & Future Research Directions",
+            "content": "The study provides evidence-grounded insights establishing a baseline for future research in Autonomous AI Agents.\n\nOngoing challenges include expanding multimodal OCR capabilities and refining real-time feedback alignment loops.",
+            "type": "conclusion"
+          }
+        ],
+        "figuresAndTables": [
+          {
+            "id": "fig-1",
+            "type": "figure",
+            "caption": "Figure 1: Architectural diagram of SWE-bench: Can Language Models Resolve Real-World GitHub Issues?."
+          },
+          {
+            "id": "tbl-1",
+            "type": "table",
+            "caption": "Table 1: Benchmark evaluation comparison."
+          }
+        ],
+        "createdAt": "2026-11-24T17:06:03.259Z"
+      }
+    ],
+    "progressLogs": [
+      {
+        "timestamp": "2026-11-24T15:00:00.000Z",
+        "stage": "planning",
+        "message": "Configured federated clinical decision research plan."
+      },
+      {
+        "timestamp": "2026-11-24T15:01:00.000Z",
+        "stage": "searching",
+        "message": "Retrieved 25 peer-reviewed federated medical AI papers."
+      },
+      {
+        "timestamp": "2026-11-24T15:02:00.000Z",
+        "stage": "completed",
+        "message": "Completed 11-section survey report and benchmark matrix."
+      }
+    ],
+    "createdAt": "2026-11-24T15:00:00.000Z"
+  }
+]

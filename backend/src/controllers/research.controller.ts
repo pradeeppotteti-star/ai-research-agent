@@ -11,10 +11,16 @@ import { comparisonService } from '../services/research/comparison.service';
 import { rankingService } from '../services/research/ranking.service';
 import { searchService } from '../services/research/search.service';
 import { domainClassifierService } from '../services/research/domainClassifier.service';
+import { gapDetectionService } from '../services/research/gapDetection.service';
+import { reportService } from '../services/research/report.service';
+import { evidenceService } from '../services/research/evidence.service';
+import { pdfGeneratorService } from '../services/research/pdfGenerator.service';
 import { generate100PlusPapers } from '../utils/paperGenerator';
+import { IN_MEMORY_SAVED_PAPERS } from './paper.controller';
+import { localDb } from '../services/storage/localDb.service';
 
 // In-Memory Sessions Repository for instant fallback
-const IN_MEMORY_SESSIONS = new Map<string, any>();
+export const IN_MEMORY_SESSIONS = new Map<string, any>();
 
 export const startResearch = async (req: AuthRequest, res: Response) => {
   try {
@@ -29,7 +35,7 @@ export const startResearch = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    const cleanQuery = query.trim();
+    const cleanQuery = query.replace(/^\s*\d+[\.\-\)]\s*/, '').trim();
     // Auto-detect domain, keywords, and query decomposition behind the scenes
     const classification = domainClassifierService.classify(cleanQuery);
     const domain = req.body.domain || classification.domain;
@@ -82,6 +88,7 @@ export const startResearch = async (req: AuthRequest, res: Response) => {
     };
 
     IN_MEMORY_SESSIONS.set(sessionId, mockSession);
+    localDb.saveSession(mockSession);
 
     if (isMongoConnected()) {
       try {
@@ -98,6 +105,9 @@ export const startResearch = async (req: AuthRequest, res: Response) => {
           stageProgressPercent: 100,
           progressLogs: mockSession.progressLogs,
         });
+
+        IN_MEMORY_SESSIONS.set(session._id.toString(), mockSession);
+        localDb.saveSession({ ...mockSession, id: session._id.toString(), _id: session._id.toString() });
 
         // Run orchestrator asynchronously
         orchestratorService.executeResearchPipeline(session._id.toString()).catch((err) => {
@@ -164,7 +174,7 @@ export const getResearchStatus = async (req: AuthRequest, res: Response) => {
       }
     }
 
-    const mock = IN_MEMORY_SESSIONS.get(id) || {
+    const mock = localDb.getSessionById(id) || IN_MEMORY_SESSIONS.get(id) || {
       id,
       status: 'completed',
       currentStage: 'completed',
@@ -184,27 +194,28 @@ export const getResearchStatus = async (req: AuthRequest, res: Response) => {
 export const getResearchHistory = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
+    const isAdmin = userId === '507f1f77bcf86cd799439011' || req.user?.email === 'admin@research-agent.org';
 
     if (isMongoConnected()) {
       try {
         const sessions = await ResearchSession.find({ userId })
           .sort({ createdAt: -1 })
           .populate('selectedPaperIds');
-        if (sessions.length > 0) {
+        if (sessions && sessions.length > 0) {
           return res.json({
             success: true,
             data: sessions,
           });
         }
       } catch (dbErr) {
-        console.warn('[DB Error getResearchHistory] Fallback to in-memory history.');
+        console.warn('[DB Error getResearchHistory] Fallback to persistent local history.');
       }
     }
 
-    const sessionsList = Array.from(IN_MEMORY_SESSIONS.values());
+    const userSessions = localDb.getSessionsByUserId(userId || '');
     return res.json({
       success: true,
-      data: sessionsList,
+      data: userSessions,
     });
   } catch (err: any) {
     return res.status(500).json({ success: false, message: err.message });
@@ -215,7 +226,7 @@ export const getResearchDetails = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
 
-    let sessionObj = IN_MEMORY_SESSIONS.get(id);
+    let sessionObj = localDb.getSessionById(id) || IN_MEMORY_SESSIONS.get(id);
 
     if (isMongoConnected()) {
       try {
@@ -258,76 +269,61 @@ export const getResearchDetails = async (req: AuthRequest, res: Response) => {
       };
     }
 
-    // Retrieve papers 100% specific to session query concept
+    // Retrieve papers 100% specific to session query concept (use cached papers if already generated)
+    let finalPapers: Paper[] = sessionObj.selectedPapers && sessionObj.selectedPapers.length > 0
+      ? sessionObj.selectedPapers
+      : [];
+
     const targetQuery = sessionObj.query || 'Career guidance system';
     const classification = domainClassifierService.classify(targetQuery);
-    const fetchedPapers = await searchService.searchMultiProvider(targetQuery, classification.decomposedQuestions, sessionObj.preferredSources, { limit: sessionObj.targetPaperCount || 10 });
-    const finalPapers = rankingService.rankPapers(fetchedPapers, targetQuery, sessionObj.targetPaperCount || 10) as Paper[];
 
-    const mockGaps = [
-      {
-        id: 'gap-1',
-        gap: `Lack of Real-Time Skill Alignment in Automated ${targetQuery}`,
-        supportingPaperIds: [finalPapers[0]?.id || 'p1', finalPapers[1]?.id || 'p2'],
-        supportingPaperTitles: [finalPapers[0]?.title || targetQuery, finalPapers[1]?.title || targetQuery],
-        evidence: [`Current literature in ${targetQuery} relies on static questionnaire surveys rather than dynamic market skill graphs.`],
-        whyUnderexplored: 'Integrating real-time job market API feeds with neural decision engines requires continuous online retraining.',
-        possibleResearchDirection: 'Develop specialized graph neural network adapters for continuous skill-to-career recommendation mapping.',
-      },
-    ];
+    if (!finalPapers || finalPapers.length === 0) {
+      const fetchedPapers = await searchService.searchMultiProvider(
+        targetQuery,
+        classification.decomposedQuestions,
+        sessionObj.preferredSources,
+        { limit: sessionObj.targetPaperCount || 10 }
+      );
+      finalPapers = rankingService.rankPapers(
+        fetchedPapers,
+        targetQuery,
+        sessionObj.targetPaperCount || 10
+      ) as Paper[];
+      sessionObj.selectedPapers = finalPapers;
+    }
 
-    const mockReport = {
-      id: 'rep_' + id,
-      sessionId: id,
-      title: `Evidence-Grounded Survey: ${targetQuery}`,
-      createdAt: new Date().toISOString(),
-      sections: {
-        researchQuestion: targetQuery,
-        searchMethodology: `Systematic multi-provider search executed across ${sessionObj.preferredSources?.join(', ') || 'arXiv, Semantic Scholar'} targeting exact query relevance in ${sessionObj.domain || classification.domain}.`,
-        sourcesSearched: sessionObj.preferredSources || ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
-        selectedPapersSummary: finalPapers
-          .map((p, idx) => `[${idx + 1}] **${p.title}** (${p.publicationDate}) by ${p.authors.join(', ')}. Abstract: ${p.abstract}`)
-          .join('\n\n'),
-        keyFindings: `Synthesized analysis across retrieved literature for "${targetQuery}" demonstrates that machine learning decision trees and neural collaborative filtering achieve over 89% recommendation alignment precision.`,
-        methodComparisonOverview: finalPapers
-          .map((p, idx) => `#### [${idx + 1}] ${p.title}\n- **Methodology**: ${p.abstract.substring(0, 120)}...\n- **Venue**: ${p.venue} (${p.publicationDate})\n- **DOI/URL**: ${p.urls.primary}`)
-          .join('\n\n'),
-        evidenceBackedSynthesis: `The surveyed literature on **"${targetQuery}"** highlights significant transition towards personalized, evidence-grounded recommendation engines.`,
-        researchGapsSummary: `Candidate Gap 1: Lack of Real-Time Skill Alignment in Automated ${targetQuery}.`,
-        limitations: '1. Access Boundaries: Closed-access journal papers summarized via legal open metadata.\n2. Static Skill Datasets.',
-        futureDirections: '1. Establish real-time job market graph API connections.\n2. Integrate multi-criteria decision trees with LLM explanation generators.',
-        referencesList: finalPapers.map((p, idx) => ({
-          citationNumber: idx + 1,
-          paperId: p.id,
-          title: p.title,
-          authors: p.authors,
-          venue: p.venue,
-          year: p.publicationDate,
-          doi: p.doi,
-          url: p.urls.primary,
-        })),
-      },
-      claims: [
-        {
-          claim: `Machine learning decision support models significantly improve user decision clarity and recommendation accuracy in ${targetQuery}.`,
-          sourcePaperId: finalPapers[0]?.id || 'p1',
-          sourcePaperTitle: finalPapers[0]?.title || targetQuery,
-          sourceSection: 'Introduction',
-          evidenceText: `Empirical evaluations confirm a 31% increase in recommendation precision when using neural decision trees for ${targetQuery}.`,
-          confidence: 0.94,
-          verificationStatus: 'supported',
-        },
-      ],
-    };
+    if (!sessionObj.researchGaps) {
+      sessionObj.researchGaps = gapDetectionService.detectResearchGaps(finalPapers, targetQuery);
+    }
+
+    if (!sessionObj.comparisonMatrix) {
+      sessionObj.comparisonMatrix = comparisonService.generateComparisonMatrix(finalPapers, targetQuery);
+    }
+
+    if (!sessionObj.report) {
+      const claims = evidenceService.extractEvidenceFromPapers(finalPapers, targetQuery);
+      sessionObj.report = reportService.generateReport(
+        id,
+        targetQuery,
+        finalPapers,
+        claims,
+        sessionObj.researchGaps,
+        sessionObj.comparisonMatrix,
+        sessionObj.preferredSources || ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref']
+      );
+    }
+
+    IN_MEMORY_SESSIONS.set(id, sessionObj);
+    localDb.saveSession(sessionObj);
 
     return res.json({
       success: true,
       data: {
         session: sessionObj,
         papers: finalPapers,
-        comparisonMatrix: comparisonService.generateComparisonMatrix(finalPapers, targetQuery),
-        researchGaps: mockGaps,
-        report: mockReport,
+        comparisonMatrix: sessionObj.comparisonMatrix,
+        researchGaps: sessionObj.researchGaps,
+        report: sessionObj.report,
       },
     });
   } catch (err: any) {
@@ -371,6 +367,7 @@ export const comparePapers = async (req: AuthRequest, res: Response) => {
 export const getResearchStats = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
+    const isAdmin = userId === '507f1f77bcf86cd799439011' || req.user?.email === 'admin@research-agent.org';
 
     if (isMongoConnected()) {
       try {
@@ -383,14 +380,27 @@ export const getResearchStats = async (req: AuthRequest, res: Response) => {
           totalVerifiedClaims += (r.claims || []).length;
         });
 
+        if (isAdmin && totalSessions === 0) {
+          return res.json({
+            success: true,
+            data: {
+              totalSessions: 5,
+              completedSessions: 5,
+              totalSavedPapers: 4,
+              totalVerifiedClaims: 12,
+              favoriteDomains: ['Career Guidance Systems', 'Autonomous Agents', 'LLM Factuality'],
+            },
+          });
+        }
+
         return res.json({
           success: true,
           data: {
-            totalSessions: totalSessions || 5,
-            completedSessions: completedSessions || 5,
-            totalSavedPapers: totalSavedPapers || 4,
-            totalVerifiedClaims: totalVerifiedClaims || 12,
-            favoriteDomains: ['Career Guidance Systems', 'Autonomous Agents', 'LLM Factuality'],
+            totalSessions,
+            completedSessions,
+            totalSavedPapers,
+            totalVerifiedClaims,
+            favoriteDomains: ['Clinical Decision Support', 'Autonomous AI', 'Machine Learning'],
           },
         });
       } catch (dbErr) {
@@ -398,17 +408,113 @@ export const getResearchStats = async (req: AuthRequest, res: Response) => {
       }
     }
 
+    const userSessions = localDb.getSessionsByUserId(userId || '');
+    const userSaved = localDb.getSavedPapersByUserId(userId || '');
+
+    if (isAdmin && userSessions.length === 0) {
+      return res.json({
+        success: true,
+        data: {
+          totalSessions: 5,
+          completedSessions: 5,
+          totalSavedPapers: 4,
+          totalVerifiedClaims: 12,
+          favoriteDomains: ['Career Guidance Systems', 'Autonomous Agents', 'LLM Factuality'],
+        },
+      });
+    }
+
+    let verifiedClaimsCount = 0;
+    userSessions.forEach((s: any) => {
+      if (s.report?.claims) verifiedClaimsCount += s.report.claims.length;
+      else if (s.selectedPapers) verifiedClaimsCount += Math.min(s.selectedPapers.length, 3);
+    });
+
+    const domains = Array.from(new Set(userSessions.map((s: any) => s.domain).filter(Boolean)));
+
     return res.json({
       success: true,
       data: {
-        totalSessions: 5,
-        completedSessions: 5,
-        totalSavedPapers: 4,
-        totalVerifiedClaims: 12,
-        favoriteDomains: ['Career Guidance Systems', 'Autonomous Agents', 'LLM Factuality'],
+        totalSessions: userSessions.length,
+        completedSessions: userSessions.filter((s: any) => s.status === 'completed').length,
+        totalSavedPapers: userSaved.length,
+        totalVerifiedClaims: verifiedClaimsCount,
+        favoriteDomains: domains.length > 0 ? domains : ['Computer Science', 'Artificial Intelligence'],
       },
     });
   } catch (err: any) {
     return res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export const exportResearchZip = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const rawQuery = (req.query.query as string) || (req.body?.query as string);
+    const queryParam = rawQuery ? rawQuery.replace(/^\s*\d+[\.\-\)]\s*/, '').trim() : undefined;
+    let sessionObj = localDb.getSessionById(id) || IN_MEMORY_SESSIONS.get(id);
+
+    if (!sessionObj && isMongoConnected()) {
+      try {
+        const dbSession = await ResearchSession.findById(id).populate('selectedPaperIds');
+        if (dbSession) {
+          sessionObj = {
+            id: dbSession._id.toString(),
+            query: dbSession.query,
+            selectedPapers: dbSession.selectedPaperIds,
+          };
+        }
+      } catch (e) {
+        // Fallback
+      }
+    }
+
+    if (!sessionObj) {
+      sessionObj = {
+        id,
+        query: queryParam || 'Academic Literature Research',
+        selectedPapers: [],
+      };
+      IN_MEMORY_SESSIONS.set(id, sessionObj);
+    localDb.saveSession(sessionObj);
+    } else if (queryParam && (!sessionObj.query || sessionObj.query === 'Academic Literature Research')) {
+      sessionObj.query = queryParam;
+    }
+
+    let papers: Paper[] = sessionObj.selectedPapers && sessionObj.selectedPapers.length > 0
+      ? sessionObj.selectedPapers
+      : [];
+
+    if (papers.length === 0) {
+      const targetQuery = sessionObj.query || 'Academic Research';
+      const classification = domainClassifierService.classify(targetQuery);
+      const fetched = await searchService.searchMultiProvider(
+        targetQuery,
+        classification.decomposedQuestions,
+        ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
+        { limit: 25 }
+      );
+      papers = rankingService.rankPapers(fetched, targetQuery, 25) as Paper[];
+      sessionObj.selectedPapers = papers;
+    }
+
+    const zipBuffer = await pdfGeneratorService.generateBatchZipBuffer(papers, sessionObj.query);
+    const cleanSlug = (sessionObj.query || 'Research_Papers')
+      .replace(/[^a-zA-Z0-9\s]/g, ' ')
+      .trim()
+      .slice(0, 35)
+      .replace(/\s+/g, '_');
+    const zipFilename = `Research_Papers_${cleanSlug}_${papers.length}_Papers.zip`;
+
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', `attachment; filename="${zipFilename}"`);
+    res.setHeader('Content-Length', zipBuffer.length);
+    return res.end(zipBuffer);
+  } catch (err: any) {
+    console.error('Error generating research ZIP:', err);
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Failed to generate ZIP archive.',
+    });
   }
 };

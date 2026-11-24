@@ -19,6 +19,26 @@ import {
 } from 'lucide-react';
 
 const DOMAIN_KEYWORDS_MAP: Record<string, { domain: string; keywords: string }> = {
+  'sepsis': {
+    domain: 'Critical Care Medicine & Intensive Care Informatics (ICU AI)',
+    keywords: 'Sepsis Management, Safe Offline Reinforcement Learning, Dynamic Treatment Regimes (DTR), Multimodal ICU Telemetry (MIMIC-IV), Vasopressor & Fluid Dosing',
+  },
+  'icu': {
+    domain: 'Critical Care Medicine & Intensive Care Informatics (ICU AI)',
+    keywords: 'Sepsis Management, Safe Offline Reinforcement Learning, Dynamic Treatment Regimes (DTR), Multimodal ICU Telemetry (MIMIC-IV), Vasopressor & Fluid Dosing',
+  },
+  'kidney': {
+    domain: 'Clinical Decision Support & Biomedical Health Informatics',
+    keywords: 'Chronic Kidney Disease (CKD), Federated Learning, Clinical Decision Support, Privacy-Preserving ML, Safe Reinforcement Learning, Disease Progression',
+  },
+  'clinical': {
+    domain: 'Clinical Decision Support & Biomedical Health Informatics',
+    keywords: 'Chronic Kidney Disease (CKD), Federated Learning, Clinical Decision Support, Privacy-Preserving ML, Safe Reinforcement Learning, Disease Progression',
+  },
+  'chronic': {
+    domain: 'Clinical Decision Support & Biomedical Health Informatics',
+    keywords: 'Chronic Kidney Disease (CKD), Federated Learning, Clinical Decision Support, Privacy-Preserving ML, Safe Reinforcement Learning, Disease Progression',
+  },
   'career': {
     domain: 'Interdisciplinary General Science & Educational Technology',
     keywords: 'Career Guidance, Decision Support System, Vocational Counseling, Machine Learning Recommendation',
@@ -224,6 +244,22 @@ export const NewResearchPage: React.FC = () => {
                 1-Click Sample Research Topics:
               </span>
               <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setQuery('A Fair and Privacy-Preserving Federated Hybrid ML–DL Framework with Safe Deep Reinforcement Learning for Personalized Chronic Kidney Disease Progression Prediction and Clinical Decision Support')}
+                  className="text-xs text-[#1E3A8A] font-bold hover:text-white bg-[#EEF2FF] hover:bg-[#1E3A8A] px-3 py-1.5 rounded-lg border border-[#C7D2FE] transition-all flex items-center gap-1.5 shadow-sm"
+                >
+                  🩺 Title 1: CKD Clinical Decision Support
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setQuery('A Safe Offline Deep Reinforcement Learning Framework for Personalized Dynamic Treatment Regimes in Sepsis Management Using Multimodal ICU Data')}
+                  className="text-xs text-emerald-800 font-bold hover:text-white bg-emerald-50 hover:bg-emerald-700 px-3 py-1.5 rounded-lg border border-emerald-300 transition-all flex items-center gap-1.5 shadow-sm"
+                >
+                  🏥 Title 2: Sepsis Dynamic Treatment (Safe Offline RL & ICU)
+                </button>
+
                 <button
                   type="button"
                   onClick={() => setQuery('Design and implementation of an intelligent career guidance system using machine learning')}

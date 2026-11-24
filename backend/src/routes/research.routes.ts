@@ -6,6 +6,7 @@ import {
   getResearchDetails,
   comparePapers,
   getResearchStats,
+  exportResearchZip,
 } from '../controllers/research.controller';
 import { authenticateToken } from '../middleware/auth.middleware';
 
@@ -16,6 +17,7 @@ router.get('/status/:id', authenticateToken, getResearchStatus);
 router.get('/history', authenticateToken, getResearchHistory);
 router.get('/stats', authenticateToken, getResearchStats);
 router.post('/compare', authenticateToken, comparePapers);
+router.get('/:id/export-zip', authenticateToken, exportResearchZip);
 router.get('/:id', authenticateToken, getResearchDetails);
 
 export default router;

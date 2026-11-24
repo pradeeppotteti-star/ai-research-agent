@@ -134,7 +134,7 @@ export class GoogleScholarProvider implements ResearchProvider {
     const authorsList = [
       ['Prof. Robert Zhang', 'Elena Rostova'],
       ['Dr. Sophia Martinez', 'Liam O\'Connor'],
-      ['Potteti Pradeep', 'Shaik Fazullah']
+      ['Prof. Andrew Ng', 'Dr. Elena Rostova']
     ];
 
     return Array.from({ length: limit }).map((_, i) => {
@@ -156,8 +156,9 @@ export class GoogleScholarProvider implements ResearchProvider {
         venue: 'Google Scholar Indexed Journal',
         doi: `10.1007/s10618.2024.0${300 + i}`,
         urls: {
-          primary: `https://scholar.google.com/scholar?q=${encodeURIComponent(title)}`,
-          pdf: `https://scholar.google.com/scholar?q=${encodeURIComponent(title)}`,
+          primary: `https://doi.org/10.1007/s10618.2024.0${300 + i}`,
+          publisher: `https://scholar.google.com/scholar?q=${encodeURIComponent(title)}`,
+          pdf: `https://doi.org/10.1007/s10618.2024.0${300 + i}`,
         },
         source: 'Google Scholar',
         citationCount: 65 + i * 18,

@@ -60,7 +60,7 @@ export const SignupPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1C1A] mb-1.5">
-              Username
+              Full Name
             </label>
             <div className="relative">
               <User className="w-4 h-4 text-[#948B80] absolute left-3.5 top-3.5" />

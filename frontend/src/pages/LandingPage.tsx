@@ -25,9 +25,12 @@ export const LandingPage: React.FC = () => {
           <span>Inspired by "Deep Research: A Survey of Autonomous Research Agents"</span>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-[#1E1C1A] leading-tight mb-6">
-          AI Powered Research Paper Analysis and Recommendation System
+        <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-[#1E1C1A] leading-tight mb-2">
+          PaperInsight
         </h1>
+        <h2 className="text-lg sm:text-2xl font-bold text-[#1E3A8A] mb-6 tracking-tight">
+          Research Analysis and Literature Review Generation System
+        </h2>
 
         <p className="text-lg sm:text-xl text-[#5C554E] max-w-2xl mx-auto leading-relaxed mb-8">
           An autonomous research agent designed to solve traditional LLM limitations: multi-tool search integration, grounded citation verification, paper comparison matrices, and candidate research-gap detection.

@@ -1,1 +1,66 @@
-[]
+[
+  {
+    "id": "sp_mwuyievip0v5",
+    "userId": "usr_mwuyhfggg7890",
+    "paperId": "gs_paper_vision_transformer_models_automated_crop_disease_detection_tomato_leaf_care_diagnosis_1",
+    "paper": {
+      "id": "gs_paper_vision_transformer_models_automated_crop_disease_detection_tomato_leaf_care_diagnosis_1",
+      "title": "Google Scholar Citation Analysis of Algorithmic Models in Vision Transformer Models Automated Crop Disease Detection Tomato Leaf Care Diagnosis",
+      "authors": [
+        "Prof. Robert Zhang",
+        "Elena Rostova"
+      ],
+      "abstract": "This Google Scholar publication by Prof. Robert Zhang, Elena Rostova presents an engineering framework targeting Vision transformer models for automated crop disease detection and tomato leaf care diagnosis. The work addresses critical bottlenecks in real-time execution, scalability under heavy load, and citation grounding accuracy across empirical datasets.\n\nThrough extensive experiments, the proposed model achieves benchmark improvements in decision precision, demonstrating strong robustness across diverse deployment environments.",
+      "publicationDate": "2026",
+      "venue": "Google Scholar Indexed Journal",
+      "doi": "10.1007/s10618.2024.0300",
+      "urls": {
+        "primary": "https://doi.org/10.1007/s10618.2024.0300",
+        "publisher": "https://scholar.google.com/scholar?q=Google%20Scholar%20Citation%20Analysis%20of%20Algorithmic%20Models%20in%20Vision%20Transformer%20Models%20Automated%20Crop%20Disease%20Detection%20Tomato%20Leaf%20Care%20Diagnosis",
+        "pdf": "https://doi.org/10.1007/s10618.2024.0300"
+      },
+      "source": "Google Scholar",
+      "citationCount": 65,
+      "pdfAvailable": true,
+      "openAccess": true,
+      "keywords": [
+        "Vision Transformer Models Automated Crop Disease Detection Tomato Leaf Care Diagnosis",
+        "Vision transformer models for automated crop disease detection and tomato leaf care diagnosis",
+        "Google Scholar"
+      ],
+      "extractedSections": [
+        {
+          "title": "Abstract",
+          "content": "This Google Scholar publication by Prof. Robert Zhang, Elena Rostova presents an engineering framework targeting Vision transformer models for automated crop disease detection and tomato leaf care diagnosis. The work addresses critical bottlenecks in real-time execution, scalability under heavy load, and citation grounding accuracy across empirical datasets.\n\nThrough extensive experiments, the proposed model achieves benchmark improvements in decision precision, demonstrating strong robustness across diverse deployment environments.",
+          "type": "abstract"
+        },
+        {
+          "title": "Introduction & Background",
+          "content": "Recent advancements in Vision transformer models for automated crop disease detection and tomato leaf care diagnosis highlight the urgent need for scalable academic standards and robust architectural paradigms.\n\nThis study establishes empirical baseline criteria and formulates the primary research questions addressed throughout the publication.",
+          "type": "introduction"
+        },
+        {
+          "title": "System Methodology & Architecture",
+          "content": "We design a modular neural architecture tailored for high-speed inference and precise decision support in Vision Transformer Models Automated Crop Disease Detection Tomato Leaf Care Diagnosis.\n\nThe pipeline integrates real-time feature transformation with verifiable data grounding checks.",
+          "type": "methodology"
+        },
+        {
+          "title": "Empirical Results & Benchmark Comparisons",
+          "content": "Comprehensive benchmarks executed across standard evaluation testbeds indicate a 29.5% precision increase over legacy algorithms.\n\nPerformance metrics demonstrate resilient throughput even under simulated stress conditions.",
+          "type": "results"
+        },
+        {
+          "title": "Conclusion & Future Directions",
+          "content": "The proposed Google Scholar architecture sets a benchmark for future engineering solutions in Vision transformer models for automated crop disease detection and tomato leaf care diagnosis.\n\nOngoing developments focus on edge hardware deployment and continuous model adaptation.",
+          "type": "conclusion"
+        }
+      ],
+      "relevanceScore": 0.99
+    },
+    "notes": "",
+    "tags": [
+      "Research"
+    ],
+    "createdAt": "2026-11-24T17:16:36.174Z"
+  }
+]

@@ -7,12 +7,15 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-1">
               <BrainCircuit className="w-5 h-5 text-[#1E3A8A]" />
-              <span className="font-extrabold text-[#1E1C1A] text-[15px]">
-                AI Powered Research Paper Analysis and Recommendation System
+              <span className="font-black text-[#1E1C1A] text-lg">
+                PaperInsight
               </span>
             </div>
+            <p className="text-xs font-bold text-[#1E3A8A] mb-3">
+              Research Analysis and Literature Review Generation System
+            </p>
             <p className="text-sm text-[#5C554E] max-w-md leading-relaxed">
               Inspired by the survey paper <i>"Deep Research: A Survey of Autonomous Research Agents"</i>. Built to solve key limitations in multi-tool search, citation verification, paper comparison, gap detection, and literature survey generation.
             </p>
@@ -57,7 +60,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="pt-6 border-t border-[#E8E2D8] flex flex-col sm:flex-row items-center justify-between text-xs text-[#766E65] gap-4">
-          <p>© {new Date().getFullYear()} AI Powered Research Paper Analysis and Recommendation System. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} PaperInsight. All rights reserved.</p>
           <p className="font-mono">Production Ready • React 18 + Node Express + MongoDB</p>
         </div>
       </div>

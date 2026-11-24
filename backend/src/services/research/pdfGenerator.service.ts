@@ -113,7 +113,7 @@ export class PdfGeneratorService {
       });
       safeDrawText(
         targetPage,
-        'AI Powered Research Paper Analysis and Recommendation System — Evidence-Grounded Scientific Index',
+        'PaperInsight — Research Analysis and Literature Review Generation System — Scientific Index',
         {
           x: margin,
           y: margin,
@@ -631,7 +631,7 @@ export class PdfGeneratorService {
 
     safeDrawText(
       page3,
-      'This research preprint was indexed, verified, and cross-grounded by the AI Powered Research Paper Analysis and Recommendation System. All code benchmarks and synthetic evaluation seeds comply with fair scientific evaluation standards.',
+      'This research preprint was indexed, verified, and cross-grounded by PaperInsight: Research Analysis and Literature Review Generation System. All code benchmarks and synthetic evaluation seeds comply with fair scientific evaluation standards.',
       {
         x: margin + 8,
         y: currentY - 24,
@@ -758,7 +758,7 @@ export class PdfGeneratorService {
     const citationsText = `========================================================================
 RESEARCH PAPER COLLECTION (${papers.length} PAPERS)
 Topic: ${cleanQuery}
-Compiled By: AI Powered Research Paper Analysis and Recommendation System
+Compiled By: PaperInsight: Research Analysis and Literature Review Generation System
 Date: ${new Date().toISOString()}
 ========================================================================
 

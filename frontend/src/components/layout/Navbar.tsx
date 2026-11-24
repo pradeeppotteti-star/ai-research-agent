@@ -58,17 +58,20 @@ export const Navbar: React.FC = () => {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E8E2D8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to={user ? '/dashboard' : '/'} className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-lg bg-[#EEF2FF] border border-[#E8E2D8] flex items-center justify-center text-[#1E3A8A] transition-colors">
+            <div className="w-9 h-9 rounded-lg bg-[#EEF2FF] border border-[#E8E2D8] flex items-center justify-center text-[#1E3A8A] transition-colors shrink-0">
               <BrainCircuit className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-xs sm:text-sm md:text-base tracking-tight text-[#1E1C1A] font-sans">
-                  AI Powered Research Paper Analysis and Recommendation System
+                <span className="font-black text-base sm:text-lg tracking-tight text-[#1E1C1A] font-sans">
+                  PaperInsight
                 </span>
                 <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#F5F1EA] text-[#766E65] border border-[#E8E2D8]">
                   v1.0
                 </span>
+              </div>
+              <div className="text-[11px] font-medium text-[#5C554E] hidden md:block leading-tight">
+                Research Analysis and Literature Review Generation System
               </div>
             </div>
           </Link>

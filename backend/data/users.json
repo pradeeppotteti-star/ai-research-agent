@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "id": "usr_mwuyhfggg7890",
+    "_id": "usr_mwuyhfggg7890",
+    "name": "pradeep",
+    "email": "pradeeppotteti@gmail.com",
+    "passwordHash": "$2a$10$sEPh9gSkYaOOMoyzfHs15ephHNKrpDStAlzFg00zI7bLqsactfqjq",
+    "role": "Researcher",
+    "institution": "Academic Institution",
+    "preferences": {
+      "researchInterests": [
+        "Autonomous AI Agents",
+        "LLM Factuality"
+      ],
+      "preferredDomains": [
+        "Computer Science",
+        "Artificial Intelligence"
+      ],
+      "preferredYearRange": {
+        "start": 2020,
+        "end": 2026
+      },
+      "defaultPaperCount": 5,
+      "preferredSources": [
+        "arXiv",
+        "Semantic Scholar",
+        "OpenAlex",
+        "Crossref",
+        "Google Scholar",
+        "IEEE Xplore"
+      ]
+    },
+    "createdAt": "2026-11-24T17:15:50.272Z"
+  }
+]

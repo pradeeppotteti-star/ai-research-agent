@@ -50,10 +50,10 @@ Inspired by the landmark survey paper *"Deep Research: A Survey of Autonomous Re
 - Field Consensus Score: 88%
 - Citation Export Standards: IEEE / ACM / BibTeX
 
-## 👥 Project Leadership & Team
-- Shaik Fazullah (Admin / Lead Architecture Researcher)
-- Potteti Pradeep (Peer Reviewer / System Tester)
-- Puli Prabhas (Research Scholar / Domain Analyst)`;
+## 👥 Architecture & System Design
+- Autonomous Research Agent Framework
+- Real-time Citation Verification Engine
+- 11-Section Literature Survey Synthesizer`;
 
   const handleToggleAudio = () => {
     if ('speechSynthesis' in window) {
@@ -62,7 +62,7 @@ Inspired by the landmark survey paper *"Deep Research: A Survey of Autonomous Re
         setIsPlayingAudio(false);
       } else {
         window.speechSynthesis.cancel();
-        const textToSpeak = `Executive Briefing for PaperInsight: Research Analysis and Literature Review Generation System. Inspired by Deep Research: A Survey of Autonomous Research Agents by Shaik Fazullah, Potteti Pradeep, and Puli Prabhas. Built to overcome multi-tool literature retrieval, citation factuality verification, and candidate gap detection.`;
+        const textToSpeak = `Executive Briefing for PaperInsight: Research Analysis and Literature Review Generation System. Inspired by Deep Research: A Survey of Autonomous Research Agents. Built to overcome multi-tool literature retrieval, citation factuality verification, and candidate gap detection.`;
         const utterance = new SpeechSynthesisUtterance(textToSpeak);
         utterance.rate = 0.95;
         utterance.pitch = 1.0;
@@ -276,7 +276,7 @@ Inspired by the landmark survey paper *"Deep Research: A Survey of Autonomous Re
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-[#1E3A8A] shrink-0" />
             <span>
-              Lead Contributors: <strong className="text-[#1E1C1A]">Shaik Fazullah</strong> (Admin), <strong className="text-[#1E1C1A]">Potteti Pradeep</strong> (Reviewer), <strong className="text-[#1E1C1A]">Puli Prabhas</strong> (Scholar)
+              System Architecture: <strong className="text-[#1E1C1A]">PaperInsight Core Agent</strong> • Autonomous Literature Intelligence
             </span>
           </div>
 

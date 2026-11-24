@@ -10,14 +10,14 @@ export const LabWorkspaceCard: React.FC<LabWorkspaceCardProps> = ({ sessionTitle
   const [annotations, setAnnotations] = useState<LabAnnotation[]>([
     {
       id: 'ann-1',
-      userName: 'Shaik Fazullah (Admin)',
+      userName: 'Lead Research Scientist',
       paperTitle: 'Deep Research: A Survey of Autonomous Research Agents',
       noteText: 'Extracted Section 4.2 evidence anchors confirm a 34% hallucination reduction under verification graph checks.',
       timestamp: new Date(Date.now() - 3600000).toLocaleTimeString(),
     },
     {
       id: 'ann-2',
-      userName: 'Potteti Pradeep (Peer Reviewer)',
+      userName: 'Senior Peer Reviewer',
       paperTitle: 'Factuality Verification & Citation Grounding',
       noteText: 'Please verify if the PDF table parser handles multi-column OCR captions cleanly.',
       timestamp: new Date(Date.now() - 1800000).toLocaleTimeString(),
@@ -33,7 +33,7 @@ export const LabWorkspaceCard: React.FC<LabWorkspaceCardProps> = ({ sessionTitle
 
     const ann: LabAnnotation = {
       id: 'ann_' + Math.random().toString(36).substring(2, 7),
-      userName: 'Puli Prabhas (Scholar)',
+      userName: 'Research Scholar',
       paperTitle: newPaper,
       noteText: newNote.trim(),
       timestamp: new Date().toLocaleTimeString(),

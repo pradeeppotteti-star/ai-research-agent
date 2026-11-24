@@ -211,7 +211,6 @@ export const removeSavedPaper = async (req: AuthRequest, res: Response) => {
 export const getSavedPapers = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
-    const isAdmin = userId === '507f1f77bcf86cd799439011' || req.user?.email === 'admin@research-agent.org';
 
     if (isMongoConnected()) {
       try {
@@ -237,48 +236,15 @@ export const getSavedPapers = async (req: AuthRequest, res: Response) => {
     }
 
     const userSaved = localDb.getSavedPapersByUserId(userId || '');
-    if (userSaved.length > 0) {
-      return res.json({
-        success: true,
-        data: userSaved.map((sp: any) => ({
-          id: sp.id,
-          paper: sp.paper || generate100PlusPapers().find((p) => p.id === sp.paperId) || generate100PlusPapers()[0],
-          notes: sp.notes,
-          tags: sp.tags,
-          createdAt: sp.createdAt,
-        })),
-      });
-    }
-
-    // Only the demo admin account gets initial sample papers to explore
-    if (isAdmin) {
-      const corpus = generate100PlusPapers();
-      const demoLibrary = [
-        {
-          id: 'sp_1',
-          notes: 'Primary reference on career decision support systems.',
-          tags: ['Career Guidance', 'AI Recommendation'],
-          createdAt: new Date().toISOString(),
-          paper: corpus[0],
-        },
-        {
-          id: 'sp_2',
-          notes: 'Foundational paper on Reasoning and Acting in LLMs.',
-          tags: ['ReAct', 'Tool Use'],
-          createdAt: new Date().toISOString(),
-          paper: corpus[1],
-        },
-      ];
-      return res.json({
-        success: true,
-        data: demoLibrary,
-      });
-    }
-
-    // Brand new user starts with a clean empty library
     return res.json({
       success: true,
-      data: [],
+      data: userSaved.map((sp: any) => ({
+        id: sp.id,
+        paper: sp.paper || generate100PlusPapers().find((p) => p.id === sp.paperId) || generate100PlusPapers()[0],
+        notes: sp.notes,
+        tags: sp.tags,
+        createdAt: sp.createdAt,
+      })),
     });
   } catch (err: any) {
     return res.status(500).json({ success: false, message: err.message });

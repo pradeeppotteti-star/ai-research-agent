@@ -47,7 +47,7 @@ export const LandingPage: React.FC = () => {
             className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-[#1E1C1A] bg-white border border-[#E8E2D8] hover:bg-[#F5F1EA] transition-all flex items-center justify-center gap-2 shadow-sm"
           >
             <Search className="w-4 h-4 text-[#1E3A8A]" />
-            <span>Try Demo Account</span>
+            <span>Researcher Sign In</span>
           </Link>
         </div>
       </section>

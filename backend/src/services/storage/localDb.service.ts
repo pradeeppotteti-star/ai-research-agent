@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcryptjs';
-import { generate100PlusPapers } from '../../utils/paperGenerator';
 
 export interface LocalUser {
   id: string;
@@ -105,8 +104,8 @@ class LocalDbService {
       this.loadSessions();
       this.loadSavedPapers();
       this.initialized = true;
-      console.log(`[LocalDatabase] Persistent database loaded successfully from: ${this.dataDir}`);
-      console.log(`[LocalDatabase] Users: ${this.users.size}, Sessions: ${this.sessions.size}, Saved Papers: ${this.savedPapers.size}`);
+      console.log(`[LocalDatabase] Clean production database initialized at: ${this.dataDir}`);
+      console.log(`[LocalDatabase] Registered Users: ${this.users.size}, Active Sessions: ${this.sessions.size}, Saved Papers: ${this.savedPapers.size}`);
     } catch (err: any) {
       console.error('[LocalDatabase Initialization Error]:', err.message);
     }
@@ -122,79 +121,12 @@ class LocalDbService {
           this.users.set(u.email.toLowerCase().trim(), u);
         }
       } catch (e) {
-        console.warn('[LocalDatabase] users.json corrupt or unreadable, re-seeding defaults.');
+        console.warn('[LocalDatabase] users.json unreadable, initializing clean empty database.');
+        this.saveUsersToDisk();
       }
+    } else {
+      this.saveUsersToDisk();
     }
-
-    // Seed defaults if empty or file doesn't exist on disk
-    if (this.users.size === 0 || !fs.existsSync(this.usersFile)) {
-      this.seedDefaultUsers();
-    }
-  }
-
-  private seedDefaultUsers() {
-    const adminHash = bcrypt.hashSync('adminPassword123', 10);
-    const testerHash = bcrypt.hashSync('testerPassword123', 10);
-    const scholarHash = bcrypt.hashSync('studentPassword123', 10);
-
-    const defaultUsers: LocalUser[] = [
-      {
-        id: '507f1f77bcf86cd799439011',
-        _id: '507f1f77bcf86cd799439011',
-        name: 'Shaik Fazullah',
-        email: 'admin@research-agent.org',
-        passwordHash: adminHash,
-        role: 'Lead Researcher (Admin)',
-        institution: 'Institute for Autonomous AI Research',
-        preferences: {
-          researchInterests: ['Autonomous Research Agents', 'Multi-Agent Frameworks', 'Citation Verification'],
-          preferredDomains: ['Computer Science', 'Artificial Intelligence'],
-          preferredYearRange: { start: 2020, end: 2026 },
-          defaultPaperCount: 5,
-          preferredSources: ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref', 'Google Scholar', 'IEEE Xplore'],
-        },
-        createdAt: new Date().toISOString(),
-      },
-      {
-        id: '507f1f77bcf86cd799439012',
-        _id: '507f1f77bcf86cd799439012',
-        name: 'Potteti Pradeep',
-        email: 'tester@academic.org',
-        passwordHash: testerHash,
-        role: 'Peer Reviewer (Tester)',
-        institution: 'Academic AI Research Lab',
-        preferences: {
-          researchInterests: ['LLM Factuality Benchmarks', 'Multimodal PDF Parsing', 'Gap Detection'],
-          preferredDomains: ['Computer Science', 'Artificial Intelligence'],
-          preferredYearRange: { start: 2020, end: 2026 },
-          defaultPaperCount: 5,
-          preferredSources: ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
-        },
-        createdAt: new Date().toISOString(),
-      },
-      {
-        id: '507f1f77bcf86cd799439013',
-        _id: '507f1f77bcf86cd799439013',
-        name: 'Puli Prabhas',
-        email: 'student@university.edu',
-        passwordHash: scholarHash,
-        role: 'Research Scholar',
-        institution: 'Data Science Research Lab',
-        preferences: {
-          researchInterests: ['Literature Surveys', 'arXiv Mining', 'Crossref DOI Indexing'],
-          preferredDomains: ['Computer Science', 'Artificial Intelligence'],
-          preferredYearRange: { start: 2020, end: 2026 },
-          defaultPaperCount: 5,
-          preferredSources: ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
-        },
-        createdAt: new Date().toISOString(),
-      },
-    ];
-
-    for (const u of defaultUsers) {
-      this.users.set(u.email.toLowerCase(), u);
-    }
-    this.saveUsersToDisk();
   }
 
   private saveUsersToDisk() {
@@ -292,93 +224,12 @@ class LocalDbService {
           this.sessions.set(sid, s);
         }
       } catch (e) {
-        console.warn('[LocalDatabase] sessions.json corrupt or unreadable, re-seeding defaults.');
+        console.warn('[LocalDatabase] sessions.json unreadable, initializing clean empty database.');
+        this.saveSessionsToDisk();
       }
+    } else {
+      this.saveSessionsToDisk();
     }
-
-    if (this.sessions.size === 0 || !fs.existsSync(this.sessionsFile)) {
-      this.seedDefaultSessions();
-    }
-  }
-
-  private seedDefaultSessions() {
-    const adminId = '507f1f77bcf86cd799439011';
-    const corpus = generate100PlusPapers();
-
-    const s1Id = 'session_career_01';
-    const s2Id = 'session_agents_02';
-    const s3Id = 'session_kidney_03';
-
-    const defaultSessions: LocalSession[] = [
-      {
-        id: s1Id,
-        _id: s1Id,
-        userId: adminId,
-        query: 'Design and implementation of an intelligent career guidance system using machine learning',
-        domain: 'Interdisciplinary General Science & Educational Technology',
-        keywords: ['Machine Learning', 'Career Guidance', 'Intelligent Tutoring', 'Decision Support'],
-        targetPaperCount: 10,
-        yearRange: { start: 2020, end: 2026 },
-        preferredSources: ['arXiv', 'Semantic Scholar'],
-        status: 'completed',
-        currentStage: 'completed',
-        stageProgressPercent: 100,
-        selectedPapers: corpus.slice(0, 10),
-        progressLogs: [
-          { timestamp: '2026-11-24T12:00:00.000Z', stage: 'planning', message: 'Formulated grounded career guidance search strategy.' },
-          { timestamp: '2026-11-24T12:01:00.000Z', stage: 'searching', message: 'Retrieved 10 papers across arXiv and Semantic Scholar.' },
-          { timestamp: '2026-11-24T12:02:00.000Z', stage: 'completed', message: 'Literature survey report successfully generated.' },
-        ],
-        createdAt: '2026-11-24T12:00:00.000Z',
-      },
-      {
-        id: s2Id,
-        _id: s2Id,
-        userId: adminId,
-        query: 'What are the latest approaches for autonomous AI research agents and citation verification?',
-        domain: 'Artificial Intelligence & Agentic Workflows',
-        keywords: ['Autonomous Agents', 'Citation Verification', 'LLM Factuality', 'Multi-Agent Frameworks'],
-        targetPaperCount: 25,
-        yearRange: { start: 2020, end: 2026 },
-        preferredSources: ['Google Scholar', 'IEEE Xplore'],
-        status: 'completed',
-        currentStage: 'completed',
-        stageProgressPercent: 100,
-        selectedPapers: corpus.slice(0, 25),
-        progressLogs: [
-          { timestamp: '2026-11-24T13:30:00.000Z', stage: 'planning', message: 'Initiated multi-agent query decomposition.' },
-          { timestamp: '2026-11-24T13:31:00.000Z', stage: 'searching', message: 'Harvested 25 publication-grade papers.' },
-          { timestamp: '2026-11-24T13:32:00.000Z', stage: 'completed', message: 'Survey completed and citation graph synthesized.' },
-        ],
-        createdAt: '2026-11-24T13:30:00.000Z',
-      },
-      {
-        id: s3Id,
-        _id: s3Id,
-        userId: adminId,
-        query: 'A Fair and Privacy-Preserving Federated Hybrid ML–DL Framework with Safe Deep Reinforcement Learning for Personalized Chronic Kidney Disease Progression Prediction and Clinical Decision Support',
-        domain: 'Clinical Decision Support & Biomedical Health Information',
-        keywords: ['Federated Learning', 'Differential Privacy', 'Safe Reinforcement Learning', 'Chronic Kidney Disease'],
-        targetPaperCount: 25,
-        yearRange: { start: 2020, end: 2026 },
-        preferredSources: ['Google Scholar', 'IEEE Xplore', 'Crossref'],
-        status: 'completed',
-        currentStage: 'completed',
-        stageProgressPercent: 100,
-        selectedPapers: corpus.slice(0, 25),
-        progressLogs: [
-          { timestamp: '2026-11-24T15:00:00.000Z', stage: 'planning', message: 'Configured federated clinical decision research plan.' },
-          { timestamp: '2026-11-24T15:01:00.000Z', stage: 'searching', message: 'Retrieved 25 peer-reviewed federated medical AI papers.' },
-          { timestamp: '2026-11-24T15:02:00.000Z', stage: 'completed', message: 'Completed 11-section survey report and benchmark matrix.' },
-        ],
-        createdAt: '2026-11-24T15:00:00.000Z',
-      },
-    ];
-
-    for (const s of defaultSessions) {
-      this.sessions.set(s.id, s);
-    }
-    this.saveSessionsToDisk();
   }
 
   private saveSessionsToDisk() {
@@ -391,17 +242,11 @@ class LocalDbService {
   }
 
   public getSessionsByUserId(userId: string): LocalSession[] {
-    const isAdmin = userId === '507f1f77bcf86cd799439011';
+    if (!userId) return [];
     const list: LocalSession[] = [];
     for (const s of this.sessions.values()) {
-      if (isAdmin) {
-        if (s.userId === userId || s.userId === 'mem_user' || !s.userId) {
-          list.push(s);
-        }
-      } else {
-        if (s.userId === userId) {
-          list.push(s);
-        }
+      if (s.userId === userId) {
+        list.push(s);
       }
     }
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -442,44 +287,12 @@ class LocalDbService {
           this.savedPapers.set(sp.id, sp);
         }
       } catch (e) {
-        console.warn('[LocalDatabase] saved_papers.json corrupt or unreadable, re-seeding defaults.');
+        console.warn('[LocalDatabase] saved_papers.json unreadable, initializing clean empty database.');
+        this.saveSavedPapersToDisk();
       }
+    } else {
+      this.saveSavedPapersToDisk();
     }
-
-    if (this.savedPapers.size === 0 || !fs.existsSync(this.savedPapersFile)) {
-      this.seedDefaultSavedPapers();
-    }
-  }
-
-  private seedDefaultSavedPapers() {
-    const adminId = '507f1f77bcf86cd799439011';
-    const corpus = generate100PlusPapers();
-
-    const defaultPapers: LocalSavedPaper[] = [
-      {
-        id: 'sp_admin_1',
-        userId: adminId,
-        paperId: corpus[0].id,
-        paper: corpus[0],
-        notes: 'Primary reference on career guidance and automated decision support systems.',
-        tags: ['Career Guidance', 'Recommendation System', 'Machine Learning'],
-        createdAt: '2026-11-24T12:05:00.000Z',
-      },
-      {
-        id: 'sp_admin_2',
-        userId: adminId,
-        paperId: corpus[1].id,
-        paper: corpus[1],
-        notes: 'Foundational benchmark paper on Reasoning and Acting in LLMs.',
-        tags: ['ReAct', 'Tool Use', 'Autonomous AI'],
-        createdAt: '2026-11-24T13:35:00.000Z',
-      },
-    ];
-
-    for (const sp of defaultPapers) {
-      this.savedPapers.set(sp.id, sp);
-    }
-    this.saveSavedPapersToDisk();
   }
 
   private saveSavedPapersToDisk() {
@@ -492,17 +305,11 @@ class LocalDbService {
   }
 
   public getSavedPapersByUserId(userId: string): LocalSavedPaper[] {
-    const isAdmin = userId === '507f1f77bcf86cd799439011';
+    if (!userId) return [];
     const list: LocalSavedPaper[] = [];
     for (const sp of this.savedPapers.values()) {
-      if (isAdmin) {
-        if (sp.userId === userId || sp.userId === 'mem_user' || !sp.userId) {
-          list.push(sp);
-        }
-      } else {
-        if (sp.userId === userId) {
-          list.push(sp);
-        }
+      if (sp.userId === userId) {
+        list.push(sp);
       }
     }
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -565,6 +372,16 @@ class LocalDbService {
       }
     }
     return false;
+  }
+
+  public clearAllData(): void {
+    this.users.clear();
+    this.sessions.clear();
+    this.savedPapers.clear();
+    this.saveUsersToDisk();
+    this.saveSessionsToDisk();
+    this.saveSavedPapersToDisk();
+    console.log('[LocalDatabase] All user data, sessions, and saved papers successfully wiped.');
   }
 }
 

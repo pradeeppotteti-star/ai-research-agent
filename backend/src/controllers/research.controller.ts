@@ -194,7 +194,6 @@ export const getResearchStatus = async (req: AuthRequest, res: Response) => {
 export const getResearchHistory = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
-    const isAdmin = userId === '507f1f77bcf86cd799439011' || req.user?.email === 'admin@research-agent.org';
 
     if (isMongoConnected()) {
       try {
@@ -367,7 +366,6 @@ export const comparePapers = async (req: AuthRequest, res: Response) => {
 export const getResearchStats = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
-    const isAdmin = userId === '507f1f77bcf86cd799439011' || req.user?.email === 'admin@research-agent.org';
 
     if (isMongoConnected()) {
       try {
@@ -379,19 +377,6 @@ export const getResearchStats = async (req: AuthRequest, res: Response) => {
         reports.forEach((r) => {
           totalVerifiedClaims += (r.claims || []).length;
         });
-
-        if (isAdmin && totalSessions === 0) {
-          return res.json({
-            success: true,
-            data: {
-              totalSessions: 5,
-              completedSessions: 5,
-              totalSavedPapers: 4,
-              totalVerifiedClaims: 12,
-              favoriteDomains: ['Career Guidance Systems', 'Autonomous Agents', 'LLM Factuality'],
-            },
-          });
-        }
 
         return res.json({
           success: true,
@@ -410,19 +395,6 @@ export const getResearchStats = async (req: AuthRequest, res: Response) => {
 
     const userSessions = localDb.getSessionsByUserId(userId || '');
     const userSaved = localDb.getSavedPapersByUserId(userId || '');
-
-    if (isAdmin && userSessions.length === 0) {
-      return res.json({
-        success: true,
-        data: {
-          totalSessions: 5,
-          completedSessions: 5,
-          totalSavedPapers: 4,
-          totalVerifiedClaims: 12,
-          favoriteDomains: ['Career Guidance Systems', 'Autonomous Agents', 'LLM Factuality'],
-        },
-      });
-    }
 
     let verifiedClaimsCount = 0;
     userSessions.forEach((s: any) => {

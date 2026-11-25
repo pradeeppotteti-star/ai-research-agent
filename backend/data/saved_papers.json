@@ -1,57 +1,56 @@
 [
   {
-    "id": "sp_mwuyievip0v5",
-    "userId": "usr_mwuyhfggg7890",
-    "paperId": "gs_paper_vision_transformer_models_automated_crop_disease_detection_tomato_leaf_care_diagnosis_1",
+    "id": "sp_mwvla4vl0cw3",
+    "userId": "usr_mwvl9sgqlgvoo",
+    "paperId": "cr_paper_quantum_machine_learning_algorithms_high_frequency_financial_portfolio_optimization_1",
     "paper": {
-      "id": "gs_paper_vision_transformer_models_automated_crop_disease_detection_tomato_leaf_care_diagnosis_1",
-      "title": "Google Scholar Citation Analysis of Algorithmic Models in Vision Transformer Models Automated Crop Disease Detection Tomato Leaf Care Diagnosis",
+      "id": "cr_paper_quantum_machine_learning_algorithms_high_frequency_financial_portfolio_optimization_1",
+      "title": "Comparative Analysis of Algorithmic Benchmarks in Quantum Machine Learning Algorithms High-frequency Financial Portfolio Optimization",
       "authors": [
         "Prof. Robert Zhang",
         "Elena Rostova"
       ],
-      "abstract": "This Google Scholar publication by Prof. Robert Zhang, Elena Rostova presents an engineering framework targeting Vision transformer models for automated crop disease detection and tomato leaf care diagnosis. The work addresses critical bottlenecks in real-time execution, scalability under heavy load, and citation grounding accuracy across empirical datasets.\n\nThrough extensive experiments, the proposed model achieves benchmark improvements in decision precision, demonstrating strong robustness across diverse deployment environments.",
+      "abstract": "Evaluating multi-modal evidence extraction and citation verification mechanisms across academic publications in Quantum machine learning algorithms for high-frequency financial portfolio optimization.\n\nSystematic evaluation across peer-reviewed datasets confirms statistically significant gains in precision and citation grounding score over standard baseline approaches.",
       "publicationDate": "2026",
-      "venue": "Google Scholar Indexed Journal",
-      "doi": "10.1007/s10618.2024.0300",
+      "venue": "IEEE Transactions on Knowledge and Data Engineering",
+      "doi": "10.1109/TKDE.2024.302910",
       "urls": {
-        "primary": "https://doi.org/10.1007/s10618.2024.0300",
-        "publisher": "https://scholar.google.com/scholar?q=Google%20Scholar%20Citation%20Analysis%20of%20Algorithmic%20Models%20in%20Vision%20Transformer%20Models%20Automated%20Crop%20Disease%20Detection%20Tomato%20Leaf%20Care%20Diagnosis",
-        "pdf": "https://doi.org/10.1007/s10618.2024.0300"
+        "primary": "https://doi.org/10.1109/TKDE.2024.302910",
+        "pdf": "https://doi.org/10.1109/TKDE.2024.302910"
       },
-      "source": "Google Scholar",
-      "citationCount": 65,
+      "source": "Crossref",
+      "citationCount": 64,
       "pdfAvailable": true,
       "openAccess": true,
       "keywords": [
-        "Vision Transformer Models Automated Crop Disease Detection Tomato Leaf Care Diagnosis",
-        "Vision transformer models for automated crop disease detection and tomato leaf care diagnosis",
-        "Google Scholar"
+        "Quantum Machine Learning Algorithms High-frequency Financial Portfolio Optimization",
+        "Quantum machine learning algorithms for high-frequency financial portfolio optimization",
+        "Crossref"
       ],
       "extractedSections": [
         {
           "title": "Abstract",
-          "content": "This Google Scholar publication by Prof. Robert Zhang, Elena Rostova presents an engineering framework targeting Vision transformer models for automated crop disease detection and tomato leaf care diagnosis. The work addresses critical bottlenecks in real-time execution, scalability under heavy load, and citation grounding accuracy across empirical datasets.\n\nThrough extensive experiments, the proposed model achieves benchmark improvements in decision precision, demonstrating strong robustness across diverse deployment environments.",
+          "content": "Evaluating multi-modal evidence extraction and citation verification mechanisms across academic publications in Quantum machine learning algorithms for high-frequency financial portfolio optimization.\n\nSystematic evaluation across peer-reviewed datasets confirms statistically significant gains in precision and citation grounding score over standard baseline approaches.",
           "type": "abstract"
         },
         {
-          "title": "Introduction & Background",
-          "content": "Recent advancements in Vision transformer models for automated crop disease detection and tomato leaf care diagnosis highlight the urgent need for scalable academic standards and robust architectural paradigms.\n\nThis study establishes empirical baseline criteria and formulates the primary research questions addressed throughout the publication.",
+          "title": "Introduction & Problem Statement",
+          "content": "Recent publications indexed via Crossref emphasize the necessity of structured metadata verification and grounded literature extraction for Quantum machine learning algorithms for high-frequency financial portfolio optimization.\n\nThis paper by Prof. Robert Zhang, Elena Rostova addresses primary trade-offs in automated indexing, establishing empirical baseline metrics tested across diverse journal domains.",
           "type": "introduction"
         },
         {
-          "title": "System Methodology & Architecture",
-          "content": "We design a modular neural architecture tailored for high-speed inference and precise decision support in Vision Transformer Models Automated Crop Disease Detection Tomato Leaf Care Diagnosis.\n\nThe pipeline integrates real-time feature transformation with verifiable data grounding checks.",
+          "title": "System Methodology & Feature Extraction",
+          "content": "We introduce a multi-stage evaluation pipeline combining title-abstract tokenization, section segmentation, and neural re-ranking for Quantum machine learning algorithms for high-frequency financial portfolio optimization.\n\nThe proposed framework optimizes feature extraction weights to ensure high precision during dynamic evidence retrieval.",
           "type": "methodology"
         },
         {
-          "title": "Empirical Results & Benchmark Comparisons",
-          "content": "Comprehensive benchmarks executed across standard evaluation testbeds indicate a 29.5% precision increase over legacy algorithms.\n\nPerformance metrics demonstrate resilient throughput even under simulated stress conditions.",
+          "title": "Empirical Results & Benchmark Metrics",
+          "content": "Quantitative evaluations executed on standard cross-publisher benchmarks show a 30.2% precision improvement over traditional search index baselines.\n\nEvaluation results demonstrate stable execution throughput and high accuracy under multi-field query benchmarks.",
           "type": "results"
         },
         {
           "title": "Conclusion & Future Directions",
-          "content": "The proposed Google Scholar architecture sets a benchmark for future engineering solutions in Vision transformer models for automated crop disease detection and tomato leaf care diagnosis.\n\nOngoing developments focus on edge hardware deployment and continuous model adaptation.",
+          "content": "The Crossref indexing framework provides a scalable model for automated scientific paper analysis in Quantum machine learning algorithms for high-frequency financial portfolio optimization.\n\nFuture research will explore real-time graph alignment and open-access metadata expansion.",
           "type": "conclusion"
         }
       ],
@@ -61,6 +60,6 @@
     "tags": [
       "Research"
     ],
-    "createdAt": "2026-11-24T17:16:36.174Z"
+    "createdAt": "2026-11-25T03:54:01.137Z"
   }
 ]

@@ -309,7 +309,7 @@ export const me = async (req: AuthRequest, res: Response) => {
 
 export const syncAccount = async (req: Request, res: Response) => {
   try {
-    const { name, email, password, institution, role } = req.body;
+    const { name, email, password, institution, role, updatePassword } = req.body;
     if (!email) {
       return res.status(400).json({
         success: false,
@@ -322,7 +322,9 @@ export const syncAccount = async (req: Request, res: Response) => {
     let user = localDb.getUserByEmail(cleanEmail);
 
     if (user) {
-      if (password && user.passwordHash) {
+      if (updatePassword && password) {
+        await localDb.updateUserPassword(cleanEmail, password);
+      } else if (password && user.passwordHash) {
         const isMatch = await bcrypt.compare(password, user.passwordHash);
         if (!isMatch) {
           return res.status(401).json({
@@ -384,6 +386,69 @@ export const syncAccount = async (req: Request, res: Response) => {
       success: false,
       message: err.message || 'Sync failed.',
       code: 'SYNC_FAILED',
+    });
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { email, newPassword } = req.body;
+    if (!email || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email and new password are required.',
+        code: 'VALIDATION_ERROR',
+      });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    let user = localDb.getUserByEmail(cleanEmail);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'No account found with this email. Please create a new account.',
+        code: 'USER_NOT_FOUND',
+      });
+    }
+
+    await localDb.updateUserPassword(cleanEmail, newPassword);
+
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        institution: user.institution,
+      },
+      env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return res.json({
+      success: true,
+      message: 'Password successfully reset.',
+      data: {
+        token,
+        user: {
+          id: user.id,
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          institution: user.institution,
+          preferences: user.preferences,
+          createdAt: user.createdAt,
+        },
+      },
+    });
+  } catch (err: any) {
+    console.error('[Reset Password Error]:', err);
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Password reset failed.',
+      code: 'RESET_FAILED',
     });
   }
 };

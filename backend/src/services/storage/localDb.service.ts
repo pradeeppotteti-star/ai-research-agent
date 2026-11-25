@@ -252,6 +252,16 @@ class LocalDbService {
     return restoredUser;
   }
 
+  public async updateUserPassword(email: string, newPassword: string): Promise<boolean> {
+    const cleanEmail = email.toLowerCase().trim();
+    const user = this.getUserByEmail(cleanEmail);
+    if (!user) return false;
+    const salt = await bcrypt.genSalt(10);
+    user.passwordHash = await bcrypt.hash(newPassword, salt);
+    this.saveUsersToDisk();
+    return true;
+  }
+
   public async createUser(data: {
     name: string;
     email: string;

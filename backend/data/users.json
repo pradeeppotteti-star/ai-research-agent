@@ -1,10 +1,43 @@
 [
   {
-    "id": "usr_mwuyhfggg7890",
-    "_id": "usr_mwuyhfggg7890",
+    "id": "usr_mwvkx61dq9l3m",
+    "_id": "usr_mwvkx61dq9l3m",
+    "name": "Shaik Fazulullah",
+    "email": "fazulullah@gmail.com",
+    "passwordHash": "$2a$10$uexY5gOMgPWz.n1GVNXrC.QktKDtORzRzV5nV1VeK9peD2nol413u",
+    "role": "Researcher",
+    "institution": "Data Science Lab",
+    "preferences": {
+      "researchInterests": [
+        "Autonomous AI Agents",
+        "LLM Factuality"
+      ],
+      "preferredDomains": [
+        "Computer Science",
+        "Artificial Intelligence"
+      ],
+      "preferredYearRange": {
+        "start": 2020,
+        "end": 2026
+      },
+      "defaultPaperCount": 5,
+      "preferredSources": [
+        "arXiv",
+        "Semantic Scholar",
+        "OpenAlex",
+        "Crossref",
+        "Google Scholar",
+        "IEEE Xplore"
+      ]
+    },
+    "createdAt": "2026-11-25T03:43:56.113Z"
+  },
+  {
+    "id": "usr_mwvl52a3ddr2i",
+    "_id": "usr_mwvl52a3ddr2i",
     "name": "pradeep",
     "email": "pradeeppotteti@gmail.com",
-    "passwordHash": "$2a$10$sEPh9gSkYaOOMoyzfHs15ephHNKrpDStAlzFg00zI7bLqsactfqjq",
+    "passwordHash": "$2a$10$knQR2RhdlETrC4axqos5rej0hB1IJDY9aEJvNMM/6vclRfW7akxxm",
     "role": "Researcher",
     "institution": "Academic Institution",
     "preferences": {
@@ -30,6 +63,39 @@
         "IEEE Xplore"
       ]
     },
-    "createdAt": "2026-11-24T17:15:50.272Z"
+    "createdAt": "2026-11-25T03:50:04.491Z"
+  },
+  {
+    "id": "usr_mwvl9sgqlgvoo",
+    "_id": "usr_mwvl9sgqlgvoo",
+    "name": "praveen",
+    "email": "praveenpotteti@gmail.com",
+    "passwordHash": "$2a$10$N4ABqEOVP7ktZrQ3ylSDWOetclSmdcbnsiUoec6OAUXIECaGZDV1e",
+    "role": "Researcher",
+    "institution": "Academic Institution",
+    "preferences": {
+      "researchInterests": [
+        "Autonomous AI Agents",
+        "LLM Factuality"
+      ],
+      "preferredDomains": [
+        "Computer Science",
+        "Artificial Intelligence"
+      ],
+      "preferredYearRange": {
+        "start": 2020,
+        "end": 2026
+      },
+      "defaultPaperCount": 5,
+      "preferredSources": [
+        "arXiv",
+        "Semantic Scholar",
+        "OpenAlex",
+        "Crossref",
+        "Google Scholar",
+        "IEEE Xplore"
+      ]
+    },
+    "createdAt": "2026-11-25T03:53:45.050Z"
   }
 ]

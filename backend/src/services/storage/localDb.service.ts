@@ -218,6 +218,40 @@ class LocalDbService {
     return null;
   }
 
+  public restoreUserFromToken(data: {
+    id: string;
+    email: string;
+    name: string;
+    role?: string;
+    institution?: string;
+  }): LocalUser {
+    const cleanEmail = data.email.toLowerCase().trim();
+    const existing = this.getUserByEmail(cleanEmail);
+    if (existing) return existing;
+
+    const restoredUser: LocalUser = {
+      id: data.id,
+      _id: data.id,
+      name: data.name || cleanEmail.split('@')[0],
+      email: cleanEmail,
+      passwordHash: '',
+      role: data.role || 'Researcher',
+      institution: data.institution || 'Academic Institution',
+      preferences: {
+        researchInterests: ['Autonomous AI Agents', 'LLM Factuality'],
+        preferredDomains: ['Computer Science', 'Artificial Intelligence'],
+        preferredYearRange: { start: 2020, end: 2026 },
+        defaultPaperCount: 5,
+        preferredSources: ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref', 'Google Scholar', 'IEEE Xplore'],
+      },
+      createdAt: new Date().toISOString(),
+    };
+
+    this.users.set(cleanEmail, restoredUser);
+    this.saveUsersToDisk();
+    return restoredUser;
+  }
+
   public async createUser(data: {
     name: string;
     email: string;

@@ -44,9 +44,49 @@ export const DashboardPage: React.FC = () => {
           api.get('/research/stats'),
         ]);
 
-        if (historyRes.data.success) setSessions(historyRes.data.data);
-        if (savedRes.data.success) setSavedPapers(savedRes.data.data);
-        if (statsRes.data.success) setStats(statsRes.data.data);
+        const userKey = user?.id || user?.email || 'default';
+        const cacheKeySessions = `paperinsight_sessions_${userKey}`;
+        const cacheKeySaved = `paperinsight_saved_${userKey}`;
+
+        let currentSessions = historyRes.data?.success ? historyRes.data.data : [];
+        let currentSaved = savedRes.data?.success ? savedRes.data.data : [];
+
+        // If server returns empty (e.g. serverless cold container), check local client cache
+        if (currentSessions.length === 0) {
+          try {
+            const cachedS = localStorage.getItem(cacheKeySessions);
+            if (cachedS) currentSessions = JSON.parse(cachedS);
+          } catch {}
+        } else {
+          try {
+            localStorage.setItem(cacheKeySessions, JSON.stringify(currentSessions));
+          } catch {}
+        }
+
+        if (currentSaved.length === 0) {
+          try {
+            const cachedP = localStorage.getItem(cacheKeySaved);
+            if (cachedP) currentSaved = JSON.parse(cachedP);
+          } catch {}
+        } else {
+          try {
+            localStorage.setItem(cacheKeySaved, JSON.stringify(currentSaved));
+          } catch {}
+        }
+
+        setSessions(currentSessions);
+        setSavedPapers(currentSaved);
+
+        if (statsRes.data?.success && statsRes.data.data?.totalSessions > 0) {
+          setStats(statsRes.data.data);
+        } else {
+          setStats({
+            totalSessions: currentSessions.length,
+            completedSessions: currentSessions.filter((s: any) => s.status === 'completed').length,
+            totalSavedPapers: currentSaved.length,
+            totalVerifiedClaims: currentSessions.reduce((acc: number, s: any) => acc + (s.verifiedClaimsCount || 0), 0),
+          });
+        }
       } catch (err) {
         console.error('Error loading dashboard data:', err);
       } finally {
@@ -54,7 +94,7 @@ export const DashboardPage: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [user]);
 
   const handleQuickLaunch = (topic: string) => {
     navigate('/research/new', { state: { query: topic } });

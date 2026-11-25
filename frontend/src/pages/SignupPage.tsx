@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
+import { authVault } from '../utils/authVault';
 import { BrainCircuit, Sparkles, User, Mail, Lock, AlertCircle } from 'lucide-react';
 
 export const SignupPage: React.FC = () => {
@@ -17,21 +18,39 @@ export const SignupPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    const cleanEmail = email.toLowerCase().trim();
+
+    // Guard against duplicate accounts on this device
+    if (authVault.hasAccount(cleanEmail)) {
+      setError('An account with this email address already exists. Please sign in.');
+      return;
+    }
+
     setLoading(true);
 
     try {
       const res = await api.post('/auth/signup', {
-        name,
-        email,
+        name: name.trim(),
+        email: cleanEmail,
         password,
       });
 
       if (res.data.success) {
+        await authVault.saveAccount({
+          name: name.trim(),
+          email: cleanEmail,
+          password,
+        });
         login(res.data.data.token, res.data.data.user);
         navigate('/dashboard');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to create account. Please check details.');
+      if (err.response?.status === 409 || err.response?.data?.code === 'EMAIL_ALREADY_EXISTS') {
+        setError('An account with this email address already exists. Please sign in.');
+      } else {
+        setError(err.response?.data?.message || 'Failed to create account. Please check details.');
+      }
     } finally {
       setLoading(false);
     }
@@ -53,7 +72,16 @@ export const SignupPage: React.FC = () => {
         {error && (
           <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-start gap-2">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-            <span>{error}</span>
+            <div className="flex-1">
+              <span>{error}</span>
+              {error.includes('already exists') && (
+                <div className="mt-1.5">
+                  <Link to="/login" className="font-bold underline text-[#1E3A8A] hover:text-[#172E6F]">
+                    Go to Sign In &rarr;
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         )}
 

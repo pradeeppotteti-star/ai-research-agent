@@ -10,6 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.1.11",
     "@types/jszip": "^3.4.0",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",

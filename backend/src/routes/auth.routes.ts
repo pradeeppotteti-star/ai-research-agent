@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { signup, login, logout, me } from '../controllers/auth.controller';
+import { signup, login, logout, me, syncAccount } from '../controllers/auth.controller';
 import { authenticateToken } from '../middleware/auth.middleware';
 
 const router = Router();
@@ -7,6 +7,7 @@ const router = Router();
 router.post('/signup', signup);
 router.post('/login', login);
 router.post('/logout', logout);
+router.post('/sync', syncAccount);
 router.get('/me', authenticateToken, me);
 
 export default router;

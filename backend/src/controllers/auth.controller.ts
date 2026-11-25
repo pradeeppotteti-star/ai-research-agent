@@ -74,7 +74,13 @@ export const signup = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign(
-      { userId: newUser.id, email: newUser.email },
+      {
+        userId: newUser.id,
+        email: newUser.email,
+        name: newUser.name,
+        role: newUser.role,
+        institution: newUser.institution,
+      },
       env.JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -128,7 +134,13 @@ export const login = async (req: Request, res: Response) => {
           const isMatch = await mongoUser.comparePassword(password);
           if (isMatch) {
             const token = jwt.sign(
-              { userId: mongoUser._id.toString(), email: mongoUser.email },
+              {
+                userId: mongoUser._id.toString(),
+                email: mongoUser.email,
+                name: mongoUser.name,
+                role: mongoUser.role,
+                institution: mongoUser.institution,
+              },
               env.JWT_SECRET,
               { expiresIn: '7d' }
             );
@@ -183,7 +195,13 @@ export const login = async (req: Request, res: Response) => {
 
     // Generate authenticated JWT token with persistent user ID
     const token = jwt.sign(
-      { userId: localUser.id, email: localUser.email },
+      {
+        userId: localUser.id,
+        email: localUser.email,
+        name: localUser.name,
+        role: localUser.role,
+        institution: localUser.institution,
+      },
       env.JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -252,7 +270,17 @@ export const me = async (req: AuthRequest, res: Response) => {
     }
 
     // Check Persistent Local Storage
-    const localUser = localDb.getUserById(req.user.userId) || localDb.getUserByEmail(req.user.email);
+    let localUser = localDb.getUserById(req.user.userId) || localDb.getUserByEmail(req.user.email);
+    if (!localUser && req.user.email) {
+      localUser = localDb.restoreUserFromToken({
+        id: req.user.userId,
+        email: req.user.email,
+        name: req.user.name || req.user.email.split('@')[0],
+        role: req.user.role || 'Researcher',
+        institution: req.user.institution || 'Academic Institution',
+      });
+    }
+
     if (localUser) {
       return res.json({
         success: true,
@@ -276,5 +304,86 @@ export const me = async (req: AuthRequest, res: Response) => {
     });
   } catch (err: any) {
     return res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export const syncAccount = async (req: Request, res: Response) => {
+  try {
+    const { name, email, password, institution, role } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required for account synchronization.',
+        code: 'VALIDATION_ERROR',
+      });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    let user = localDb.getUserByEmail(cleanEmail);
+
+    if (user) {
+      if (password && user.passwordHash) {
+        const isMatch = await bcrypt.compare(password, user.passwordHash);
+        if (!isMatch) {
+          return res.status(401).json({
+            success: false,
+            message: 'Incorrect password. Please verify your credentials and try again.',
+            code: 'INVALID_PASSWORD',
+          });
+        }
+      }
+    } else {
+      if (!password) {
+        return res.status(400).json({
+          success: false,
+          message: 'Password required to provision account.',
+          code: 'VALIDATION_ERROR',
+        });
+      }
+      user = await localDb.createUser({
+        name: name ? name.trim() : cleanEmail.split('@')[0],
+        email: cleanEmail,
+        password: password,
+        institution: institution || 'Academic Institution',
+        role: role || 'Researcher',
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        institution: user.institution,
+      },
+      env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return res.json({
+      success: true,
+      message: 'Account synchronized successfully.',
+      data: {
+        token,
+        user: {
+          id: user.id,
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          institution: user.institution,
+          preferences: user.preferences,
+          createdAt: user.createdAt,
+        },
+      },
+    });
+  } catch (err: any) {
+    console.error('[Sync Error]:', err);
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Sync failed.',
+      code: 'SYNC_FAILED',
+    });
   }
 };

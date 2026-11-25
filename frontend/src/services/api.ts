@@ -25,10 +25,20 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const url = error.config?.url || '';
+    const isAuthRoute =
+      url.includes('/auth/login') ||
+      url.includes('/auth/signup') ||
+      url.includes('/auth/sync');
+
+    if (error.response?.status === 401 && !isAuthRoute) {
       localStorage.removeItem('research_auth_token');
       localStorage.removeItem('research_user');
-      if (window.location.pathname !== '/login' && window.location.pathname !== '/signup' && window.location.pathname !== '/') {
+      if (
+        window.location.pathname !== '/login' &&
+        window.location.pathname !== '/signup' &&
+        window.location.pathname !== '/'
+      ) {
         window.location.href = '/login';
       }
     }

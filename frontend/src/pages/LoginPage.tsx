@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
+import { authVault } from '../utils/authVault';
 import {
   BrainCircuit,
   Mail,
@@ -24,13 +25,59 @@ export const LoginPage: React.FC = () => {
     setError('');
     setLoading(true);
 
+    const cleanEmail = email.toLowerCase().trim();
+
     try {
-      const res = await api.post('/auth/login', { email, password });
+      const res = await api.post('/auth/login', { email: cleanEmail, password });
       if (res.data.success) {
+        await authVault.saveAccount({
+          name: res.data.data.user.name,
+          email: cleanEmail,
+          password,
+          institution: res.data.data.user.institution,
+          role: res.data.data.user.role,
+        });
         login(res.data.data.token, res.data.data.user);
         navigate('/dashboard');
+        return;
       }
     } catch (err: any) {
+      const status = err.response?.status;
+      const code = err.response?.data?.code;
+      const msg = err.response?.data?.message || '';
+
+      // Resilient serverless fallback: if container cold-started and doesn't have the user in memory
+      if (status === 401 && (code === 'USER_NOT_FOUND' || msg.includes('No account found'))) {
+        const cached = authVault.getAccount(cleanEmail);
+        if (cached) {
+          const isMatch = await authVault.verifyPassword(cleanEmail, password);
+          if (!isMatch) {
+            setError('Incorrect password. Please verify your credentials and try again.');
+            setLoading(false);
+            return;
+          }
+
+          // Transparently re-sync to the active serverless container
+          try {
+            const syncRes = await api.post('/auth/sync', {
+              name: cached.name,
+              email: cleanEmail,
+              password,
+              institution: cached.institution,
+              role: cached.role,
+            });
+
+            if (syncRes.data.success) {
+              login(syncRes.data.data.token, syncRes.data.data.user);
+              navigate('/dashboard');
+              return;
+            }
+          } catch (syncErr: any) {
+            console.error('Account sync error:', syncErr);
+          }
+        }
+      }
+
       setError(err.response?.data?.message || 'Invalid email or password.');
     } finally {
       setLoading(false);

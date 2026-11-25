@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import bcrypt from 'bcryptjs';
 
 export interface LocalUser {
@@ -73,10 +74,37 @@ class LocalDbService {
   }
 
   private resolveDataDir(): string {
+    const isServerless = !!(
+      process.env.NETLIFY ||
+      process.env.AWS_LAMBDA_FUNCTION_NAME ||
+      process.env.LAMBDA_TASK_ROOT ||
+      process.env.VERCEL
+    );
+
+    // In serverless cloud environments (AWS Lambda / Netlify), os.tmpdir() is the ONLY writable directory
+    if (isServerless) {
+      try {
+        const tmpTarget = path.join(os.tmpdir(), 'paperinsight_data');
+        if (!fs.existsSync(tmpTarget)) {
+          fs.mkdirSync(tmpTarget, { recursive: true });
+        }
+        return tmpTarget;
+      } catch (err) {
+        return os.tmpdir();
+      }
+    }
+
+    // Local development candidates
+    const baseData = path.basename(process.cwd()) === 'backend'
+      ? path.resolve(process.cwd(), 'data')
+      : path.resolve(process.cwd(), 'backend/data');
+
     const candidates = [
-      path.resolve(__dirname, '../../../data'),
-      path.resolve(process.cwd(), 'backend/data'),
+      baseData,
       path.resolve(process.cwd(), 'data'),
+      path.resolve(__dirname, '../../../data'),
+      path.resolve(__dirname, '../../data'),
+      path.join(os.tmpdir(), 'paperinsight_data'),
     ];
 
     for (const c of candidates) {
@@ -84,16 +112,25 @@ class LocalDbService {
         if (!fs.existsSync(c)) {
           fs.mkdirSync(c, { recursive: true });
         }
+        // Test write permission safely
+        const testFile = path.join(c, `.probe_${Date.now()}`);
+        fs.writeFileSync(testFile, '1', 'utf-8');
+        fs.unlinkSync(testFile);
         return c;
       } catch (err) {
-        // try next
+        // try next candidate
       }
     }
-    const fallback = path.resolve(__dirname, '../../../data');
-    if (!fs.existsSync(fallback)) {
-      fs.mkdirSync(fallback, { recursive: true });
+
+    try {
+      const fallback = path.join(os.tmpdir(), 'paperinsight_data');
+      if (!fs.existsSync(fallback)) {
+        fs.mkdirSync(fallback, { recursive: true });
+      }
+      return fallback;
+    } catch (e) {
+      return os.tmpdir();
     }
-    return fallback;
   }
 
   private init() {
@@ -104,15 +141,18 @@ class LocalDbService {
       this.loadSessions();
       this.loadSavedPapers();
       this.initialized = true;
-      console.log(`[LocalDatabase] Clean production database initialized at: ${this.dataDir}`);
-      console.log(`[LocalDatabase] Registered Users: ${this.users.size}, Active Sessions: ${this.sessions.size}, Saved Papers: ${this.savedPapers.size}`);
+      console.log(`[LocalDatabase] Resilient database initialized at: ${this.dataDir}`);
+      console.log(
+        `[LocalDatabase] Active Users: ${this.users.size}, Active Sessions: ${this.sessions.size}, Saved Papers: ${this.savedPapers.size}`
+      );
     } catch (err: any) {
-      console.error('[LocalDatabase Initialization Error]:', err.message);
+      console.error('[LocalDatabase Initialization Warning]:', err.message);
     }
   }
 
   // ================= USERS =================
   private loadUsers() {
+    // 1. Try reading from active writable dataDir
     if (fs.existsSync(this.usersFile)) {
       try {
         const raw = fs.readFileSync(this.usersFile, 'utf-8');
@@ -120,13 +160,40 @@ class LocalDbService {
         for (const u of list) {
           this.users.set(u.email.toLowerCase().trim(), u);
         }
+        return;
       } catch (e) {
-        console.warn('[LocalDatabase] users.json unreadable, initializing clean empty database.');
-        this.saveUsersToDisk();
+        console.warn('[LocalDatabase] users.json unreadable in dataDir, starting empty.');
       }
-    } else {
-      this.saveUsersToDisk();
     }
+
+    // 2. Try copying from bundled read-only seed files if available
+    const baseDir = path.basename(process.cwd()) === 'backend'
+      ? path.resolve(process.cwd(), 'data')
+      : path.resolve(process.cwd(), 'backend/data');
+
+    const seedCandidates = [
+      path.resolve(baseDir, 'users.json'),
+      path.resolve(process.cwd(), 'data/users.json'),
+      path.resolve(__dirname, '../../../data/users.json'),
+      path.resolve(__dirname, '../../data/users.json'),
+    ];
+
+    for (const sc of seedCandidates) {
+      try {
+        if (fs.existsSync(sc)) {
+          const raw = fs.readFileSync(sc, 'utf-8');
+          const list: LocalUser[] = JSON.parse(raw);
+          for (const u of list) {
+            this.users.set(u.email.toLowerCase().trim(), u);
+          }
+          break;
+        }
+      } catch (e) {
+        // continue
+      }
+    }
+
+    this.saveUsersToDisk();
   }
 
   private saveUsersToDisk() {
@@ -134,7 +201,7 @@ class LocalDbService {
       const list = Array.from(this.users.values());
       fs.writeFileSync(this.usersFile, JSON.stringify(list, null, 2), 'utf-8');
     } catch (err: any) {
-      console.error('[LocalDatabase Error saving users]:', err.message);
+      console.warn('[LocalDatabase Warning] Cannot write users to disk, keeping in-memory store:', err.message);
     }
   }
 
@@ -223,13 +290,40 @@ class LocalDbService {
           const sid = s.id || s._id;
           this.sessions.set(sid, s);
         }
+        return;
       } catch (e) {
-        console.warn('[LocalDatabase] sessions.json unreadable, initializing clean empty database.');
-        this.saveSessionsToDisk();
+        console.warn('[LocalDatabase] sessions.json unreadable in dataDir, starting empty.');
       }
-    } else {
-      this.saveSessionsToDisk();
     }
+
+    const baseDir = path.basename(process.cwd()) === 'backend'
+      ? path.resolve(process.cwd(), 'data')
+      : path.resolve(process.cwd(), 'backend/data');
+
+    const seedCandidates = [
+      path.resolve(baseDir, 'sessions.json'),
+      path.resolve(process.cwd(), 'data/sessions.json'),
+      path.resolve(__dirname, '../../../data/sessions.json'),
+      path.resolve(__dirname, '../../data/sessions.json'),
+    ];
+
+    for (const sc of seedCandidates) {
+      try {
+        if (fs.existsSync(sc)) {
+          const raw = fs.readFileSync(sc, 'utf-8');
+          const list: LocalSession[] = JSON.parse(raw);
+          for (const s of list) {
+            const sid = s.id || s._id;
+            this.sessions.set(sid, s);
+          }
+          break;
+        }
+      } catch (e) {
+        // continue
+      }
+    }
+
+    this.saveSessionsToDisk();
   }
 
   private saveSessionsToDisk() {
@@ -237,7 +331,7 @@ class LocalDbService {
       const list = Array.from(this.sessions.values());
       fs.writeFileSync(this.sessionsFile, JSON.stringify(list, null, 2), 'utf-8');
     } catch (err: any) {
-      console.error('[LocalDatabase Error saving sessions]:', err.message);
+      console.warn('[LocalDatabase Warning] Cannot write sessions to disk, keeping in-memory store:', err.message);
     }
   }
 
@@ -286,13 +380,39 @@ class LocalDbService {
         for (const sp of list) {
           this.savedPapers.set(sp.id, sp);
         }
+        return;
       } catch (e) {
-        console.warn('[LocalDatabase] saved_papers.json unreadable, initializing clean empty database.');
-        this.saveSavedPapersToDisk();
+        console.warn('[LocalDatabase] saved_papers.json unreadable in dataDir, starting empty.');
       }
-    } else {
-      this.saveSavedPapersToDisk();
     }
+
+    const baseDir = path.basename(process.cwd()) === 'backend'
+      ? path.resolve(process.cwd(), 'data')
+      : path.resolve(process.cwd(), 'backend/data');
+
+    const seedCandidates = [
+      path.resolve(baseDir, 'saved_papers.json'),
+      path.resolve(process.cwd(), 'data/saved_papers.json'),
+      path.resolve(__dirname, '../../../data/saved_papers.json'),
+      path.resolve(__dirname, '../../data/saved_papers.json'),
+    ];
+
+    for (const sc of seedCandidates) {
+      try {
+        if (fs.existsSync(sc)) {
+          const raw = fs.readFileSync(sc, 'utf-8');
+          const list: LocalSavedPaper[] = JSON.parse(raw);
+          for (const sp of list) {
+            this.savedPapers.set(sp.id, sp);
+          }
+          break;
+        }
+      } catch (e) {
+        // continue
+      }
+    }
+
+    this.saveSavedPapersToDisk();
   }
 
   private saveSavedPapersToDisk() {
@@ -300,7 +420,7 @@ class LocalDbService {
       const list = Array.from(this.savedPapers.values());
       fs.writeFileSync(this.savedPapersFile, JSON.stringify(list, null, 2), 'utf-8');
     } catch (err: any) {
-      console.error('[LocalDatabase Error saving saved papers]:', err.message);
+      console.warn('[LocalDatabase Warning] Cannot write saved papers to disk, keeping in-memory store:', err.message);
     }
   }
 
@@ -322,7 +442,6 @@ class LocalDbService {
     notes?: string,
     tags?: string[]
   ): LocalSavedPaper {
-    // Check if already saved by this user
     for (const sp of this.savedPapers.values()) {
       if (sp.userId === userId && sp.paperId === paperId) {
         sp.notes = notes || sp.notes;
@@ -381,7 +500,6 @@ class LocalDbService {
     this.saveUsersToDisk();
     this.saveSessionsToDisk();
     this.saveSavedPapersToDisk();
-    console.log('[LocalDatabase] All user data, sessions, and saved papers successfully wiped.');
   }
 }
 

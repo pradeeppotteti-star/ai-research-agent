@@ -28,13 +28,15 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Netlify Functions path normalization middleware
 app.use((req, res, next) => {
   if (req.url.startsWith('/.netlify/functions/api')) {
-    req.url = req.url.replace('/.netlify/functions/api', '/api');
+    const stripped = req.url.replace('/.netlify/functions/api', '');
+    req.url = stripped.startsWith('/') ? stripped : '/' + stripped;
+    if (req.url === '') req.url = '/';
   }
   next();
 });
 
 // Health Check
-app.get('/api/health', (req, res) => {
+app.get(['/api/health', '/health'], (req, res) => {
   res.json({
     status: 'online',
     timestamp: new Date().toISOString(),
@@ -43,11 +45,18 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes
+// API Routes - mounted on both /api/* and /* for universal serverless/cloud compatibility
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+
 app.use('/api/research', researchRoutes);
+app.use('/research', researchRoutes);
+
 app.use('/api/papers', paperRoutes);
+app.use('/papers', paperRoutes);
+
 app.use('/api/user', userRoutes);
+app.use('/user', userRoutes);
 
 // Centralized Error Handling Middleware
 app.use(errorHandler);

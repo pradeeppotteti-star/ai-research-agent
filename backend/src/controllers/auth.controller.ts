@@ -7,6 +7,49 @@ import { isMongoConnected } from '../config/db';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { localDb } from '../services/storage/localDb.service';
 
+interface SerializableUser {
+  id?: string;
+  _id?: string | { toString(): string };
+  name?: string;
+  email?: string;
+  role?: string;
+  institution?: string;
+  preferences?: any;
+  createdAt?: Date | string;
+}
+
+function resolveUserId(user: SerializableUser): string {
+  return user.id || (user._id ? user._id.toString() : '');
+}
+
+function serializeUser(user: SerializableUser) {
+  const id = resolveUserId(user);
+  return {
+    id,
+    _id: id,
+    name: user.name || '',
+    email: user.email || '',
+    role: user.role || 'Researcher',
+    institution: user.institution,
+    preferences: user.preferences,
+    createdAt: user.createdAt,
+  };
+}
+
+function signAuthToken(user: SerializableUser): string {
+  return jwt.sign(
+    {
+      userId: resolveUserId(user),
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      institution: user.institution,
+    },
+    env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+}
+
 export const signup = async (req: Request, res: Response) => {
   try {
     const { name, email, password, institution, researchInterests } = req.body;
@@ -20,8 +63,64 @@ export const signup = async (req: Request, res: Response) => {
     }
 
     const cleanEmail = email.toLowerCase().trim();
+    const cleanName = name.trim();
+    const cleanInstitution = institution || 'Academic Institution';
+    const interests = researchInterests || ['Autonomous AI Agents', 'LLM Factuality'];
 
-    // Check if email already exists in local persistent database
+    if (isMongoConnected()) {
+      const existingMongo = await User.findOne({ email: cleanEmail });
+      if (existingMongo) {
+        return res.status(409).json({
+          success: false,
+          message: 'An account with this email address already exists. Please sign in.',
+          code: 'EMAIL_ALREADY_EXISTS',
+        });
+      }
+
+      const mongoUser = await User.create({
+        name: cleanName,
+        email: cleanEmail,
+        passwordHash: password, // Hashed in UserSchema pre('save')
+        institution: cleanInstitution,
+        role: 'Researcher',
+        preferences: {
+          researchInterests: interests,
+          preferredDomains: ['Computer Science', 'Artificial Intelligence'],
+          preferredYearRange: { start: 2020, end: 2026 },
+          defaultPaperCount: 5,
+          preferredSources: ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref', 'Google Scholar', 'IEEE Xplore'],
+        },
+      });
+
+      // Keep local fallback in sync if writable during local dev
+      if (!localDb.getUserByEmail(cleanEmail)) {
+        try {
+          await localDb.createUser({
+            id: mongoUser._id.toString(),
+            name: mongoUser.name,
+            email: mongoUser.email,
+            password,
+            institution: mongoUser.institution,
+            role: mongoUser.role,
+            researchInterests: interests,
+          });
+        } catch {
+          // Non-fatal in read-only or serverless environments
+        }
+      }
+
+      const token = signAuthToken(mongoUser);
+      return res.status(201).json({
+        success: true,
+        message: 'Account successfully created and saved to database.',
+        data: {
+          token,
+          user: serializeUser(mongoUser),
+        },
+      });
+    }
+
+    // Fallback when MongoDB is unavailable (offline local dev / tests)
     const existingLocal = localDb.getUserByEmail(cleanEmail);
     if (existingLocal) {
       return res.status(409).json({
@@ -31,78 +130,32 @@ export const signup = async (req: Request, res: Response) => {
       });
     }
 
-    if (isMongoConnected()) {
-      try {
-        const existingMongo = await User.findOne({ email: cleanEmail });
-        if (existingMongo) {
-          return res.status(409).json({
-            success: false,
-            message: 'An account with this email address already exists. Please sign in.',
-            code: 'EMAIL_ALREADY_EXISTS',
-          });
-        }
-      } catch (dbErr) {
-        console.warn('[DB Error during signup check]: Falling back to local disk database.');
-      }
-    }
-
-    // Create user in persistent local database
     const newUser = await localDb.createUser({
-      name: name.trim(),
+      name: cleanName,
       email: cleanEmail,
-      password: password,
-      institution: institution || 'Academic Institution',
+      password,
+      institution: cleanInstitution,
       role: 'Researcher',
-      researchInterests: researchInterests || ['Autonomous AI Agents', 'LLM Factuality'],
+      researchInterests: interests,
     });
 
-    // Mirror to Mongo if connected
-    if (isMongoConnected()) {
-      try {
-        await User.create({
-          _id: newUser.id,
-          name: newUser.name,
-          email: newUser.email,
-          passwordHash: password, // Mongoose pre('save') hashes it
-          institution: newUser.institution,
-          role: newUser.role,
-          preferences: newUser.preferences,
-        });
-      } catch (mongoErr) {
-        console.warn('[MongoDB Mirror Warning]: Created in persistent local DB, Mongo mirror deferred.');
-      }
-    }
-
-    const token = jwt.sign(
-      {
-        userId: newUser.id,
-        email: newUser.email,
-        name: newUser.name,
-        role: newUser.role,
-        institution: newUser.institution,
-      },
-      env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
+    const token = signAuthToken(newUser);
     return res.status(201).json({
       success: true,
-      message: 'Account successfully created and saved to database.',
+      message: 'Account successfully created.',
       data: {
         token,
-        user: {
-          id: newUser.id,
-          _id: newUser._id,
-          name: newUser.name,
-          email: newUser.email,
-          role: newUser.role,
-          institution: newUser.institution,
-          preferences: newUser.preferences,
-          createdAt: newUser.createdAt,
-        },
+        user: serializeUser(newUser),
       },
     });
   } catch (err: any) {
+    if (err?.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        message: 'An account with this email address already exists. Please sign in.',
+        code: 'EMAIL_ALREADY_EXISTS',
+      });
+    }
     console.error('[Signup Error]:', err);
     return res.status(500).json({
       success: false,
@@ -126,54 +179,62 @@ export const login = async (req: Request, res: Response) => {
 
     const cleanEmail = email.toLowerCase().trim();
 
-    // 1. Try Live MongoDB if connected
     if (isMongoConnected()) {
-      try {
-        const mongoUser = await User.findOne({ email: cleanEmail });
-        if (mongoUser) {
-          const isMatch = await mongoUser.comparePassword(password);
-          if (isMatch) {
-            const token = jwt.sign(
-              {
-                userId: mongoUser._id.toString(),
-                email: mongoUser.email,
-                name: mongoUser.name,
-                role: mongoUser.role,
-                institution: mongoUser.institution,
-              },
-              env.JWT_SECRET,
-              { expiresIn: '7d' }
-            );
-            return res.json({
-              success: true,
-              message: 'Authentication successful.',
-              data: {
-                token,
-                user: {
-                  id: mongoUser._id.toString(),
-                  name: mongoUser.name,
-                  email: mongoUser.email,
-                  role: mongoUser.role,
-                  institution: mongoUser.institution,
-                  preferences: mongoUser.preferences,
-                  createdAt: mongoUser.createdAt,
-                },
-              },
-            });
-          } else {
+      let mongoUser = await User.findOne({ email: cleanEmail });
+
+      // One-time seamless migration for accounts created in localDb prior to MongoDB connection
+      if (!mongoUser) {
+        const legacyLocal = localDb.getUserByEmail(cleanEmail);
+        if (legacyLocal && legacyLocal.passwordHash) {
+          const legacyMatch = await bcrypt.compare(password, legacyLocal.passwordHash);
+          if (!legacyMatch) {
             return res.status(401).json({
               success: false,
               message: 'Incorrect password. Please verify your credentials and try again.',
               code: 'INVALID_PASSWORD',
             });
           }
+          mongoUser = await User.create({
+            _id: legacyLocal.id,
+            name: legacyLocal.name,
+            email: legacyLocal.email,
+            passwordHash: legacyLocal.passwordHash,
+            role: legacyLocal.role,
+            institution: legacyLocal.institution,
+            preferences: legacyLocal.preferences,
+          });
         }
-      } catch (dbErr) {
-        console.warn('[DB Error during login] Switching to persistent local storage.');
       }
+
+      if (!mongoUser) {
+        return res.status(401).json({
+          success: false,
+          message: 'No account found with this email. Please check your email or create a new account.',
+          code: 'USER_NOT_FOUND',
+        });
+      }
+
+      const isMatch = await mongoUser.comparePassword(password);
+      if (!isMatch) {
+        return res.status(401).json({
+          success: false,
+          message: 'Incorrect password. Please verify your credentials and try again.',
+          code: 'INVALID_PASSWORD',
+        });
+      }
+
+      const token = signAuthToken(mongoUser);
+      return res.json({
+        success: true,
+        message: 'Authentication successful.',
+        data: {
+          token,
+          user: serializeUser(mongoUser),
+        },
+      });
     }
 
-    // 2. Persistent Local Storage Authentication
+    // Fallback local storage authentication when MongoDB is unavailable
     const localUser = localDb.getUserByEmail(cleanEmail);
     if (!localUser) {
       return res.status(401).json({
@@ -183,7 +244,14 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    // Verify Password against stored bcrypt hash
+    if (!localUser.passwordHash) {
+      return res.status(401).json({
+        success: false,
+        message: 'Account credentials need to be reset. Please sign up or contact support.',
+        code: 'INVALID_PASSWORD',
+      });
+    }
+
     const isPasswordValid = await bcrypt.compare(password, localUser.passwordHash);
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -193,34 +261,13 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    // Generate authenticated JWT token with persistent user ID
-    const token = jwt.sign(
-      {
-        userId: localUser.id,
-        email: localUser.email,
-        name: localUser.name,
-        role: localUser.role,
-        institution: localUser.institution,
-      },
-      env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
+    const token = signAuthToken(localUser);
     return res.json({
       success: true,
       message: 'Authentication successful.',
       data: {
         token,
-        user: {
-          id: localUser.id,
-          _id: localUser._id,
-          name: localUser.name,
-          email: localUser.email,
-          role: localUser.role,
-          institution: localUser.institution,
-          preferences: localUser.preferences,
-          createdAt: localUser.createdAt,
-        },
+        user: serializeUser(localUser),
       },
     });
   } catch (err: any) {
@@ -233,7 +280,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const logout = async (req: Request, res: Response) => {
+export const logout = async (_req: Request, res: Response) => {
   return res.json({
     success: true,
     message: 'Successfully logged out.',
@@ -246,54 +293,27 @@ export const me = async (req: AuthRequest, res: Response) => {
       return res.status(401).json({ success: false, message: 'Not authenticated.' });
     }
 
-    // Check Mongo if connected
     if (isMongoConnected()) {
-      try {
-        const user = await User.findById(req.user.userId).select('-passwordHash');
-        if (user) {
-          return res.json({
-            success: true,
-            data: {
-              id: user._id.toString(),
-              name: user.name,
-              email: user.email,
-              role: user.role,
-              institution: user.institution,
-              preferences: user.preferences,
-              createdAt: user.createdAt,
-            },
-          });
-        }
-      } catch (dbErr) {
-        console.warn('[DB Error during me check] Using persistent local storage.');
+      const user =
+        (await User.findById(req.user.userId).select('-passwordHash')) ||
+        (req.user.email ? await User.findOne({ email: req.user.email.toLowerCase().trim() }).select('-passwordHash') : null);
+
+      if (user) {
+        return res.json({
+          success: true,
+          data: serializeUser(user),
+        });
       }
     }
 
-    // Check Persistent Local Storage
-    let localUser = localDb.getUserById(req.user.userId) || localDb.getUserByEmail(req.user.email);
-    if (!localUser && req.user.email) {
-      localUser = localDb.restoreUserFromToken({
-        id: req.user.userId,
-        email: req.user.email,
-        name: req.user.name || req.user.email.split('@')[0],
-        role: req.user.role || 'Researcher',
-        institution: req.user.institution || 'Academic Institution',
-      });
-    }
+    const localUser =
+      localDb.getUserById(req.user.userId) ||
+      (req.user.email ? localDb.getUserByEmail(req.user.email) : null);
 
     if (localUser) {
       return res.json({
         success: true,
-        data: {
-          id: localUser.id,
-          _id: localUser._id,
-          name: localUser.name,
-          email: localUser.email,
-          role: localUser.role,
-          institution: localUser.institution,
-          preferences: localUser.preferences,
-          createdAt: localUser.createdAt,
-        },
+        data: serializeUser(localUser),
       });
     }
 
@@ -307,147 +327,93 @@ export const me = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const syncAccount = async (req: Request, res: Response) => {
-  try {
-    const { name, email, password, institution, role, updatePassword } = req.body;
-    if (!email) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email is required for account synchronization.',
-        code: 'VALIDATION_ERROR',
-      });
-    }
-
-    const cleanEmail = email.toLowerCase().trim();
-    let user = localDb.getUserByEmail(cleanEmail);
-
-    if (user) {
-      if (updatePassword && password) {
-        await localDb.updateUserPassword(cleanEmail, password);
-      } else if (password && user.passwordHash) {
-        const isMatch = await bcrypt.compare(password, user.passwordHash);
-        if (!isMatch) {
-          return res.status(401).json({
-            success: false,
-            message: 'Incorrect password. Please verify your credentials and try again.',
-            code: 'INVALID_PASSWORD',
-          });
-        }
-      }
-    } else {
-      if (!password) {
-        return res.status(400).json({
-          success: false,
-          message: 'Password required to provision account.',
-          code: 'VALIDATION_ERROR',
-        });
-      }
-      user = await localDb.createUser({
-        name: name ? name.trim() : cleanEmail.split('@')[0],
-        email: cleanEmail,
-        password: password,
-        institution: institution || 'Academic Institution',
-        role: role || 'Researcher',
-      });
-    }
-
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        institution: user.institution,
-      },
-      env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    return res.json({
-      success: true,
-      message: 'Account synchronized successfully.',
-      data: {
-        token,
-        user: {
-          id: user.id,
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          institution: user.institution,
-          preferences: user.preferences,
-          createdAt: user.createdAt,
-        },
-      },
-    });
-  } catch (err: any) {
-    console.error('[Sync Error]:', err);
-    return res.status(500).json({
-      success: false,
-      message: err.message || 'Sync failed.',
-      code: 'SYNC_FAILED',
-    });
-  }
-};
-
 export const resetPassword = async (req: Request, res: Response) => {
   try {
-    const { email, newPassword } = req.body;
-    if (!email || !newPassword) {
+    const { email, currentPassword, newPassword } = req.body;
+    if (!email || !currentPassword || !newPassword) {
       return res.status(400).json({
         success: false,
-        message: 'Email and new password are required.',
+        message: 'Email, current password, and new password are required.',
+        code: 'VALIDATION_ERROR',
+      });
+    }
+
+    if (String(newPassword).length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 6 characters long.',
         code: 'VALIDATION_ERROR',
       });
     }
 
     const cleanEmail = email.toLowerCase().trim();
-    let user = localDb.getUserByEmail(cleanEmail);
 
-    if (!user) {
+    if (isMongoConnected()) {
+      const mongoUser = await User.findOne({ email: cleanEmail });
+      if (!mongoUser) {
+        return res.status(404).json({
+          success: false,
+          message: 'No account found with this email.',
+          code: 'USER_NOT_FOUND',
+        });
+      }
+
+      const isCurrentValid = await mongoUser.comparePassword(currentPassword);
+      if (!isCurrentValid) {
+        return res.status(401).json({
+          success: false,
+          message: 'Current password is incorrect.',
+          code: 'INVALID_PASSWORD',
+        });
+      }
+
+      mongoUser.passwordHash = newPassword;
+      await mongoUser.save();
+      await localDb.updateUserPassword(cleanEmail, newPassword);
+
+      const token = signAuthToken(mongoUser);
+      return res.json({
+        success: true,
+        message: 'Password successfully updated.',
+        data: {
+          token,
+          user: serializeUser(mongoUser),
+        },
+      });
+    }
+
+    const localUser = localDb.getUserByEmail(cleanEmail);
+    if (!localUser) {
       return res.status(404).json({
         success: false,
-        message: 'No account found with this email. Please create a new account.',
+        message: 'No account found with this email.',
         code: 'USER_NOT_FOUND',
       });
     }
 
+    if (!localUser.passwordHash || !(await bcrypt.compare(currentPassword, localUser.passwordHash))) {
+      return res.status(401).json({
+        success: false,
+        message: 'Current password is incorrect.',
+        code: 'INVALID_PASSWORD',
+      });
+    }
+
     await localDb.updateUserPassword(cleanEmail, newPassword);
-
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        institution: user.institution,
-      },
-      env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
+    const token = signAuthToken(localUser);
     return res.json({
       success: true,
-      message: 'Password successfully reset.',
+      message: 'Password successfully updated.',
       data: {
         token,
-        user: {
-          id: user.id,
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          institution: user.institution,
-          preferences: user.preferences,
-          createdAt: user.createdAt,
-        },
+        user: serializeUser(localUser),
       },
     });
   } catch (err: any) {
     console.error('[Reset Password Error]:', err);
     return res.status(500).json({
       success: false,
-      message: err.message || 'Password reset failed.',
+      message: err.message || 'Password update failed.',
       code: 'RESET_FAILED',
     });
   }

@@ -259,3 +259,17 @@ export interface ResearchStats {
   totalVerifiedClaims: number;
   favoriteDomains: string[];
 }
+
+export type { PdfLibLike } from './pdfExportHelpers';
+export {
+  sanitizeForWinAnsi,
+  buildFolderSlug,
+  buildPaperPdfFilename,
+  isZipHeader,
+  resolvePaperSections,
+  buildPaperBibTeX,
+  buildBatchBibTeX,
+  buildBatchMetadataCsv,
+  buildBatchReadmeText,
+  generatePaperPdfBytes,
+} from './pdfExportHelpers';

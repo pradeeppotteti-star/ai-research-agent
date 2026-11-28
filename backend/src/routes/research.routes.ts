@@ -18,6 +18,7 @@ router.get('/history', authenticateToken, getResearchHistory);
 router.get('/stats', authenticateToken, getResearchStats);
 router.post('/compare', authenticateToken, comparePapers);
 router.get('/:id/export-zip', authenticateToken, exportResearchZip);
+router.post('/:id/export-zip', authenticateToken, exportResearchZip);
 router.get('/:id', authenticateToken, getResearchDetails);
 
 export default router;

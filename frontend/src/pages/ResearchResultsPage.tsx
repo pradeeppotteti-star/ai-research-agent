@@ -21,6 +21,12 @@ import { ResearchLoadingVisualizer } from '../components/common/ResearchLoadingV
 import { generateMultiBibTeX, downloadBibTeXFile } from '../utils/bibtex';
 import { downloadAllPapersDocument, downloadAllPapersCSV, downloadAllPapersJSON } from '../utils/paperExport';
 import {
+  buildClientResearchZipBlob,
+  buildZipDownloadFilename,
+  isValidZipBlob,
+  triggerBlobDownload,
+} from '../utils/paperZipExport';
+import {
   FileCheck2,
   GitCompare,
   Compass,
@@ -56,6 +62,8 @@ export const ResearchResultsPage: React.FC = () => {
   >('papers');
   const [bibtexCopied, setBibtexCopied] = useState<boolean>(false);
   const [downloadingZip, setDownloadingZip] = useState<boolean>(false);
+  const [zipProgress, setZipProgress] = useState<string>('');
+  const [zipFeedback, setZipFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   useEffect(() => {
     // Instant cache retrieval from sessionStorage to eliminate reload delays
@@ -70,6 +78,9 @@ export const ResearchResultsPage: React.FC = () => {
             setPapers(loaded);
             setReport(cached.report || null);
             setGaps(cached.researchGaps || []);
+            if (cached.consensus) setConsensus(cached.consensus);
+            if (cached.peerReview) setPeerReview(cached.peerReview);
+            if (cached.trendForecast) setTrendForecast(cached.trendForecast);
             setSelectedPaperIds(loaded.map((p: Paper) => p.id));
             setLoading(false);
           }
@@ -96,91 +107,15 @@ export const ResearchResultsPage: React.FC = () => {
           setReport(res.data.data.report);
           setGaps(res.data.data.researchGaps || []);
 
-          setConsensus({
-            overallFieldConsensusPct: 88,
-            consensusItems: [
-              {
-                topic: 'Multi-stage Query Decomposition vs Single-Prompt LLM Retrieval',
-                consensusScorePct: 88,
-                supportingPapersCount: Math.max(2, loadedPapers.length - 1),
-                contrastingPapersCount: 1,
-                consensusSummary: 'Literature strongly agrees (88% consensus) that decomposing complex academic queries improves precision.',
-                contrastingViewpoint: 'Single-prompt direct RAG achieves lower latency in simple lookup tasks.',
-              },
-              {
-                topic: 'Direct PDF Text Snippet Grounding for Hallucination Mitigation',
-                consensusScorePct: 92,
-                supportingPapersCount: loadedPapers.length,
-                contrastingPapersCount: 0,
-                consensusSummary: 'High consensus (92%) confirming that verifying generated claim text directly against extracted PDF paragraphs reduces hallucinations to under 9%.',
-              },
-            ],
-          });
-
-          setPeerReview({
-            overallDecision: 'Accept',
-            overallScore: 8.8,
-            reviewers: [
-              {
-                reviewerRole: 'Reviewer 1 (Methodology)',
-                score: 9.1,
-                summary: `The multi-provider search strategy over ${loadedPapers.length} peer-reviewed works displays strong technical rigor. Benchmark metric reporting is consistent.`,
-                strengths: [
-                  'Rigorous query decomposition covering foundational architectures.',
-                  'Direct comparison matrix across models, evaluation metrics, and benchmark datasets.',
-                ],
-                weaknesses: ['Paywalled publisher papers rely on abstract metadata fallback.'],
-              },
-              {
-                reviewerRole: 'Reviewer 2 (Novelty & Gaps)',
-                score: 8.6,
-                summary: `Identified candidate research gaps with actionable directions. Proposed future directions are highly relevant.`,
-                strengths: [
-                  'Explicit candidate gap detection isolating unaddressed multimodal chart parsing.',
-                  'Actionable future research directions provided for each identified gap.',
-                ],
-                weaknesses: ['Longitudinal citations spanning past 10 years could further strengthen context.'],
-              },
-              {
-                reviewerRole: 'Reviewer 3 (Factuality Auditor)',
-                score: 9.3,
-                summary: `Citation verification rate is high (92% supported claims). Grounding text anchors correctly quote retrieved paper paragraphs.`,
-                strengths: ['Supported, Inferred, and Uncertain claims explicitly demarcated.'],
-                weaknesses: ['Table figure caption extraction depends on PDF OCR quality.'],
-              },
-            ],
-          });
-
-          setTrendForecast({
-            projectedGrowthPct: 124,
-            emergingTopics: [
-              {
-                keyword: 'Autonomous Agentic Tool-Use',
-                momentum: 'high_growth',
-                growthPct: 142,
-                historicalCounts: [
-                  { year: 2021, paperCount: 12 },
-                  { year: 2022, paperCount: 45 },
-                  { year: 2023, paperCount: 180 },
-                  { year: 2024, paperCount: 410 },
-                  { year: 2025, paperCount: 780 },
-                ],
-              },
-              {
-                keyword: 'Citation Grounding & Factuality Verification',
-                momentum: 'high_growth',
-                growthPct: 118,
-                historicalCounts: [
-                  { year: 2021, paperCount: 8 },
-                  { year: 2022, paperCount: 22 },
-                  { year: 2023, paperCount: 95 },
-                  { year: 2024, paperCount: 260 },
-                  { year: 2025, paperCount: 520 },
-                ],
-              },
-            ],
-            recommendation: 'Focus upcoming research proposals on Autonomous Agentic Tool-Use and Multimodal PDF OCR Chart Parsing.',
-          });
+          if (res.data.data.consensus) {
+            setConsensus(res.data.data.consensus);
+          }
+          if (res.data.data.peerReview) {
+            setPeerReview(res.data.data.peerReview);
+          }
+          if (res.data.data.trendForecast) {
+            setTrendForecast(res.data.data.trendForecast);
+          }
 
           if (loadedPapers.length > 0) {
             setSelectedPaperIds(loadedPapers.map((p: Paper) => p.id));
@@ -206,7 +141,20 @@ export const ResearchResultsPage: React.FC = () => {
   };
 
   const handleCompareClick = () => {
-    navigate(`/research/compare`, { state: { paperIds: selectedPaperIds, query: session?.query } });
+    const selectedSet = new Set(selectedPaperIds);
+    const selectedPapers = papers.filter((p) => selectedSet.has(p.id));
+    const payload = {
+      paperIds: selectedPaperIds,
+      query: session?.query,
+      sessionId: id,
+      papers: selectedPapers,
+    };
+    try {
+      sessionStorage.setItem('paperinsight_last_matrix', JSON.stringify(payload));
+    } catch {
+      // ignore storage quota
+    }
+    navigate(`/research/compare`, { state: payload });
   };
 
   const handleCopyBibTeX = () => {
@@ -222,32 +170,75 @@ export const ResearchResultsPage: React.FC = () => {
   };
 
   const handleDownloadAllZip = async () => {
+    if (downloadingZip || papers.length === 0) return;
+
+    const targetQuery = session?.query || 'Research_Papers';
+    const zipFilename = buildZipDownloadFilename(targetQuery, papers.length);
+
     try {
       setDownloadingZip(true);
-      const res = await api.get(`/research/${id}/export-zip`, {
-        responseType: 'blob',
-        params: { query: session?.query },
-        timeout: 180000, // 3 minutes timeout for generating all 25 publication PDFs
+      setZipFeedback(null);
+      setZipProgress(`Packaging ${papers.length} PDFs...`);
+
+      let zipBlob: Blob | null = null;
+
+      // 1. Primary path: POST papers + query so stateless serverless never loses session context
+      try {
+        const res = await api.post(
+          `/research/${id}/export-zip`,
+          { query: targetQuery, papers },
+          {
+            responseType: 'blob',
+            timeout: 45000,
+          }
+        );
+
+        const candidateBlob =
+          res.data instanceof Blob
+            ? res.data
+            : new Blob([res.data], { type: 'application/zip' });
+
+        if (await isValidZipBlob(candidateBlob)) {
+          zipBlob = candidateBlob;
+        } else {
+          console.warn('Server returned non-ZIP payload; falling back to client-side ZIP packager.');
+        }
+      } catch (serverErr) {
+        console.warn('Server ZIP export unavailable; falling back to client-side ZIP packager:', serverErr);
+      }
+
+      // 2. Resilient client-side fallback if server is unreachable, timed out, or returned invalid data
+      if (!zipBlob) {
+        setZipProgress(`Building ${papers.length} PDFs locally...`);
+        const clientBlob = await buildClientResearchZipBlob(papers, targetQuery, (done, total) => {
+          setZipProgress(`Packaging ${done}/${total} PDFs...`);
+        });
+        if (await isValidZipBlob(clientBlob)) {
+          zipBlob = clientBlob;
+        }
+      }
+
+      if (!zipBlob) {
+        throw new Error('Generated archive failed ZIP integrity verification.');
+      }
+
+      triggerBlobDownload(zipBlob, zipFilename);
+      setZipFeedback({
+        type: 'success',
+        message: `Downloaded ${papers.length} PDFs + index files (${(zipBlob.size / 1024).toFixed(0)} KB).`,
       });
-      const blob = new Blob([res.data], { type: 'application/zip' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      const cleanName = (session?.query || 'Research_Papers')
-        .replace(/[^a-zA-Z0-9\s]/g, ' ')
-        .trim()
-        .slice(0, 30)
-        .replace(/\s+/g, '_');
-      link.download = `Research_Papers_${cleanName}_${papers.length}_PDFs.zip`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
+      window.setTimeout(() => {
+        setZipFeedback((prev) => (prev?.type === 'success' ? null : prev));
+      }, 6000);
+    } catch (err: any) {
       console.error('Error downloading research papers ZIP:', err);
-      alert('Failed to download research papers ZIP archive.');
+      setZipFeedback({
+        type: 'error',
+        message: err?.message || 'Unable to generate the PDFs ZIP archive. Please try again.',
+      });
     } finally {
       setDownloadingZip(false);
+      setZipProgress('');
     }
   };
 
@@ -294,7 +285,7 @@ export const ResearchResultsPage: React.FC = () => {
             {downloadingZip ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin text-white" />
-                <span>Packaging {papers.length} PDFs...</span>
+                <span>{zipProgress || `Packaging ${papers.length} PDFs...`}</span>
               </>
             ) : (
               <>
@@ -347,6 +338,26 @@ export const ResearchResultsPage: React.FC = () => {
             <span>Download .bib</span>
           </button>
         </div>
+
+        {zipFeedback && (
+          <div
+            role="status"
+            className={`px-4 py-2.5 rounded-lg text-xs font-semibold border flex items-center justify-between gap-3 ${
+              zipFeedback.type === 'success'
+                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                : 'bg-red-50 text-red-800 border-red-200'
+            }`}
+          >
+            <span>{zipFeedback.message}</span>
+            <button
+              type="button"
+              onClick={() => setZipFeedback(null)}
+              className="text-[11px] underline opacity-80 hover:opacity-100"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Navigation Tabs */}

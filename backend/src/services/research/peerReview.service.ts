@@ -2,8 +2,17 @@ import { Paper, PeerReviewPanel, EvidenceItem, CandidateResearchGap } from '@res
 
 export class PeerReviewService {
   evaluateSurvey(query: string, papers: Paper[], claims: EvidenceItem[], gaps: CandidateResearchGap[]): PeerReviewPanel {
-    const verifiedRatio = claims.filter((c) => c.verificationStatus === 'supported').length / Math.max(1, claims.length);
-    const overallScore = Number((7.8 + verifiedRatio * 1.6).toFixed(1));
+    const totalPapers = Math.max(1, papers.length);
+    const totalClaims = Math.max(1, claims.length);
+    const supportedCount = claims.filter((c) => c.verificationStatus === 'supported').length;
+    const verifiedRatio = supportedCount / totalClaims;
+    const openAccessRatio = papers.filter((p) => p.openAccess || p.pdfAvailable).length / totalPapers;
+    const sourceCount = new Set(papers.map((p) => p.source).filter(Boolean)).size;
+
+    const methodologyScore = Math.min(9.6, Number((6.8 + Math.min(1, sourceCount / 4) * 1.6 + Math.min(1, papers.length / 10) * 1.0).toFixed(1)));
+    const noveltyScore = Math.min(9.5, Number((6.9 + Math.min(1, gaps.length / 4) * 1.8 + openAccessRatio * 0.6).toFixed(1)));
+    const factualityScore = Math.min(9.8, Number((6.6 + verifiedRatio * 2.8).toFixed(1)));
+    const overallScore = Number(((methodologyScore + noveltyScore + factualityScore) / 3).toFixed(1));
 
     let overallDecision: PeerReviewPanel['overallDecision'] = 'Accept';
     if (overallScore >= 9.0) overallDecision = 'Strong Accept';
@@ -17,38 +26,44 @@ export class PeerReviewService {
       reviewers: [
         {
           reviewerRole: 'Reviewer 1 (Methodology)',
-          score: Math.min(9.5, Number((overallScore + 0.3).toFixed(1))),
-          summary: `The multi-provider search strategy over ${papers.length} peer-reviewed works displays strong technical rigor. Benchmark metric reporting is consistent.`,
+          score: methodologyScore,
+          summary: `Survey covers ${papers.length} works across ${sourceCount} repository source(s) for "${query}".`,
           strengths: [
-            'Rigorous query decomposition covering foundational architectures.',
-            'Direct comparison matrix across models, evaluation metrics, and benchmark datasets.',
+            `Cross-provider coverage across ${sourceCount} academic source(s).`,
+            'Structured side-by-side comparison across methodology, datasets, and limitations.',
           ],
           weaknesses: [
-            'Paywalled publisher papers rely on abstract metadata fallback rather than full-text PDF parsing.',
+            openAccessRatio < 1
+              ? `${papers.length - Math.round(openAccessRatio * papers.length)} non-open-access paper(s) rely on abstract metadata.`
+              : 'Additional longitudinal baselines could further broaden historical context.',
           ],
         },
         {
           reviewerRole: 'Reviewer 2 (Novelty & Gaps)',
-          score: Math.min(9.5, Number((overallScore - 0.2).toFixed(1))),
-          summary: `Identified ${gaps.length} candidate research gaps with actionable directions. The proposed future directions are highly relevant for modern AI agent development.`,
+          score: noveltyScore,
+          summary: `Identified ${gaps.length} candidate research gap(s) grounded in the retrieved corpus for "${query}".`,
           strengths: [
-            'Explicit candidate gap detection isolating unaddressed multimodal chart parsing.',
-            'Actionable future research directions provided for each identified gap.',
+            `Explicitly isolates ${gaps.length} underexplored research direction(s).`,
+            'Links each gap directly to supporting paper titles and evidence.',
           ],
           weaknesses: [
-            'Longitudinal citations spanning past 10 years could further strengthen foundational context.',
+            gaps.length < 3
+              ? 'Expanding the target paper count may surface additional niche research gaps.'
+              : 'Experimental validation of proposed future directions remains open work.',
           ],
         },
         {
           reviewerRole: 'Reviewer 3 (Factuality Auditor)',
-          score: Math.min(9.8, Number((overallScore + 0.4).toFixed(1))),
-          summary: `Citation verification rate is high (${Math.round(verifiedRatio * 100)}% supported claims). Grounding text anchors correctly quote retrieved paper paragraphs.`,
+          score: factualityScore,
+          summary: `${supportedCount} of ${claims.length} extracted claims (${Math.round(verifiedRatio * 100)}%) are directly supported by retrieved paper text.`,
           strengths: [
-            'Clear evidence classification: Supported, Inferred, and Uncertain claims explicitly demarcated.',
-            'Exact snippet quotes provided for all major claims.',
+            'Claims are categorized into Supported, Inferred, and Uncertain states.',
+            'Each finding links back to its source paper title and section.',
           ],
           weaknesses: [
-            'Table figure caption extraction depends on PDF OCR quality.',
+            verifiedRatio < 0.8
+              ? 'Some claims are inferred or uncertain due to limited full-text availability.'
+              : 'Automated PDF table/figure parsing depends on upstream publisher formatting.',
           ],
         },
       ],

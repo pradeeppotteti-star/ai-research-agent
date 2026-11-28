@@ -12,17 +12,25 @@ export const getProfile = async (req: AuthRequest, res: Response) => {
     }
 
     if (isMongoConnected()) {
-      try {
-        const user = await User.findById(userId).select('-passwordHash');
-        if (user) {
-          return res.json({
-            success: true,
-            data: user,
-          });
-        }
-      } catch (e) {
-        console.warn('[DB Error getProfile] Falling back to persistent local DB.');
+      const user =
+        (await User.findById(userId).select('-passwordHash')) ||
+        (req.user?.email ? await User.findOne({ email: req.user.email.toLowerCase().trim() }).select('-passwordHash') : null);
+      if (user) {
+        return res.json({
+          success: true,
+          data: {
+            id: user._id.toString(),
+            _id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            institution: user.institution,
+            preferences: user.preferences,
+            createdAt: user.createdAt,
+          },
+        });
       }
+      return res.status(404).json({ success: false, message: 'User profile not found.' });
     }
 
     const localUser = localDb.getUserById(userId) || (req.user?.email ? localDb.getUserByEmail(req.user.email) : null);
@@ -57,22 +65,41 @@ export const updateProfile = async (req: AuthRequest, res: Response) => {
     }
 
     if (isMongoConnected()) {
-      try {
-        const user = await User.findById(userId);
-        if (user) {
-          if (name) user.name = name.trim();
-          if (institution) user.institution = institution.trim();
-          if (preferences) {
-            user.preferences = {
-              ...user.preferences,
-              ...preferences,
-            };
-          }
-          await user.save();
-        }
-      } catch (e) {
-        console.warn('[DB Error updateProfile] Falling back to persistent local DB.');
+      const user =
+        (await User.findById(userId)) ||
+        (req.user?.email ? await User.findOne({ email: req.user.email.toLowerCase().trim() }) : null);
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User profile not found.' });
       }
+
+      if (name) user.name = name.trim();
+      if (institution !== undefined) user.institution = String(institution).trim();
+      if (preferences) {
+        user.preferences = {
+          ...user.preferences,
+          ...preferences,
+        };
+      }
+      await user.save();
+
+      // Best-effort sync to localDb
+      try {
+        await localDb.updateUser(user._id.toString(), { name, institution, preferences });
+      } catch {
+        // ignore
+      }
+
+      return res.json({
+        success: true,
+        message: 'Profile and preferences successfully updated.',
+        data: {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+          institution: user.institution,
+          preferences: user.preferences,
+        },
+      });
     }
 
     const updated = await localDb.updateUser(userId, { name, institution, preferences });

@@ -156,7 +156,10 @@ export const PaperDetailsPage: React.FC = () => {
         await api.delete(`/papers/${encodeURIComponent(paperId)}/save`);
         setIsSaved(false);
       } else {
-        await api.post(`/papers/${encodeURIComponent(paperId)}/save`, { tags: ['Research'] });
+        await api.post(`/papers/${encodeURIComponent(paperId)}/save`, {
+          tags: ['Research'],
+          paper: { ...paper, id: paperId },
+        });
         setIsSaved(true);
       }
     } catch (err) {
@@ -166,25 +169,49 @@ export const PaperDetailsPage: React.FC = () => {
     }
   };
 
+  const buildExecutiveSummary = (p: Paper) => {
+    const authors = p.authors?.length ? p.authors.join(', ') : 'Research Authors';
+    const methodSec = p.extractedSections?.find((s) => s.type === 'methodology')?.content;
+    const resultsSec = p.extractedSections?.find((s) => s.type === 'results')?.content;
+    const conclusionSec = p.extractedSections?.find((s) => s.type === 'conclusion')?.content;
+    const firstSentence = p.abstract?.split(/(?<=[.!?])\s+/)[0] || p.title;
+
+    return {
+      objective: `${p.title} (${p.publicationDate}) by ${authors} addresses: ${firstSentence}`,
+      methodology:
+        methodSec ||
+        `Evaluates methods indexed via ${p.source}${p.keywords?.length ? ` focusing on ${p.keywords.slice(0, 4).join(', ')}` : ''}.`,
+      findings: [
+        resultsSec || `Published in ${p.venue || p.source} (${p.publicationDate}) with ${p.citationCount ?? 0} recorded citations.`,
+        p.openAccess
+          ? 'Open-access metadata and full-text extraction available for direct claim verification.'
+          : 'Metadata-indexed record; verify experimental hyperparameters against the publisher PDF.',
+      ],
+      limitations:
+        conclusionSec ||
+        `${p.openAccess ? 'Follow-up evaluation across broader benchmarks is recommended.' : 'Publisher access boundaries limit automated full-text table extraction.'}`,
+    };
+  };
+
   const handleCopySummary = () => {
     if (!paper) return;
-    const summaryText = `EXECUTIVE AI SUMMARY: ${paper.title}
+    const s = buildExecutiveSummary(paper);
+    const summaryText = `EXECUTIVE SUMMARY: ${paper.title}
 Authors: ${paper.authors ? paper.authors.join(', ') : 'Author'}
 Venue: ${paper.venue || 'Academic Journal'} (${paper.publicationDate})
 
 1. CORE OBJECTIVE & PROBLEM
-This paper by ${paper.authors ? paper.authors.join(', ') : 'Author'} investigates key bottlenecks in ${paper.title.toLowerCase()}, proposing an evidence-grounded framework to improve decision precision and retrieval accuracy.
+${s.objective}
 
-2. METHODOLOGY & NOVEL ARCHITECTURE
-Proposes a multi-stage machine learning pipeline combining user profiling, section parsing, feature extraction, and neural scoring.
+2. METHODOLOGY & ARCHITECTURE
+${s.methodology}
 
-3. KEY QUANTITATIVE RESULTS
-- Demonstration of a 31% improvement in alignment precision over baseline models.
-- 92.4% citation grounding accuracy under verified text anchor checks.
+3. KEY FINDINGS & IMPACT
+- ${s.findings[0]}
+- ${s.findings[1]}
 
 4. LIMITATIONS & FUTURE DIRECTIONS
-- closed-access metadata fallback for paywalled journal sections.
-- develop specialized neural embedding adapters and continuous graph-based alignment loops.`;
+${s.limitations}`;
 
     navigator.clipboard.writeText(summaryText);
     setCopiedSummary(true);
@@ -193,8 +220,9 @@ Proposes a multi-stage machine learning pipeline combining user profiling, secti
 
   const handleDownloadSummaryTxt = () => {
     if (!paper) return;
+    const s = buildExecutiveSummary(paper);
     const element = document.createElement('a');
-    const summaryText = `EXECUTIVE AI SUMMARY: ${paper.title}\nAuthors: ${paper.authors ? paper.authors.join(', ') : 'Author'}\n\nABSTRACT:\n${paper.abstract}\n\nKEY TAKEAWAYS:\n1. Core Objective: Proposes an evidence-grounded architecture for ${paper.title}.\n2. Empirical Impact: Achieves strong precision and citation grounding.\n3. Future Direction: Expand multimodal chart parsing and real-time graph alignment.`;
+    const summaryText = `EXECUTIVE SUMMARY: ${paper.title}\nAuthors: ${paper.authors ? paper.authors.join(', ') : 'Author'}\n\nABSTRACT:\n${paper.abstract}\n\nKEY TAKEAWAYS:\n1. Core Objective: ${s.objective}\n2. Methodology: ${s.methodology}\n3. Findings: ${s.findings.join(' ')}\n4. Limitations & Future Directions: ${s.limitations}`;
     const file = new Blob([summaryText], { type: 'text/plain;charset=utf-8' });
     element.href = URL.createObjectURL(file);
     element.download = `${paper.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}_summary.txt`;
@@ -461,44 +489,49 @@ Proposes a multi-stage machine learning pipeline combining user profiling, secti
         </div>
 
         {/* Structured Executive Summary Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] space-y-2 bg-white shadow-sm">
-            <span className="text-xs font-black uppercase tracking-wider text-[#1E3A8A] font-mono">
-              01. Core Objective & Problem Addressed
-            </span>
-            <p className="text-xs text-[#433E38] leading-relaxed font-sans font-medium">
-              This paper by <strong className="text-[#1E1C1A] font-extrabold">{paper.authors ? paper.authors.join(', ') : 'Author'}</strong> investigates key bottlenecks in <strong className="text-[#1E1C1A] font-extrabold">{paper.title}</strong>, formulating a structured framework to improve recommendation accuracy, citation grounding, and decision support precision.
-            </p>
-          </div>
+        {(() => {
+          const summary = buildExecutiveSummary(paper);
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] space-y-2 bg-white shadow-sm">
+                <span className="text-xs font-black uppercase tracking-wider text-[#1E3A8A] font-mono">
+                  01. Core Objective & Problem Addressed
+                </span>
+                <p className="text-xs text-[#433E38] leading-relaxed font-sans font-medium">
+                  {summary.objective}
+                </p>
+              </div>
 
-          <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] space-y-2 bg-white shadow-sm">
-            <span className="text-xs font-black uppercase tracking-wider text-[#1E3A8A] font-mono">
-              02. Methodology & Novel Architecture
-            </span>
-            <p className="text-xs text-[#433E38] leading-relaxed font-sans font-medium">
-              Proposes a multi-stage machine learning pipeline combining user profiling, section parsing, feature extraction, and neural scoring to optimize experimental benchmarks.
-            </p>
-          </div>
+              <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] space-y-2 bg-white shadow-sm">
+                <span className="text-xs font-black uppercase tracking-wider text-[#1E3A8A] font-mono">
+                  02. Methodology & Architecture
+                </span>
+                <p className="text-xs text-[#433E38] leading-relaxed font-sans font-medium">
+                  {summary.methodology}
+                </p>
+              </div>
 
-          <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] space-y-2 bg-white shadow-sm">
-            <span className="text-xs font-black uppercase tracking-wider text-emerald-800 font-mono">
-              03. Key Empirical Findings & Results
-            </span>
-            <ul className="text-xs text-[#433E38] space-y-1 list-disc list-inside font-sans font-medium">
-              <li>Demonstrates a 31% precision improvement over baseline models.</li>
-              <li>Achieves 92.4% citation grounding under PDF paragraph anchor checks.</li>
-            </ul>
-          </div>
+              <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] space-y-2 bg-white shadow-sm">
+                <span className="text-xs font-black uppercase tracking-wider text-emerald-800 font-mono">
+                  03. Key Findings & Metadata
+                </span>
+                <ul className="text-xs text-[#433E38] space-y-1 list-disc list-inside font-sans font-medium">
+                  <li>{summary.findings[0]}</li>
+                  <li>{summary.findings[1]}</li>
+                </ul>
+              </div>
 
-          <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] space-y-2 bg-white shadow-sm">
-            <span className="text-xs font-black uppercase tracking-wider text-amber-800 font-mono">
-              04. Stated Limitations & Future Directions
-            </span>
-            <p className="text-xs text-[#433E38] leading-relaxed font-sans font-medium">
-              Closed-access metadata fallback for paywalled sections. Recommends developing specialized vision-language embedding adapters for real-time graph alignment.
-            </p>
-          </div>
-        </div>
+              <div className="glass-card p-5 rounded-xl border border-[#E8E2D8] space-y-2 bg-white shadow-sm">
+                <span className="text-xs font-black uppercase tracking-wider text-amber-800 font-mono">
+                  04. Limitations & Future Directions
+                </span>
+                <p className="text-xs text-[#433E38] leading-relaxed font-sans font-medium">
+                  {summary.limitations}
+                </p>
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Abstract */}

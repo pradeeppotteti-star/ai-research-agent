@@ -1,8 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IReportDocument extends Document {
-  sessionId: mongoose.Types.ObjectId;
-  userId: mongoose.Types.ObjectId;
+export interface IReportDocument extends Document<string> {
+  _id: string;
+  sessionId: string;
+  userId: string;
   title: string;
   sections: {
     researchQuestion: string;
@@ -41,8 +42,9 @@ export interface IReportDocument extends Document {
 
 const ReportSchema = new Schema<IReportDocument>(
   {
-    sessionId: { type: Schema.Types.ObjectId, ref: 'ResearchSession', required: true, index: true },
-    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+    _id: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
+    sessionId: { type: String, ref: 'ResearchSession', required: true, index: true },
+    userId: { type: String, ref: 'User', required: true, index: true },
     title: { type: String, required: true },
     sections: {
       researchQuestion: { type: String, required: true },

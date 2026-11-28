@@ -2,50 +2,60 @@ import { Paper, ConsensusAnalysis, ConsensusItem } from '@research-agent/shared'
 
 export class ConsensusService {
   analyzeConsensus(papers: Paper[], query: string): ConsensusAnalysis {
-    const consensusItems: ConsensusItem[] = [];
+    const total = Math.max(1, papers.length);
+    const openAccessCount = papers.filter((p) => p.openAccess || p.pdfAvailable).length;
+    const openAccessPct = Math.round((openAccessCount / total) * 100);
 
-    // Topic 1: Multi-stage query decomposition vs single-prompt querying
-    consensusItems.push({
-      topic: 'Multi-stage query decomposition vs Single-Prompt LLM Retrieval',
-      consensusScorePct: 88,
-      supportingPapersCount: Math.max(2, papers.length - 1),
-      contrastingPapersCount: 1,
-      consensusSummary:
-        'Literature strongly agrees (88% consensus) that decomposing complex academic queries into domain-specific sub-questions improves retrieval precision and recall.',
-      contrastingViewpoint:
-        'Single-prompt direct RAG achieves lower latency in simple lookup tasks, though at the expense of comprehensive literature coverage.',
-    });
+    const recentCount = papers.filter((p) => {
+      const y = parseInt(String(p.publicationDate || '2020'), 10);
+      return !isNaN(y) && y >= 2023;
+    }).length;
+    const recencyPct = Math.round((recentCount / total) * 100);
 
-    // Topic 2: Citation grounding & PDF text anchor verification
-    consensusItems.push({
-      topic: 'Direct PDF Text Snippet Grounding for Hallucination Mitigation',
-      consensusScorePct: 92,
-      supportingPapersCount: papers.length,
-      contrastingPapersCount: 0,
-      consensusSummary:
-        'High consensus (92%) confirming that verifying generated claim text directly against extracted PDF paragraphs reduces non-factual claim hallucinations to under 9%.',
-    });
+    const uniqueSources = new Set(papers.map((p) => p.source).filter(Boolean)).size;
+    const multiSourceScore = Math.min(95, Math.max(55, 55 + uniqueSources * 8));
 
-    // Topic 3: Paywalled metadata vs open-access full-text indexing
-    if (papers.length > 2) {
-      consensusItems.push({
-        topic: 'Abstract Metadata Fallback Accuracy for Non-Open-Access Papers',
-        consensusScorePct: 65,
-        supportingPapersCount: 2,
-        contrastingPapersCount: 2,
-        consensusSummary:
-          'Moderate consensus (65%). Abstracts provide reliable high-level claim verification, but lack granular experimental hyperparameter metrics found only in full PDFs.',
+    const highCitedCount = papers.filter((p) => (p.citationCount || 0) >= 10).length;
+    const citationConsensusPct = Math.min(96, Math.max(50, Math.round((highCitedCount / total) * 100) || 60));
+
+    const consensusItems: ConsensusItem[] = [
+      {
+        topic: `Methodological Recency & Momentum for "${query.slice(0, 60)}"`,
+        consensusScorePct: recencyPct,
+        supportingPapersCount: recentCount,
+        contrastingPapersCount: Math.max(0, papers.length - recentCount),
+        consensusSummary: `${recentCount} of ${papers.length} analyzed papers (${recencyPct}%) were published in 2023 or later, reflecting active convergence on modern approaches.`,
         contrastingViewpoint:
-          'Publisher paywall restrictions degrade empirical evidence verification for non-open-access journals.',
-      });
-    }
+          papers.length - recentCount > 0
+            ? `${papers.length - recentCount} earlier foundational studies establish baseline methods prior to recent architectures.`
+            : undefined,
+      },
+      {
+        topic: 'Open-Access Full-Text Verifiability',
+        consensusScorePct: openAccessPct,
+        supportingPapersCount: openAccessCount,
+        contrastingPapersCount: Math.max(0, papers.length - openAccessCount),
+        consensusSummary: `${openAccessCount} of ${papers.length} papers (${openAccessPct}%) expose open-access metadata or PDF links for direct claim grounding.`,
+        contrastingViewpoint:
+          papers.length - openAccessCount > 0
+            ? `${papers.length - openAccessCount} publisher-restricted entries rely on abstract-level metadata.`
+            : undefined,
+      },
+      {
+        topic: 'Cross-Repository Evidence & Citation Alignment',
+        consensusScorePct: Math.round((multiSourceScore + citationConsensusPct) / 2),
+        supportingPapersCount: Math.max(1, highCitedCount),
+        contrastingPapersCount: Math.max(0, papers.length - Math.max(1, highCitedCount)),
+        consensusSummary: `Evidence spans ${uniqueSources} academic repository source(s), with ${highCitedCount} paper(s) carrying 10+ citations supporting core claims.`,
+      },
+    ];
 
     const avgConsensus = Math.round(
       consensusItems.reduce((acc, item) => acc + item.consensusScorePct, 0) / consensusItems.length
     );
 
     return {
-      overallFieldConsensusPct: avgConsensus || 82,
+      overallFieldConsensusPct: avgConsensus,
       consensusItems,
     };
   }

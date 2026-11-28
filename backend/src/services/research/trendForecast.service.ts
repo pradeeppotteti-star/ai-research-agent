@@ -1,63 +1,73 @@
-import { TemporalTrendForecast, TopicTrend } from '@research-agent/shared';
+import { Paper, TemporalTrendForecast, TopicTrend } from '@research-agent/shared';
 
 export class TrendForecastService {
-  forecastTrends(query: string): TemporalTrendForecast {
-    const emergingTopics: TopicTrend[] = [
-      {
-        keyword: 'Autonomous Agentic Tool-Use',
-        momentum: 'high_growth',
-        growthPct: 142,
-        historicalCounts: [
-          { year: 2021, paperCount: 12 },
-          { year: 2022, paperCount: 45 },
-          { year: 2023, paperCount: 180 },
-          { year: 2024, paperCount: 410 },
-          { year: 2025, paperCount: 780 },
-        ],
-      },
-      {
-        keyword: 'Citation Grounding & Factuality Verification',
-        momentum: 'high_growth',
-        growthPct: 118,
-        historicalCounts: [
-          { year: 2021, paperCount: 8 },
-          { year: 2022, paperCount: 22 },
-          { year: 2023, paperCount: 95 },
-          { year: 2024, paperCount: 260 },
-          { year: 2025, paperCount: 520 },
-        ],
-      },
-      {
-        keyword: 'Scientific Multimodal OCR Chart Parsing',
-        momentum: 'emerging',
-        growthPct: 85,
-        historicalCounts: [
-          { year: 2021, paperCount: 4 },
-          { year: 2022, paperCount: 14 },
-          { year: 2023, paperCount: 48 },
-          { year: 2024, paperCount: 115 },
-          { year: 2025, paperCount: 290 },
-        ],
-      },
-      {
-        keyword: 'Static Heuristic Web Crawling',
-        momentum: 'declining',
-        growthPct: -34,
-        historicalCounts: [
-          { year: 2021, paperCount: 150 },
-          { year: 2022, paperCount: 180 },
-          { year: 2023, paperCount: 160 },
-          { year: 2024, paperCount: 120 },
-          { year: 2025, paperCount: 85 },
-        ],
-      },
-    ];
+  forecastTrends(query: string, papers: Paper[] = [], keywords: string[] = []): TemporalTrendForecast {
+    const years = [2022, 2023, 2024, 2025, 2026];
 
+    // Collect top keywords from papers and query
+    const freq = new Map<string, number>();
+    for (const kw of keywords) {
+      const clean = kw.trim();
+      if (clean.length > 2) freq.set(clean, (freq.get(clean) || 0) + 2);
+    }
+    for (const p of papers) {
+      for (const kw of p.keywords || []) {
+        const clean = kw.trim();
+        if (clean.length > 2) freq.set(clean, (freq.get(clean) || 0) + 1);
+      }
+    }
+
+    let topTopics = Array.from(freq.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4)
+      .map(([k]) => k);
+
+    if (topTopics.length === 0) {
+      topTopics = [query.trim().slice(0, 40) || 'Core Research Topic'];
+    }
+
+    const emergingTopics: TopicTrend[] = topTopics.map((topic) => {
+      const lower = topic.toLowerCase();
+      const matchingPapers = papers.filter(
+        (p) =>
+          p.title.toLowerCase().includes(lower) ||
+          p.abstract.toLowerCase().includes(lower) ||
+          (p.keywords || []).some((k) => k.toLowerCase().includes(lower))
+      );
+      const pool = matchingPapers.length > 0 ? matchingPapers : papers;
+
+      const historicalCounts = years.map((year) => ({
+        year,
+        paperCount: pool.filter((p) => parseInt(String(p.publicationDate || '2024'), 10) === year).length,
+      }));
+
+      const earlier = historicalCounts.slice(0, 2).reduce((s, c) => s + c.paperCount, 0);
+      const recent = historicalCounts.slice(3).reduce((s, c) => s + c.paperCount, 0);
+      const growthPct = earlier === 0 ? (recent > 0 ? recent * 50 : 0) : Math.round(((recent - earlier) / earlier) * 100);
+
+      let momentum: TopicTrend['momentum'] = 'stable';
+      if (growthPct >= 50) momentum = 'high_growth';
+      else if (growthPct > 10) momentum = 'emerging';
+      else if (growthPct < -10) momentum = 'declining';
+
+      return {
+        keyword: topic,
+        momentum,
+        growthPct,
+        historicalCounts,
+      };
+    });
+
+    const avgGrowth =
+      emergingTopics.length > 0
+        ? Math.round(emergingTopics.reduce((s, t) => s + t.growthPct, 0) / emergingTopics.length)
+        : 0;
+
+    const leadTopic = emergingTopics[0]?.keyword || query;
     return {
-      projectedGrowthPct: 124,
+      projectedGrowthPct: avgGrowth,
       emergingTopics,
-      recommendation:
-        'Focus upcoming research proposals on Autonomous Agentic Tool-Use and Multimodal PDF OCR Chart Parsing, as publication velocity in these areas has increased by over 118% year-over-year.',
+      recommendation: `Based on ${papers.length} retrieved paper(s), "${leadTopic}" shows the strongest representation (${avgGrowth >= 0 ? '+' : ''}${avgGrowth}% trend shift across 2022–2026).`,
     };
   }
 }

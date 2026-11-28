@@ -1,8 +1,10 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface ISavedPaperDocument extends Document {
-  userId: mongoose.Types.ObjectId;
-  paperId: mongoose.Types.ObjectId;
+export interface ISavedPaperDocument extends Document<string> {
+  _id: string;
+  userId: string;
+  paperId: string;
+  paper?: any;
   notes?: string;
   tags: string[];
   createdAt: Date;
@@ -11,8 +13,10 @@ export interface ISavedPaperDocument extends Document {
 
 const SavedPaperSchema = new Schema<ISavedPaperDocument>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-    paperId: { type: Schema.Types.ObjectId, ref: 'Paper', required: true, index: true },
+    _id: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
+    userId: { type: String, ref: 'User', required: true, index: true },
+    paperId: { type: String, ref: 'Paper', required: true, index: true },
+    paper: { type: Schema.Types.Mixed },
     notes: { type: String, default: '' },
     tags: { type: [String], default: [] },
   },

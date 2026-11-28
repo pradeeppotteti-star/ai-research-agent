@@ -6,7 +6,6 @@ import { Report } from '../models/Report';
 import { SavedPaper } from '../models/SavedPaper';
 import { Paper } from '@research-agent/shared';
 import { isMongoConnected } from '../config/db';
-import { orchestratorService } from '../services/research/orchestrator.service';
 import { comparisonService } from '../services/research/comparison.service';
 import { rankingService } from '../services/research/ranking.service';
 import { searchService } from '../services/research/search.service';
@@ -14,17 +13,59 @@ import { domainClassifierService } from '../services/research/domainClassifier.s
 import { gapDetectionService } from '../services/research/gapDetection.service';
 import { reportService } from '../services/research/report.service';
 import { evidenceService } from '../services/research/evidence.service';
+import { verificationService } from '../services/research/verification.service';
+import { consensusService } from '../services/research/consensus.service';
+import { peerReviewService } from '../services/research/peerReview.service';
+import { trendForecastService } from '../services/research/trendForecast.service';
 import { pdfGeneratorService } from '../services/research/pdfGenerator.service';
-import { generate100PlusPapers } from '../utils/paperGenerator';
-import { IN_MEMORY_SAVED_PAPERS } from './paper.controller';
 import { localDb } from '../services/storage/localDb.service';
 
 // In-Memory Sessions Repository for instant fallback
 export const IN_MEMORY_SESSIONS = new Map<string, any>();
 
+function buildSessionArtifacts(
+  sessionId: string,
+  query: string,
+  papers: Paper[],
+  preferredSources: string[],
+  keywords: string[] = []
+) {
+  const researchGaps = gapDetectionService.detectResearchGaps(papers, query);
+  const comparisonMatrix = comparisonService.generateComparisonMatrix(papers, query);
+  const rawClaims = evidenceService.extractEvidenceFromPapers(papers, query);
+  const verifiedClaims = verificationService.verifyAll(rawClaims);
+  const consensus = consensusService.analyzeConsensus(papers, query);
+  const peerReview = peerReviewService.evaluateSurvey(query, papers, verifiedClaims, researchGaps);
+  const trendForecast = trendForecastService.forecastTrends(query, papers, keywords);
+  const report = reportService.generateReport(
+    sessionId,
+    query,
+    papers,
+    verifiedClaims,
+    researchGaps,
+    comparisonMatrix,
+    preferredSources,
+    consensus
+  );
+
+  return {
+    researchGaps,
+    comparisonMatrix,
+    verifiedClaims,
+    consensus,
+    peerReview,
+    trendForecast,
+    report,
+  };
+}
+
 export const startResearch = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.user?.userId || 'mem_user';
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Not authenticated.' });
+    }
+
     const { query, targetPaperCount, yearRange, preferredSources } = req.body;
 
     if (!query || !query.trim()) {
@@ -36,21 +77,23 @@ export const startResearch = async (req: AuthRequest, res: Response) => {
     }
 
     const cleanQuery = query.replace(/^\s*\d+[\.\-\)]\s*/, '').trim();
-    // Auto-detect domain, keywords, and query decomposition behind the scenes
     const classification = domainClassifierService.classify(cleanQuery);
     const domain = req.body.domain || classification.domain;
     const keywords = req.body.keywords && req.body.keywords.length > 0 ? req.body.keywords : classification.keywords;
+    const sources = preferredSources && preferredSources.length > 0
+      ? preferredSources
+      : ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'];
 
     const startYear = yearRange?.start ? parseInt(String(yearRange.start), 10) : 2020;
     const endYear = yearRange?.end ? parseInt(String(yearRange.end), 10) : 2026;
+    const paperLimit = targetPaperCount || 10;
 
-    // Retrieve/synthesize papers 100% matching cleanQuery concept within selected timeline range
     const rawPapers = await searchService.searchMultiProvider(
       cleanQuery,
       classification.decomposedQuestions,
-      preferredSources,
+      sources,
       {
-        limit: targetPaperCount || 10,
+        limit: paperLimit,
         yearStart: startYear,
         yearEnd: endYear,
       }
@@ -59,80 +102,103 @@ export const startResearch = async (req: AuthRequest, res: Response) => {
     const rankedPapers = rankingService.rankPapers(
       rawPapers,
       cleanQuery,
-      targetPaperCount || 10,
+      paperLimit,
       { start: startYear, end: endYear }
     ) as Paper[];
 
-    const sessionId = 'session_' + Math.random().toString(36).substring(2, 9);
+    const progressLogs = [
+      { timestamp: new Date().toISOString(), stage: 'planning', message: `Auto-classified domain: "${domain}". Formulating adaptive research plan...` },
+      { timestamp: new Date().toISOString(), stage: 'searching', message: `Retrieved ${rankedPapers.length} papers matching "${cleanQuery}".` },
+      { timestamp: new Date().toISOString(), stage: 'completed', message: 'Literature survey report generated.' },
+    ];
 
-    const mockSession = {
+    if (isMongoConnected()) {
+      const session = await ResearchSession.create({
+        userId,
+        query: cleanQuery,
+        domain,
+        keywords,
+        targetPaperCount: paperLimit,
+        yearRange: { start: startYear, end: endYear },
+        preferredSources: sources,
+        status: 'completed',
+        currentStage: 'completed',
+        stageProgressPercent: 100,
+        selectedPapers: rankedPapers,
+        progressLogs,
+      });
+
+      const sessionId = session._id.toString();
+      const artifacts = buildSessionArtifacts(sessionId, cleanQuery, rankedPapers, sources, keywords);
+
+      const reportDoc = await Report.create({
+        sessionId,
+        userId,
+        title: artifacts.report.title || `AI Smart Research Survey: ${cleanQuery}`,
+        sections: artifacts.report.sections,
+        claims: artifacts.report.claims || [],
+      });
+
+      session.comparisonMatrix = artifacts.comparisonMatrix as any;
+      session.researchGaps = artifacts.researchGaps as any;
+      session.reportId = reportDoc._id.toString();
+      await session.save();
+
+      const fullSession = {
+        ...session.toObject(),
+        id: sessionId,
+        report: {
+          ...artifacts.report,
+          id: reportDoc._id.toString(),
+          _id: reportDoc._id.toString(),
+          createdAt: reportDoc.createdAt,
+        },
+      };
+      IN_MEMORY_SESSIONS.set(sessionId, fullSession);
+
+      return res.status(201).json({
+        success: true,
+        message: 'Research pipeline completed.',
+        data: {
+          sessionId,
+          status: 'completed',
+          currentStage: 'completed',
+          domain,
+          keywords,
+        },
+      });
+    }
+
+    const sessionId = 'session_' + Math.random().toString(36).substring(2, 9);
+    const artifacts = buildSessionArtifacts(sessionId, cleanQuery, rankedPapers, sources, keywords);
+
+    const localSession = {
       id: sessionId,
       _id: sessionId,
       userId,
       query: cleanQuery,
       domain,
       keywords,
-      targetPaperCount: targetPaperCount || 10,
-      yearRange: yearRange || { start: 2020, end: 2026 },
-      preferredSources: preferredSources || ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
-      status: 'completed',
+      targetPaperCount: paperLimit,
+      yearRange: { start: startYear, end: endYear },
+      preferredSources: sources,
+      status: 'completed' as const,
       currentStage: 'completed',
       stageProgressPercent: 100,
       selectedPapers: rankedPapers,
-      progressLogs: [
-        { timestamp: new Date().toISOString(), stage: 'planning', message: `Auto-classified domain: "${domain}". Formulating adaptive research plan...` },
-        { timestamp: new Date().toISOString(), stage: 'searching', message: `Retrieved ${rankedPapers.length} live papers specifically matching "${cleanQuery}".` },
-        { timestamp: new Date().toISOString(), stage: 'completed', message: 'Literature survey report generated.' },
-      ],
+      comparisonMatrix: artifacts.comparisonMatrix,
+      researchGaps: artifacts.researchGaps,
+      report: artifacts.report,
+      progressLogs,
       createdAt: new Date().toISOString(),
     };
 
-    IN_MEMORY_SESSIONS.set(sessionId, mockSession);
-    localDb.saveSession(mockSession);
-
-    if (isMongoConnected()) {
-      try {
-        const session = await ResearchSession.create({
-          userId,
-          query: cleanQuery,
-          domain,
-          keywords,
-          targetPaperCount: targetPaperCount || 10,
-          yearRange: yearRange || { start: 2020, end: 2026 },
-          preferredSources: preferredSources || ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
-          status: 'completed',
-          currentStage: 'completed',
-          stageProgressPercent: 100,
-          progressLogs: mockSession.progressLogs,
-        });
-
-        IN_MEMORY_SESSIONS.set(session._id.toString(), mockSession);
-        localDb.saveSession({ ...mockSession, id: session._id.toString(), _id: session._id.toString() });
-
-        // Run orchestrator asynchronously
-        orchestratorService.executeResearchPipeline(session._id.toString()).catch((err) => {
-          console.error('[Pipeline Execution Error]:', err);
-        });
-
-        return res.status(201).json({
-          success: true,
-          message: 'Research pipeline initiated.',
-          data: {
-            sessionId: session._id,
-            status: 'completed',
-            currentStage: 'completed',
-            domain,
-            keywords,
-          },
-        });
-      } catch (dbErr) {
-        console.warn('[DB Warning] Using fast in-memory session store.');
-      }
-    }
+    IN_MEMORY_SESSIONS.set(sessionId, localSession);
+    localDb.saveSession(localSession);
 
     return res.status(201).json({
       success: true,
-      message: 'Research pipeline initiated.',
+      message: 'Research pipeline completed.',
       data: {
         sessionId,
         status: 'completed',
@@ -154,37 +220,32 @@ export const getResearchStatus = async (req: AuthRequest, res: Response) => {
     const { id } = req.params;
 
     if (isMongoConnected()) {
-      try {
-        const session = await ResearchSession.findById(id);
-        if (session) {
-          return res.json({
-            success: true,
-            data: {
-              id: session._id,
-              status: session.status,
-              currentStage: session.currentStage,
-              stageProgressPercent: session.stageProgressPercent,
-              progressLogs: session.progressLogs,
-              reportId: session.reportId,
-            },
-          });
-        }
-      } catch (dbErr) {
-        console.warn('[DB Error getResearchStatus] Fallback to in-memory.');
+      const session = await ResearchSession.findById(id);
+      if (session) {
+        return res.json({
+          success: true,
+          data: {
+            id: session._id.toString(),
+            query: session.query,
+            status: session.status,
+            currentStage: session.currentStage,
+            stageProgressPercent: session.stageProgressPercent,
+            progressLogs: session.progressLogs,
+            reportId: session.reportId,
+          },
+        });
       }
+      return res.status(404).json({ success: false, message: 'Research session not found.' });
     }
 
-    const mock = localDb.getSessionById(id) || IN_MEMORY_SESSIONS.get(id) || {
-      id,
-      status: 'completed',
-      currentStage: 'completed',
-      stageProgressPercent: 100,
-      progressLogs: [{ timestamp: new Date().toISOString(), stage: 'completed', message: 'Completed' }],
-    };
+    const session = localDb.getSessionById(id) || IN_MEMORY_SESSIONS.get(id);
+    if (!session) {
+      return res.status(404).json({ success: false, message: 'Research session not found.' });
+    }
 
     return res.json({
       success: true,
-      data: mock,
+      data: session,
     });
   } catch (err: any) {
     return res.status(500).json({ success: false, message: err.message });
@@ -194,24 +255,25 @@ export const getResearchStatus = async (req: AuthRequest, res: Response) => {
 export const getResearchHistory = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
-
-    if (isMongoConnected()) {
-      try {
-        const sessions = await ResearchSession.find({ userId })
-          .sort({ createdAt: -1 })
-          .populate('selectedPaperIds');
-        if (sessions && sessions.length > 0) {
-          return res.json({
-            success: true,
-            data: sessions,
-          });
-        }
-      } catch (dbErr) {
-        console.warn('[DB Error getResearchHistory] Fallback to persistent local history.');
-      }
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Not authenticated.' });
     }
 
-    const userSessions = localDb.getSessionsByUserId(userId || '');
+    if (isMongoConnected()) {
+      const sessions = await ResearchSession.find({ userId })
+        .sort({ createdAt: -1 })
+        .populate('selectedPaperIds');
+
+      return res.json({
+        success: true,
+        data: sessions.map((s: any) => ({
+          ...s.toObject(),
+          id: s._id.toString(),
+        })),
+      });
+    }
+
+    const userSessions = localDb.getSessionsByUserId(userId);
     return res.json({
       success: true,
       data: userSessions,
@@ -225,62 +287,80 @@ export const getResearchDetails = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
 
-    let sessionObj = localDb.getSessionById(id) || IN_MEMORY_SESSIONS.get(id);
-
     if (isMongoConnected()) {
-      try {
-        const dbSession = await ResearchSession.findById(id).populate('selectedPaperIds');
-        if (dbSession) {
-          let report = null;
-          if (dbSession.reportId) {
-            report = await Report.findById(dbSession.reportId);
-          }
+      let dbSession = await ResearchSession.findById(id).populate('selectedPaperIds');
+      let reportDoc: any = null;
 
-          const dbPapers = dbSession.selectedPaperIds as any[];
-          if (dbPapers && dbPapers.length > 0) {
-            return res.json({
-              success: true,
-              data: {
-                session: dbSession,
-                papers: dbPapers,
-                comparisonMatrix: dbSession.comparisonMatrix,
-                researchGaps: dbSession.researchGaps,
-                report,
-              },
-            });
-          }
+      // Support lookup by reportId as well (e.g., when navigating to /reports/:reportId)
+      if (!dbSession) {
+        reportDoc = await Report.findById(id);
+        if (reportDoc?.sessionId) {
+          dbSession = await ResearchSession.findById(reportDoc.sessionId).populate('selectedPaperIds');
         }
-      } catch (dbErr) {
-        console.warn('[DB Error getResearchDetails] Using in-memory store.');
       }
+
+      if (!dbSession) {
+        return res.status(404).json({ success: false, message: 'Research session not found.' });
+      }
+
+      if (!reportDoc && dbSession.reportId) {
+        reportDoc = await Report.findById(dbSession.reportId);
+      }
+
+      const sessionPapers: Paper[] =
+        dbSession.selectedPapers && dbSession.selectedPapers.length > 0
+          ? (dbSession.selectedPapers as Paper[])
+          : ((dbSession.selectedPaperIds as any[]) || []).map((p: any) =>
+              typeof p?.toObject === 'function' ? { ...p.toObject(), id: p._id.toString() } : p
+            );
+
+      const sessionIdStr = dbSession._id.toString();
+      const artifacts = buildSessionArtifacts(
+        sessionIdStr,
+        dbSession.query,
+        sessionPapers,
+        dbSession.preferredSources || ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
+        dbSession.keywords || []
+      );
+
+      const formattedReport = reportDoc
+        ? {
+            ...reportDoc.toObject(),
+            id: reportDoc._id.toString(),
+          }
+        : artifacts.report;
+
+      return res.json({
+        success: true,
+        data: {
+          session: { ...dbSession.toObject(), id: sessionIdStr },
+          papers: sessionPapers,
+          comparisonMatrix: dbSession.comparisonMatrix?.length ? dbSession.comparisonMatrix : artifacts.comparisonMatrix,
+          researchGaps: dbSession.researchGaps?.length ? dbSession.researchGaps : artifacts.researchGaps,
+          report: formattedReport,
+          consensus: artifacts.consensus,
+          peerReview: artifacts.peerReview,
+          trendForecast: artifacts.trendForecast,
+        },
+      });
     }
 
+    const sessionObj = localDb.getSessionById(id) || IN_MEMORY_SESSIONS.get(id);
     if (!sessionObj) {
-      sessionObj = {
-        id,
-        query: 'Design and implementation of an intelligent career guidance system using machine learning',
-        domain: 'Interdisciplinary General Science & Educational Technology',
-        status: 'completed',
-        currentStage: 'completed',
-        targetPaperCount: 10,
-        preferredSources: ['arXiv', 'Semantic Scholar'],
-        createdAt: new Date().toISOString(),
-      };
+      return res.status(404).json({ success: false, message: 'Research session not found.' });
     }
 
-    // Retrieve papers 100% specific to session query concept (use cached papers if already generated)
-    let finalPapers: Paper[] = sessionObj.selectedPapers && sessionObj.selectedPapers.length > 0
-      ? sessionObj.selectedPapers
-      : [];
+    let finalPapers: Paper[] =
+      sessionObj.selectedPapers && sessionObj.selectedPapers.length > 0 ? sessionObj.selectedPapers : [];
+    const targetQuery = sessionObj.query;
+    const sources = sessionObj.preferredSources || ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'];
 
-    const targetQuery = sessionObj.query || 'Career guidance system';
-    const classification = domainClassifierService.classify(targetQuery);
-
-    if (!finalPapers || finalPapers.length === 0) {
+    if (finalPapers.length === 0) {
+      const classification = domainClassifierService.classify(targetQuery);
       const fetchedPapers = await searchService.searchMultiProvider(
         targetQuery,
         classification.decomposedQuestions,
-        sessionObj.preferredSources,
+        sources,
         { limit: sessionObj.targetPaperCount || 10 }
       );
       finalPapers = rankingService.rankPapers(
@@ -291,26 +371,10 @@ export const getResearchDetails = async (req: AuthRequest, res: Response) => {
       sessionObj.selectedPapers = finalPapers;
     }
 
-    if (!sessionObj.researchGaps) {
-      sessionObj.researchGaps = gapDetectionService.detectResearchGaps(finalPapers, targetQuery);
-    }
-
-    if (!sessionObj.comparisonMatrix) {
-      sessionObj.comparisonMatrix = comparisonService.generateComparisonMatrix(finalPapers, targetQuery);
-    }
-
-    if (!sessionObj.report) {
-      const claims = evidenceService.extractEvidenceFromPapers(finalPapers, targetQuery);
-      sessionObj.report = reportService.generateReport(
-        id,
-        targetQuery,
-        finalPapers,
-        claims,
-        sessionObj.researchGaps,
-        sessionObj.comparisonMatrix,
-        sessionObj.preferredSources || ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref']
-      );
-    }
+    const artifacts = buildSessionArtifacts(id, targetQuery, finalPapers, sources, sessionObj.keywords || []);
+    if (!sessionObj.researchGaps) sessionObj.researchGaps = artifacts.researchGaps;
+    if (!sessionObj.comparisonMatrix) sessionObj.comparisonMatrix = artifacts.comparisonMatrix;
+    if (!sessionObj.report) sessionObj.report = artifacts.report;
 
     IN_MEMORY_SESSIONS.set(id, sessionObj);
     localDb.saveSession(sessionObj);
@@ -323,6 +387,9 @@ export const getResearchDetails = async (req: AuthRequest, res: Response) => {
         comparisonMatrix: sessionObj.comparisonMatrix,
         researchGaps: sessionObj.researchGaps,
         report: sessionObj.report,
+        consensus: artifacts.consensus,
+        peerReview: artifacts.peerReview,
+        trendForecast: artifacts.trendForecast,
       },
     });
   } catch (err: any) {
@@ -332,29 +399,59 @@ export const getResearchDetails = async (req: AuthRequest, res: Response) => {
 
 export const comparePapers = async (req: AuthRequest, res: Response) => {
   try {
-    const { paperIds, query } = req.body;
+    const { paperIds, query, sessionId, papers: bodyPapers } = req.body;
 
-    if (!paperIds || !Array.isArray(paperIds) || paperIds.length === 0) {
-      return res.status(400).json({ success: false, message: 'Array of paperIds required for comparison.' });
+    if ((!paperIds || !Array.isArray(paperIds) || paperIds.length === 0) && (!Array.isArray(bodyPapers) || bodyPapers.length === 0)) {
+      return res.status(400).json({ success: false, message: 'Array of paperIds or papers required for comparison.' });
     }
 
+    const targetQuery = query || 'Academic Literature Comparison';
+
+    // 1. Direct papers passed from the client UI (fastest and 100% consistent on serverless)
+    if (Array.isArray(bodyPapers) && bodyPapers.length > 0) {
+      const selectedSet = Array.isArray(paperIds) && paperIds.length > 0 ? new Set(paperIds) : null;
+      const filtered = selectedSet
+        ? bodyPapers.filter((p: any) => selectedSet.has(p.id || p._id))
+        : bodyPapers;
+      const sourcePapers = (filtered.length > 0 ? filtered : bodyPapers) as Paper[];
+      const comparison = comparisonService.generateComparisonMatrix(sourcePapers, targetQuery);
+      return res.json({ success: true, data: comparison });
+    }
+
+    // 2. Check cached session in localDb / in-memory store
+    const idSet = new Set(paperIds || []);
+    const cachedSession = sessionId ? (localDb.getSessionById(sessionId) || IN_MEMORY_SESSIONS.get(sessionId)) : null;
+    if (cachedSession?.selectedPapers && cachedSession.selectedPapers.length > 0) {
+      const matched = cachedSession.selectedPapers.filter((p: any) => idSet.has(p.id || p._id));
+      const sourcePapers = (matched.length > 0 ? matched : cachedSession.selectedPapers) as Paper[];
+      const comparison = comparisonService.generateComparisonMatrix(sourcePapers, cachedSession.query || targetQuery);
+      return res.json({ success: true, data: comparison });
+    }
+
+    // 3. MongoDB lookup when connected
     if (isMongoConnected()) {
       try {
         const papers = await PaperModel.find({ _id: { $in: paperIds } });
         if (papers.length > 0) {
           const plainPapers = papers.map((p) => ({ ...p.toObject(), id: p._id.toString() })) as unknown as Paper[];
-          const comparison = comparisonService.generateComparisonMatrix(plainPapers, query || 'AI Academic Agent Research');
+          const comparison = comparisonService.generateComparisonMatrix(plainPapers, targetQuery);
           return res.json({ success: true, data: comparison });
         }
-      } catch (dbErr) {
+      } catch {
         console.warn('[DB Error comparePapers] Fallback matrix.');
       }
     }
 
-    const fallbackQuery = query || 'Career Guidance System';
+    // 4. Fallback multi-provider lookup
+    const fallbackQuery = query || 'Academic Literature Research';
     const classification = domainClassifierService.classify(fallbackQuery);
-    const fetched = await searchService.searchMultiProvider(fallbackQuery, classification.decomposedQuestions, ['arXiv', 'Semantic Scholar'], { limit: paperIds.length || 5 });
-    const fallbackPapers = rankingService.rankPapers(fetched, fallbackQuery, paperIds.length || 5) as Paper[];
+    const fetched = await searchService.searchMultiProvider(
+      fallbackQuery,
+      classification.decomposedQuestions,
+      ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
+      { limit: Math.max(paperIds?.length || 5, 5) }
+    );
+    const fallbackPapers = rankingService.rankPapers(fetched, fallbackQuery, paperIds?.length || 5) as Paper[];
 
     const comparison = comparisonService.generateComparisonMatrix(fallbackPapers, fallbackQuery);
     return res.json({ success: true, data: comparison });
@@ -368,29 +465,31 @@ export const getResearchStats = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.userId;
 
     if (isMongoConnected()) {
-      try {
-        const totalSessions = await ResearchSession.countDocuments({ userId });
-        const completedSessions = await ResearchSession.countDocuments({ userId, status: 'completed' });
-        const totalSavedPapers = await SavedPaper.countDocuments({ userId });
-        const reports = await Report.find({ userId });
-        let totalVerifiedClaims = 0;
-        reports.forEach((r) => {
-          totalVerifiedClaims += (r.claims || []).length;
-        });
+      const [totalSessions, completedSessions, totalSavedPapers, reports, sessions] = await Promise.all([
+        ResearchSession.countDocuments({ userId }),
+        ResearchSession.countDocuments({ userId, status: 'completed' }),
+        SavedPaper.countDocuments({ userId }),
+        Report.find({ userId }),
+        ResearchSession.find({ userId }).select('domain'),
+      ]);
 
-        return res.json({
-          success: true,
-          data: {
-            totalSessions,
-            completedSessions,
-            totalSavedPapers,
-            totalVerifiedClaims,
-            favoriteDomains: ['Clinical Decision Support', 'Autonomous AI', 'Machine Learning'],
-          },
-        });
-      } catch (dbErr) {
-        console.warn('[DB Error getResearchStats] Using stats fallback.');
-      }
+      let totalVerifiedClaims = 0;
+      reports.forEach((r) => {
+        totalVerifiedClaims += (r.claims || []).length;
+      });
+
+      const domains = Array.from(new Set(sessions.map((s) => s.domain).filter(Boolean))) as string[];
+
+      return res.json({
+        success: true,
+        data: {
+          totalSessions,
+          completedSessions,
+          totalSavedPapers,
+          totalVerifiedClaims,
+          favoriteDomains: domains.length > 0 ? domains : ['Computer Science', 'Artificial Intelligence'],
+        },
+      });
     }
 
     const userSessions = localDb.getSessionsByUserId(userId || '');
@@ -422,8 +521,10 @@ export const getResearchStats = async (req: AuthRequest, res: Response) => {
 export const exportResearchZip = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const rawQuery = (req.query.query as string) || (req.body?.query as string);
+    const rawQuery = (req.body?.query as string) || (req.query.query as string);
     const queryParam = rawQuery ? rawQuery.replace(/^\s*\d+[\.\-\)]\s*/, '').trim() : undefined;
+    const bodyPapers = Array.isArray(req.body?.papers) ? (req.body.papers as Paper[]) : [];
+
     let sessionObj = localDb.getSessionById(id) || IN_MEMORY_SESSIONS.get(id);
 
     if (!sessionObj && isMongoConnected()) {
@@ -433,10 +534,13 @@ export const exportResearchZip = async (req: AuthRequest, res: Response) => {
           sessionObj = {
             id: dbSession._id.toString(),
             query: dbSession.query,
+            targetPaperCount: dbSession.targetPaperCount,
+            yearRange: dbSession.yearRange,
+            preferredSources: dbSession.preferredSources,
             selectedPapers: dbSession.selectedPaperIds,
           };
         }
-      } catch (e) {
+      } catch {
         // Fallback
       }
     }
@@ -445,43 +549,80 @@ export const exportResearchZip = async (req: AuthRequest, res: Response) => {
       sessionObj = {
         id,
         query: queryParam || 'Academic Literature Research',
-        selectedPapers: [],
+        selectedPapers: bodyPapers.length > 0 ? bodyPapers : [],
       };
       IN_MEMORY_SESSIONS.set(id, sessionObj);
-    localDb.saveSession(sessionObj);
-    } else if (queryParam && (!sessionObj.query || sessionObj.query === 'Academic Literature Research')) {
-      sessionObj.query = queryParam;
+      localDb.saveSession(sessionObj);
+    } else {
+      if (queryParam && (!sessionObj.query || sessionObj.query === 'Academic Literature Research')) {
+        sessionObj.query = queryParam;
+      }
+      if (bodyPapers.length > 0) {
+        sessionObj.selectedPapers = bodyPapers;
+      }
     }
 
-    let papers: Paper[] = sessionObj.selectedPapers && sessionObj.selectedPapers.length > 0
-      ? sessionObj.selectedPapers
-      : [];
+    let papers: Paper[] =
+      bodyPapers.length > 0
+        ? bodyPapers
+        : sessionObj.selectedPapers && sessionObj.selectedPapers.length > 0
+        ? sessionObj.selectedPapers
+        : [];
 
     if (papers.length === 0) {
       const targetQuery = sessionObj.query || 'Academic Research';
+      const targetLimit = sessionObj.targetPaperCount || 25;
       const classification = domainClassifierService.classify(targetQuery);
       const fetched = await searchService.searchMultiProvider(
         targetQuery,
         classification.decomposedQuestions,
-        ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
-        { limit: 25 }
+        sessionObj.preferredSources || ['arXiv', 'Semantic Scholar', 'OpenAlex', 'Crossref'],
+        {
+          limit: targetLimit,
+          yearStart: sessionObj.yearRange?.start,
+          yearEnd: sessionObj.yearRange?.end,
+        }
       );
-      papers = rankingService.rankPapers(fetched, targetQuery, 25) as Paper[];
+      papers = rankingService.rankPapers(fetched, targetQuery, targetLimit) as Paper[];
       sessionObj.selectedPapers = papers;
     }
 
-    const zipBuffer = await pdfGeneratorService.generateBatchZipBuffer(papers, sessionObj.query);
-    const cleanSlug = (sessionObj.query || 'Research_Papers')
+    if (!papers || papers.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No research papers found to include in the ZIP archive.',
+      });
+    }
+
+    const isServerless = Boolean(
+      process.env.NETLIFY ||
+        process.env.AWS_LAMBDA_FUNCTION_NAME ||
+        process.env.LAMBDA_TASK_ROOT ||
+        process.env.VERCEL
+    );
+    const includeExternalPdfs =
+      !isServerless &&
+      req.query.mode !== 'fast' &&
+      req.body?.includeExternalPdfs !== false;
+
+    const targetQuery = sessionObj.query || queryParam || 'Research_Papers';
+    const zipBuffer = await pdfGeneratorService.generateBatchZipBuffer(papers, targetQuery, {
+      includeExternalPdfs,
+    });
+
+    const cleanSlug = targetQuery
       .replace(/[^a-zA-Z0-9\s]/g, ' ')
       .trim()
       .slice(0, 35)
-      .replace(/\s+/g, '_');
+      .replace(/\s+/g, '_') || 'Research_Papers';
     const zipFilename = `Research_Papers_${cleanSlug}_${papers.length}_Papers.zip`;
 
     res.setHeader('Content-Type', 'application/zip');
     res.setHeader('Content-Disposition', `attachment; filename="${zipFilename}"`);
     res.setHeader('Content-Length', zipBuffer.length);
-    return res.end(zipBuffer);
+    res.setHeader('X-Paper-Count', String(papers.length));
+    res.setHeader('X-Archive-Mode', includeExternalPdfs ? 'hybrid' : 'synthesized');
+    return res.status(200).send(zipBuffer);
   } catch (err: any) {
     console.error('Error generating research ZIP:', err);
     return res.status(500).json({

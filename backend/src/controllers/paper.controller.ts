@@ -14,26 +14,26 @@ export const IN_MEMORY_SAVED_PAPERS = new Map<string, any>();
 export const getPaperDetails = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
+    const userId = req.user?.userId;
 
     if (isMongoConnected()) {
-      try {
-        const paper = await PaperModel.findById(id);
-        if (paper) {
-          let isSaved = false;
-          if (req.user?.userId) {
-            isSaved = localDb.isPaperSaved(req.user.userId, id);
-            if (!isSaved) {
-              const saved = await SavedPaper.findOne({ userId: req.user.userId, paperId: id });
-              isSaved = !!saved;
-            }
-          }
+      const paper = await PaperModel.findById(id);
+      if (paper) {
+        const saved = userId ? await SavedPaper.findOne({ userId, paperId: id }) : null;
+        return res.json({
+          success: true,
+          data: { paper: { ...paper.toObject(), id: paper._id.toString() }, isSaved: !!saved },
+        });
+      }
+
+      if (userId) {
+        const savedSnapshot = await SavedPaper.findOne({ userId, paperId: id });
+        if (savedSnapshot?.paper) {
           return res.json({
             success: true,
-            data: { paper, isSaved },
+            data: { paper: savedSnapshot.paper, isSaved: true },
           });
         }
-      } catch (dbErr) {
-        console.warn('[DB Error getPaperDetails] Using dynamic paper lookup.');
       }
     }
 
@@ -110,11 +110,20 @@ export const getPaperDetails = async (req: AuthRequest, res: Response) => {
       }
     }
 
+    let isSaved = false;
+    if (userId) {
+      if (isMongoConnected()) {
+        isSaved = !!(await SavedPaper.findOne({ userId, paperId: id }));
+      } else {
+        isSaved = localDb.isPaperSaved(userId, id);
+      }
+    }
+
     return res.json({
       success: true,
       data: {
         paper: targetPaper,
-        isSaved: req.user?.userId ? localDb.isPaperSaved(req.user.userId, id) : false,
+        isSaved,
       },
     });
   } catch (err: any) {
@@ -124,47 +133,66 @@ export const getPaperDetails = async (req: AuthRequest, res: Response) => {
 
 export const savePaper = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.user?.userId || 'mem_user';
-    const { paperId } = req.params;
-    const { notes, tags } = req.body;
-
-    if (isMongoConnected()) {
-      try {
-        const paper = await PaperModel.findById(paperId);
-        if (paper) {
-          const saved = await SavedPaper.findOneAndUpdate(
-            { userId, paperId },
-            { userId, paperId, notes: notes || '', tags: tags || ['Research'] },
-            { upsert: true, new: true }
-          );
-          return res.status(201).json({
-            success: true,
-            message: 'Paper successfully saved to personal library.',
-            data: saved,
-          });
-        }
-      } catch (dbErr) {
-        console.warn('[DB Error savePaper] Using in-memory store.');
-      }
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Not authenticated.' });
     }
 
-    let targetPaper = null;
-    const corpus = generate100PlusPapers();
-    targetPaper = corpus.find((p) => p.id === paperId);
+    const { paperId } = req.params;
+    const { notes, tags, paper: bodyPaper } = req.body || {};
+
+    let targetPaper: any = bodyPaper || null;
+    if (!targetPaper && isMongoConnected()) {
+      const existingPaper = await PaperModel.findById(paperId);
+      if (existingPaper) {
+        targetPaper = { ...existingPaper.toObject(), id: existingPaper._id.toString() };
+      }
+    }
     if (!targetPaper) {
       for (const sess of IN_MEMORY_SESSIONS.values()) {
-        const found = sess.selectedPapers?.find((p: any) => p.id === paperId || (p as any)._id === paperId);
+        const found = sess.selectedPapers?.find((p: any) => p.id === paperId || p._id === paperId);
         if (found) {
           targetPaper = found;
           break;
         }
       }
     }
+    if (!targetPaper) {
+      const corpus = generate100PlusPapers();
+      targetPaper = corpus.find((p) => p.id === paperId) || corpus[0];
+    }
+
+    if (isMongoConnected()) {
+      const saved = await SavedPaper.findOneAndUpdate(
+        { userId, paperId },
+        {
+          userId,
+          paperId,
+          paper: targetPaper,
+          notes: notes || '',
+          tags: tags || ['Research'],
+        },
+        { upsert: true, new: true }
+      );
+
+      return res.status(201).json({
+        success: true,
+        message: 'Paper successfully saved to personal library.',
+        data: {
+          id: saved._id.toString(),
+          paperId: saved.paperId,
+          paper: saved.paper,
+          notes: saved.notes,
+          tags: saved.tags,
+          createdAt: saved.createdAt,
+        },
+      });
+    }
 
     const savedRecord = localDb.savePaperForUser(
       userId,
       paperId,
-      targetPaper || corpus[0],
+      targetPaper,
       notes,
       tags || ['Research']
     );
@@ -187,11 +215,7 @@ export const removeSavedPaper = async (req: AuthRequest, res: Response) => {
     const { paperId } = req.params;
 
     if (isMongoConnected()) {
-      try {
-        await SavedPaper.findOneAndDelete({ userId, paperId });
-      } catch (dbErr) {
-        console.warn('[DB Error removeSavedPaper]');
-      }
+      await SavedPaper.findOneAndDelete({ userId, paperId });
     }
 
     localDb.removeSavedPaper(userId, paperId);
@@ -211,31 +235,32 @@ export const removeSavedPaper = async (req: AuthRequest, res: Response) => {
 export const getSavedPapers = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
-
-    if (isMongoConnected()) {
-      try {
-        const savedPapers = await SavedPaper.find({ userId })
-          .sort({ createdAt: -1 })
-          .populate('paperId');
-
-        if (savedPapers && savedPapers.length > 0) {
-          return res.json({
-            success: true,
-            data: savedPapers.map((sp) => ({
-              id: sp._id,
-              paper: sp.paperId,
-              notes: sp.notes,
-              tags: sp.tags,
-              createdAt: sp.createdAt,
-            })),
-          });
-        }
-      } catch (dbErr) {
-        console.warn('[DB Error getSavedPapers] Using persistent local store.');
-      }
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Not authenticated.' });
     }
 
-    const userSaved = localDb.getSavedPapersByUserId(userId || '');
+    if (isMongoConnected()) {
+      const savedPapers = await SavedPaper.find({ userId })
+        .sort({ createdAt: -1 })
+        .populate('paperId');
+
+      return res.json({
+        success: true,
+        data: savedPapers.map((sp: any) => {
+          const populatedPaper = sp.paperId && typeof sp.paperId === 'object' ? sp.paperId : null;
+          return {
+            id: sp._id.toString(),
+            paperId: typeof sp.paperId === 'string' ? sp.paperId : populatedPaper?._id?.toString(),
+            paper: sp.paper || populatedPaper,
+            notes: sp.notes,
+            tags: sp.tags,
+            createdAt: sp.createdAt,
+          };
+        }),
+      });
+    }
+
+    const userSaved = localDb.getSavedPapersByUserId(userId);
     return res.json({
       success: true,
       data: userSaved.map((sp: any) => ({

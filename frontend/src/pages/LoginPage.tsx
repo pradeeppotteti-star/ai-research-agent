@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
-import { authVault } from '../utils/authVault';
 import {
   BrainCircuit,
   Mail,
@@ -30,110 +29,11 @@ export const LoginPage: React.FC = () => {
     try {
       const res = await api.post('/auth/login', { email: cleanEmail, password });
       if (res.data.success) {
-        await authVault.saveAccount({
-          name: res.data.data.user.name,
-          email: cleanEmail,
-          password,
-          institution: res.data.data.user.institution,
-          role: res.data.data.user.role,
-        });
         login(res.data.data.token, res.data.data.user);
         navigate('/dashboard');
-        return;
       }
     } catch (err: any) {
-      const status = err.response?.status;
-      const code = err.response?.data?.code;
-      const msg = err.response?.data?.message || '';
-
-      // Check if user is registered in this browser's vault
-      const cached = authVault.getAccount(cleanEmail);
-
-      // Resilient serverless fallback: if container cold-started or password mismatch with vault
-      if (status === 401 && cached) {
-        const isMatch = await authVault.verifyPassword(cleanEmail, password);
-        if (isMatch) {
-          try {
-            const syncRes = await api.post('/auth/sync', {
-              name: cached.name,
-              email: cleanEmail,
-              password,
-              updatePassword: true,
-              institution: cached.institution,
-              role: cached.role,
-            });
-
-            if (syncRes.data.success) {
-              login(syncRes.data.data.token, syncRes.data.data.user);
-              navigate('/dashboard');
-              return;
-            }
-          } catch (syncErr: any) {
-            console.error('Account sync error:', syncErr);
-          }
-        } else {
-          setError('Incorrect password. Please verify your credentials and try again.');
-          setLoading(false);
-          return;
-        }
-      }
-
       setError(err.response?.data?.message || 'Invalid email or password.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleQuickReset = async () => {
-    if (!email || !password) {
-      setError('Please enter both email and your desired password.');
-      return;
-    }
-    setLoading(true);
-    setError('');
-
-    const cleanEmail = email.toLowerCase().trim();
-
-    try {
-      const res = await api.post('/auth/reset-password', {
-        email: cleanEmail,
-        newPassword: password,
-      });
-
-      if (res.data.success) {
-        await authVault.saveAccount({
-          name: res.data.data.user.name,
-          email: cleanEmail,
-          password,
-          institution: res.data.data.user.institution,
-          role: res.data.data.user.role,
-        });
-        login(res.data.data.token, res.data.data.user);
-        navigate('/dashboard');
-        return;
-      }
-    } catch (resetErr: any) {
-      // If user wasn't in server db yet, auto-provision with this password
-      try {
-        const syncRes = await api.post('/auth/sync', {
-          name: cleanEmail.split('@')[0],
-          email: cleanEmail,
-          password,
-          updatePassword: true,
-        });
-        if (syncRes.data.success) {
-          await authVault.saveAccount({
-            name: syncRes.data.data.user.name,
-            email: cleanEmail,
-            password,
-          });
-          login(syncRes.data.data.token, syncRes.data.data.user);
-          navigate('/dashboard');
-          return;
-        }
-      } catch (e: any) {
-        setError(resetErr.response?.data?.message || 'Password update failed. Please check details.');
-      }
     } finally {
       setLoading(false);
     }
@@ -155,23 +55,9 @@ export const LoginPage: React.FC = () => {
       {/* Login Form */}
       <div className="glass-panel p-8 rounded-xl border border-[#E8E2D8] shadow-sm space-y-5 bg-white">
         {error && (
-          <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm space-y-2.5">
-            <div className="flex items-start gap-2">
-              <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-              <span className="font-medium">{error}</span>
-            </div>
-            {error.includes('Incorrect password') && (
-              <div className="pt-2 border-t border-rose-200/80 flex items-center justify-between text-xs">
-                <span className="text-[#5C554E]">Want to set and sign in with this password?</span>
-                <button
-                  type="button"
-                  onClick={handleQuickReset}
-                  className="font-bold underline text-[#1E3A8A] hover:text-[#172E6F] transition-all ml-2"
-                >
-                  Reset & Sign In &rarr;
-                </button>
-              </div>
-            )}
+          <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-start gap-2">
+            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+            <span className="font-medium">{error}</span>
           </div>
         )}
 

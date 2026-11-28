@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
-import { authVault } from '../utils/authVault';
 import { BrainCircuit, Sparkles, User, Mail, Lock, AlertCircle } from 'lucide-react';
 
 export const SignupPage: React.FC = () => {
@@ -20,13 +19,6 @@ export const SignupPage: React.FC = () => {
     setError('');
 
     const cleanEmail = email.toLowerCase().trim();
-
-    // Guard against duplicate accounts on this device
-    if (authVault.hasAccount(cleanEmail)) {
-      setError('An account with this email address already exists. Please sign in.');
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -37,11 +29,6 @@ export const SignupPage: React.FC = () => {
       });
 
       if (res.data.success) {
-        await authVault.saveAccount({
-          name: name.trim(),
-          email: cleanEmail,
-          password,
-        });
         login(res.data.data.token, res.data.data.user);
         navigate('/dashboard');
       }

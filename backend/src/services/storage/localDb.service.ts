@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import bcrypt from 'bcryptjs';
+import mongoose from 'mongoose';
 
 export interface LocalUser {
   id: string;
@@ -263,6 +264,7 @@ class LocalDbService {
   }
 
   public async createUser(data: {
+    id?: string;
     name: string;
     email: string;
     password: string;
@@ -277,7 +279,7 @@ class LocalDbService {
 
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(data.password, salt);
-    const id = 'usr_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 7);
+    const id = data.id || new mongoose.Types.ObjectId().toString();
 
     const newUser: LocalUser = {
       id,

@@ -20,10 +20,17 @@ app.use(
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Disposition', 'Content-Length', 'X-Paper-Count', 'X-Archive-Mode'],
   })
 );
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Ensure MongoDB connection promise settles before request handlers run (prevents serverless cold-start race)
+app.use(async (_req, _res, next) => {
+  await connectDB();
+  next();
+});
 
 // Netlify Functions path normalization middleware
 app.use((req, res, next) => {
@@ -62,8 +69,14 @@ app.use('/user', userRoutes);
 app.use(errorHandler);
 
 const PORT = parseInt(env.PORT, 10) || 5000;
+const isServerlessRuntime = Boolean(
+  process.env.NETLIFY ||
+    process.env.AWS_LAMBDA_FUNCTION_NAME ||
+    process.env.LAMBDA_TASK_ROOT ||
+    process.env.VERCEL
+);
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && !isServerlessRuntime) {
   app.listen(PORT, () => {
     console.log(`=======================================================`);
     console.log(`[PaperInsight: Research Analysis and Literature Review Generation System API Active]`);

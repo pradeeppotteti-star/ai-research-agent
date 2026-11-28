@@ -85,7 +85,10 @@ export const PaperCard: React.FC<PaperCardProps> = ({
         setSaved(false);
         if (onSaveToggle) onSaveToggle(paperId, false);
       } else {
-        await api.post(`/papers/${encodeURIComponent(paperId)}/save`, { tags: ['Research'] });
+        await api.post(`/papers/${encodeURIComponent(paperId)}/save`, {
+          tags: ['Research'],
+          paper: { ...paper, id: paperId },
+        });
         setSaved(true);
         if (onSaveToggle) onSaveToggle(paperId, true);
       }

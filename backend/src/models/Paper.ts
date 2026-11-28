@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IPaperDocument extends Document {
+export interface IPaperDocument extends Document<string> {
+  _id: string;
   title: string;
   authors: string[];
   abstract: string;
@@ -36,6 +37,7 @@ export interface IPaperDocument extends Document {
 
 const PaperSchema = new Schema<IPaperDocument>(
   {
+    _id: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
     title: { type: String, required: true, index: true },
     authors: { type: [String], default: [] },
     abstract: { type: String, required: true },

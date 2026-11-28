@@ -80,6 +80,11 @@
 
 /* Publication Grade Print Styles */
 @media print {
+  @page {
+    size: landscape;
+    margin: 12mm;
+  }
+
   header,
   footer,
   .no-print,
@@ -102,14 +107,22 @@
     background: transparent !important;
   }
 
+  .overflow-x-auto {
+    overflow: visible !important;
+  }
+
   table {
     width: 100% !important;
     border-collapse: collapse !important;
+    table-layout: fixed !important;
   }
 
   th, td {
     border: 1px solid #D8D0C4 !important;
     page-break-inside: avoid !important;
+    word-break: break-word !important;
+    font-size: 9px !important;
+    padding: 6px !important;
   }
 
   thead {

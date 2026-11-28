@@ -28,8 +28,7 @@ api.interceptors.response.use(
     const url = error.config?.url || '';
     const isAuthRoute =
       url.includes('/auth/login') ||
-      url.includes('/auth/signup') ||
-      url.includes('/auth/sync');
+      url.includes('/auth/signup');
 
     if (error.response?.status === 401 && !isAuthRoute) {
       localStorage.removeItem('research_auth_token');

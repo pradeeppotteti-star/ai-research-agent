@@ -85,6 +85,7 @@ Primary synthesis highlights three main pillars:
 `;
 
     return {
+      id: sessionId,
       sessionId,
       title: `AI Smart Research Survey: ${query}`,
       sections: {
@@ -104,6 +105,7 @@ Primary synthesis highlights three main pillars:
       },
       claims,
       consensusAnalysis,
+      createdAt: new Date().toISOString(),
     };
   }
 }

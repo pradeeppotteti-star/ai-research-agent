@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env';
-import { localDb } from '../services/storage/localDb.service';
 
 export interface AuthRequest extends Request {
   user?: {
@@ -34,18 +33,6 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
       institution?: string;
     };
     req.user = decoded;
-
-    // Resilient serverless re-hydration: if this container cold-started, ensure user exists in memory/tmp
-    if (decoded.userId && decoded.email && !localDb.getUserById(decoded.userId)) {
-      localDb.restoreUserFromToken({
-        id: decoded.userId,
-        email: decoded.email,
-        name: decoded.name || decoded.email.split('@')[0],
-        role: decoded.role || 'Researcher',
-        institution: decoded.institution || 'Academic Institution',
-      });
-    }
-
     next();
   } catch (err) {
     return res.status(403).json({

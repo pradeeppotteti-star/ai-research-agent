@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-export interface IUserDocument extends Document {
+export interface IUserDocument extends Document<string> {
+  _id: string;
   name: string;
   email: string;
   passwordHash: string;
@@ -24,6 +25,7 @@ export interface IUserDocument extends Document {
 
 const UserSchema = new Schema<IUserDocument>(
   {
+    _id: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     passwordHash: { type: String, required: true },
@@ -45,6 +47,8 @@ const UserSchema = new Schema<IUserDocument>(
 
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('passwordHash')) return next();
+  // Avoid double-hashing when migrating an existing bcrypt hash
+  if (/^\$2[aby]\$\d{2}\$/.test(this.passwordHash)) return next();
   try {
     const salt = await bcrypt.genSalt(10);
     this.passwordHash = await bcrypt.hash(this.passwordHash, salt);

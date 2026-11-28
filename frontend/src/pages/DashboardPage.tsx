@@ -44,47 +44,20 @@ export const DashboardPage: React.FC = () => {
           api.get('/research/stats'),
         ]);
 
-        const userKey = user?.id || user?.email || 'default';
-        const cacheKeySessions = `paperinsight_sessions_${userKey}`;
-        const cacheKeySaved = `paperinsight_saved_${userKey}`;
-
-        let currentSessions = historyRes.data?.success ? historyRes.data.data : [];
-        let currentSaved = savedRes.data?.success ? savedRes.data.data : [];
-
-        // If server returns empty (e.g. serverless cold container), check local client cache
-        if (currentSessions.length === 0) {
-          try {
-            const cachedS = localStorage.getItem(cacheKeySessions);
-            if (cachedS) currentSessions = JSON.parse(cachedS);
-          } catch {}
-        } else {
-          try {
-            localStorage.setItem(cacheKeySessions, JSON.stringify(currentSessions));
-          } catch {}
-        }
-
-        if (currentSaved.length === 0) {
-          try {
-            const cachedP = localStorage.getItem(cacheKeySaved);
-            if (cachedP) currentSaved = JSON.parse(cachedP);
-          } catch {}
-        } else {
-          try {
-            localStorage.setItem(cacheKeySaved, JSON.stringify(currentSaved));
-          } catch {}
-        }
+        const currentSessions = historyRes.data?.success ? historyRes.data.data : [];
+        const currentSaved = savedRes.data?.success ? savedRes.data.data : [];
 
         setSessions(currentSessions);
         setSavedPapers(currentSaved);
 
-        if (statsRes.data?.success && statsRes.data.data?.totalSessions > 0) {
+        if (statsRes.data?.success) {
           setStats(statsRes.data.data);
         } else {
           setStats({
             totalSessions: currentSessions.length,
             completedSessions: currentSessions.filter((s: any) => s.status === 'completed').length,
             totalSavedPapers: currentSaved.length,
-            totalVerifiedClaims: currentSessions.reduce((acc: number, s: any) => acc + (s.verifiedClaimsCount || 0), 0),
+            totalVerifiedClaims: currentSessions.reduce((acc: number, s: any) => acc + (s.report?.claims?.length || 0), 0),
           });
         }
       } catch (err) {

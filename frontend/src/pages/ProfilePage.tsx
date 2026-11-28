@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
-import { User, Building, Mail, Sparkles, Layers, Sliders, Check } from 'lucide-react';
+import { User, Building, Mail, Sparkles, Layers, Sliders, Check, AlertCircle } from 'lucide-react';
 
 export const ProfilePage: React.FC = () => {
-  const { user, updateUserPreferences } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const [name, setName] = useState<string>(user?.name || '');
   const [institution, setInstitution] = useState<string>(user?.institution || '');
@@ -20,11 +20,13 @@ export const ProfilePage: React.FC = () => {
 
   const [saving, setSaving] = useState<boolean>(false);
   const [successMsg, setSuccessMsg] = useState<string>('');
+  const [errorMsg, setErrorMsg] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
     setSuccessMsg('');
+    setErrorMsg('');
 
     try {
       const interestsList = researchInterests.split(',').map((s) => s.trim()).filter(Boolean);
@@ -43,12 +45,17 @@ export const ProfilePage: React.FC = () => {
       });
 
       if (res.data.success) {
-        updateUserPreferences(updatedPrefs);
+        updateUser({
+          name: res.data.data?.name ?? name,
+          institution: res.data.data?.institution ?? institution,
+          preferences: res.data.data?.preferences ?? updatedPrefs,
+        });
         setSuccessMsg('Profile preferences successfully saved.');
         setTimeout(() => setSuccessMsg(''), 3000);
       }
     } catch (err: any) {
       console.error('Error saving profile:', err);
+      setErrorMsg(err.response?.data?.message || 'Failed to save profile preferences.');
     } finally {
       setSaving(false);
     }
@@ -68,6 +75,13 @@ export const ProfilePage: React.FC = () => {
           <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-2 font-semibold">
             <Check className="w-5 h-5 text-emerald-600" />
             <span>{successMsg}</span>
+          </div>
+        )}
+
+        {errorMsg && (
+          <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2 font-semibold">
+            <AlertCircle className="w-5 h-5 text-rose-600" />
+            <span>{errorMsg}</span>
           </div>
         )}
 

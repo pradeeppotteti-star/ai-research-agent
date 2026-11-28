@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IResearchSessionDocument extends Document {
-  userId: mongoose.Types.ObjectId;
+export interface IResearchSessionDocument extends Document<string> {
+  _id: string;
+  userId: string;
   query: string;
   domain?: string;
   keywords: string[];
@@ -27,7 +28,8 @@ export interface IResearchSessionDocument extends Document {
     extractedKeywords: string[];
     searchStrategy: string;
   };
-  selectedPaperIds: mongoose.Types.ObjectId[];
+  selectedPaperIds: string[];
+  selectedPapers?: any[];
   comparisonMatrix?: Array<{
     paperId: string;
     paperTitle: string;
@@ -52,14 +54,15 @@ export interface IResearchSessionDocument extends Document {
     whyUnderexplored: string;
     possibleResearchDirection: string;
   }>;
-  reportId?: mongoose.Types.ObjectId;
+  reportId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const ResearchSessionSchema = new Schema<IResearchSessionDocument>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+    _id: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
+    userId: { type: String, ref: 'User', required: true, index: true },
     query: { type: String, required: true },
     domain: { type: String, default: 'General Science' },
     keywords: { type: [String], default: [] },
@@ -87,10 +90,11 @@ const ResearchSessionSchema = new Schema<IResearchSessionDocument>(
       extractedKeywords: [String],
       searchStrategy: String,
     },
-    selectedPaperIds: [{ type: Schema.Types.ObjectId, ref: 'Paper' }],
+    selectedPaperIds: [{ type: String, ref: 'Paper' }],
+    selectedPapers: { type: [Schema.Types.Mixed], default: [] },
     comparisonMatrix: [Schema.Types.Mixed],
     researchGaps: [Schema.Types.Mixed],
-    reportId: { type: Schema.Types.ObjectId, ref: 'Report' },
+    reportId: { type: String, ref: 'Report' },
   },
   { timestamps: true }
 );
